@@ -1,3 +1,8 @@
+---
+name: sutra
+description: "SUTRA — A minimal, deterministic agent-to-agent communication language with 8 Sanskrit-inspired keywords (INTENT, FACT, QUERY, OFFER, ACCEPT, REJECT, COMMIT, ACT). Use when agents need to negotiate deals, query knowledge, commit to obligations with Ed25519 cryptographic signatures, or coordinate multi-agent workflows. Includes HTTP transport, multi-agent runtime with auto-response, and conversation tracking. Alternative to unstructured English or rigid JSON APIs for agent communication."
+---
+
 # SUTRA — Agent-to-Agent Communication Language
 
 SUTRA (Structured Universal Transaction & Reasoning Architecture) is a minimal, deterministic, formally-specified language that enables AI agents to communicate, negotiate, and commit to agreements. Sanskrit-inspired ontology, English-readable syntax.
