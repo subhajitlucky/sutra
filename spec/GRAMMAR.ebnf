@@ -1,0 +1,92 @@
+(* ============================================== *)
+(* SUTRA v0.1 — Formal Grammar (EBNF)            *)
+(* Structured Universal Transaction & Reasoning   *)
+(* Architecture                                   *)
+(* ============================================== *)
+
+(* === TOP LEVEL === *)
+
+program         = header* statement* ;
+
+header          = "#" header_key string_lit NEWLINE ;
+header_key      = "sutra" | "from" | "to" | "timestamp"
+                | "signature" | "import" | "x-" identifier ;
+
+statement       = intent_stmt
+                | fact_stmt
+                | query_stmt
+                | offer_stmt
+                | accept_stmt
+                | reject_stmt
+                | commit_stmt
+                | act_stmt
+                ;
+
+(* === INTENT === *)
+
+intent_stmt     = "INTENT" predicate ";" ;
+
+(* === FACT === *)
+
+fact_stmt       = "FACT" predicate ";" ;
+
+(* === QUERY === *)
+
+query_stmt      = "QUERY" predicate "FROM" string_lit ";" ;
+
+(* === OFFER === *)
+
+offer_stmt      = "OFFER" "id" "=" string_lit "TO" string_lit
+                  "{" offer_body "}" ";" ;
+offer_body      = offer_field ( "," offer_field )* ;
+offer_field     = identifier ":" value ;
+
+(* === ACCEPT === *)
+
+accept_stmt     = "ACCEPT" string_lit ";" ;
+
+(* === REJECT === *)
+
+reject_stmt     = "REJECT" string_lit ( "REASON" string_lit )? ";" ;
+
+(* === COMMIT === *)
+
+commit_stmt     = "COMMIT" predicate ( "BY" string_lit )? ";" ;
+
+(* === ACT === *)
+
+act_stmt        = "ACT" predicate ";" ;
+
+(* === SHARED RULES === *)
+
+predicate       = identifier "(" arg_list? ")" ;
+arg_list        = named_arg ( "," named_arg )* ;
+named_arg       = identifier "=" value ;
+
+value           = string_lit
+                | number_lit
+                | bool_lit
+                | null_lit
+                | map_lit
+                | list_lit
+                ;
+
+map_lit         = "{" ( map_entry ( "," map_entry )* )? "}" ;
+map_entry       = identifier ":" value ;
+
+list_lit        = "[" ( value ( "," value )* )? "]" ;
+
+(* === LITERALS === *)
+
+string_lit      = '"' ( char - '"' )* '"' ;
+number_lit      = [ "-" ] digit+ [ "." digit+ ] ;
+bool_lit        = "true" | "false" ;
+null_lit        = "null" ;
+
+(* === LEXICAL === *)
+
+identifier      = letter ( letter | digit | "_" )* ;
+letter          = "a".."z" | "A".."Z" | "_" ;
+digit           = "0".."9" ;
+char            = ? any Unicode character ? ;
+NEWLINE         = "\n" | "\r\n" ;

@@ -1,0 +1,22 @@
+// ──────────────────────────────────────────────
+// SUTRA Example: Buyer Agent Script
+// A customer agent searching for a Smart TV
+// ──────────────────────────────────────────────
+
+#sutra "v0.1"
+#from "buyer@home"
+#to "seller@store"
+#timestamp "2026-02-27T20:00:00Z"
+
+// Step 1: Declare what we want (Sankalpa)
+INTENT buy(item="SmartTV", max_price=50000, brand="Samsung", deadline="2026-03-01");
+
+// Step 2: Query seller for availability (Prashna)
+QUERY availability(item="SmartTV") FROM "seller@store";
+
+// Step 3: Make an offer (Samvida)
+OFFER id="offer-tv-001" TO "seller@store" {
+    give: {money: 48000},
+    want: {item: "SmartTV", brand: "Samsung", model: "Crystal4K"},
+    expires: "2026-03-01T23:59"
+};

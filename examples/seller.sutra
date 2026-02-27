@@ -1,0 +1,26 @@
+// ──────────────────────────────────────────────
+// SUTRA Example: Seller Agent Script
+// A store agent responding to buyer's offer
+// ──────────────────────────────────────────────
+
+#sutra "v0.1"
+#from "seller@store"
+#to "buyer@home"
+#timestamp "2026-02-27T20:05:00Z"
+
+// Publish available products (Pramana)
+FACT available(item="SmartTV", brand="Samsung", model="Crystal4K", price=52000, stock=15);
+FACT available(item="SmartTV", brand="LG", model="OLED55", price=65000, stock=8);
+FACT shipping(method="express", days=2, cost=499);
+FACT shipping(method="standard", days=5, cost=0);
+
+// Reject the buyer's first offer — too low
+REJECT "offer-tv-001" REASON "price_below_minimum";
+
+// Counter with our own offer
+OFFER id="offer-tv-002" TO "buyer@home" {
+    give: {item: "SmartTV", brand: "Samsung", model: "Crystal4K"},
+    want: {money: 51000},
+    bonus: {free_shipping: true, warranty_years: 2},
+    expires: "2026-03-01T12:00"
+};

@@ -1,0 +1,17 @@
+// ──────────────────────────────────────────────
+// SUTRA Example: Deal Finalization
+// Both agents commit after reaching agreement
+// ──────────────────────────────────────────────
+
+#sutra "v0.1"
+#from "buyer@home"
+#timestamp "2026-02-27T21:00:00Z"
+
+// Buyer accepts the seller's counter-offer
+ACCEPT "offer-tv-002";
+
+// Buyer commits to payment (Dharma — binding obligation)
+COMMIT pay(amount=51000, to="seller@store", method="upi") BY "2026-02-28";
+
+// Buyer executes payment action (Kriya)
+ACT transfer(amount=51000, to="seller@store", ref="txn-20260227-001");

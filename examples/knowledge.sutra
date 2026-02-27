@@ -1,0 +1,18 @@
+// ──────────────────────────────────────────────
+// SUTRA Example: Multi-Agent Knowledge Sharing
+// Agents sharing facts and querying each other
+// ──────────────────────────────────────────────
+
+#sutra "v0.1"
+#from "market-analyst@agency"
+
+// Share market intelligence (Pramana)
+FACT price_trend(item="SmartTV", direction="falling", confidence=0.85);
+FACT best_deal(item="SmartTV", seller="seller@store", price=48000);
+FACT best_deal(item="SmartTV", seller="electronics@mega", price=46500);
+
+// Query another agent for reviews
+QUERY customer_rating(seller="seller@store") FROM "review-agent@platform";
+
+// Declare analysis intent
+INTENT analyze(category="SmartTV", market="india", period="2026-Q1");

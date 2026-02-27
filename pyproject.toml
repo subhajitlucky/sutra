@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "sutra-lang"
+version = "0.4.0"
+description = "SUTRA — A minimal agent-to-agent communication language"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "Subhajit"},
+]
+keywords = ["agents", "ai", "communication", "language", "negotiation", "dsl"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Interpreters",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.optional-dependencies]
+crypto = ["cryptography>=41.0"]
+
+[project.scripts]
+sutra = "sutra.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/your-username/sutra"
+Repository = "https://github.com/your-username/sutra"
+
+[tool.setuptools.packages.find]
+include = ["sutra*"]
