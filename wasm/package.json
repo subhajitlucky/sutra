@@ -1,0 +1,28 @@
+{
+  "name": "sutra-lang",
+  "version": "0.6.0",
+  "description": "SUTRA — A minimal, deterministic agent-to-agent communication language (JavaScript interpreter)",
+  "main": "sutra.js",
+  "browser": "sutra.js",
+  "keywords": [
+    "sutra",
+    "agent",
+    "communication",
+    "language",
+    "interpreter",
+    "multi-agent",
+    "deterministic",
+    "sandboxed",
+    "wasm"
+  ],
+  "author": "Subhajit <subhajitpradhan310@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/subhajitlucky/sutra"
+  },
+  "files": ["sutra.js"],
+  "exports": {
+    ".": "./sutra.js"
+  }
+}

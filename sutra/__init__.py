@@ -1,3 +1,3 @@
-"""SUTRA v0.4 — Structured Universal Transaction & Reasoning Architecture"""
+"""SUTRA v0.5 — Structured Universal Transaction & Reasoning Architecture"""
 
-__version__ = "0.4.0"
+__version__ = "0.6.0"

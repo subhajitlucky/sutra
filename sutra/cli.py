@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SUTRA v0.4 — CLI Entry Point
+"""SUTRA v0.5 — CLI Entry Point
 
 Usage:
     python -m sutra run <file.sutra>                 # Run a script with a default agent
@@ -15,6 +15,8 @@ Usage:
     python -m sutra verify <agent_id>                # Verify an agent's signed commits
     python -m sutra signed-demo                      # Run demo with cryptographic signing
     python -m sutra runtime-demo                     # Run multi-agent runtime demo
+    python -m sutra sandbox-demo                     # Run sandboxed interpreter demo
+    python -m sutra playground                       # Open browser playground
 """
 
 import argparse
@@ -859,10 +861,362 @@ ACT ship(item="SmartTV", brand="LG", to="buyer@home", method="express");
     print("  ✓ Agents communicated using SUTRA — queries auto-answered, offers auto-evaluated.\n")
 
 
+def cmd_sandbox_demo(_args):
+    """Demonstrate sandboxed execution with capability restrictions."""
+    from .sandbox import SutraSandbox, SandboxLimits
+
+    print("\n" + "═" * 60)
+    print("  🛡️  SUTRA v0.5 — Sandboxed Interpreter Demo")
+    print("  Capability-based security & resource limits")
+    print("═" * 60)
+
+    # ── Demo 1: Full-access sandbox ──────────────────────
+    print("\n── Demo 1: Unrestricted sandbox ──")
+    full = SutraSandbox(agent_id="full-access")
+    result = full.execute('''
+INTENT purchase(item="Laptop", budget=75000);
+FACT known(item="Laptop", brand="ThinkPad");
+OFFER id="deal-100" TO "seller" {
+    item: "ThinkPad X1",
+    price: 72000
+};
+COMMIT deliver(item="ThinkPad X1") BY "2025-06-01";
+ACT ship(item="ThinkPad X1", to="buyer@home");
+''')
+    print(f"  Status: {'✅ CLEAN' if result.is_clean else '⚠️  VIOLATIONS'}")
+    print(f"  Responses: {len(result.responses)}")
+    for r in result.responses:
+        print(f"    {r}")
+    print(f"  Elapsed: {result.elapsed_ms:.1f}ms")
+
+    # ── Demo 2: Read-only sandbox (no state mutations) ───
+    print("\n── Demo 2: Read-only sandbox (FACT + QUERY only) ──")
+    readonly = SutraSandbox(
+        agent_id="read-only",
+        allowed_keywords={"FACT", "QUERY"},
+    )
+    result = readonly.execute('''
+FACT known(topic="SUTRA", version=5);
+QUERY known(topic="SUTRA") FROM "self";
+COMMIT deliver(item="secret") BY "2025-01-01";
+ACT hack(target="mainframe");
+OFFER id="bad-deal" TO "victim" {
+    steal: "data"
+};
+''')
+    print(f"  Status: {'✅ CLEAN' if result.is_clean else '⚠️  VIOLATIONS'}")
+    print(f"  Executed: {result.stats['statements_executed']}/{result.stats['statements_total']}")
+    print(f"  Blocked:  {result.stats['statements_blocked']} statements")
+    print(f"  Responses:")
+    for r in result.responses:
+        print(f"    {r}")
+    if result.violations:
+        print(f"  Violations:")
+        for v in result.violations:
+            print(f"    ✗ {v}")
+
+    # ── Demo 3: Resource limits ──────────────────────────
+    print("\n── Demo 3: Resource limits (max 3 statements) ──")
+    limited = SutraSandbox(
+        agent_id="limited",
+        limits=SandboxLimits(max_statements=3),
+    )
+    result = limited.execute('''
+FACT a(x=1);
+FACT b(x=2);
+FACT c(x=3);
+FACT d(x=4);
+''')
+    print(f"  Status: {'✅ CLEAN' if result.is_clean else '⚠️  VIOLATIONS'}")
+    if result.violations:
+        for v in result.violations:
+            print(f"    ✗ {v}")
+
+    # ── Demo 4: Denied keywords ──────────────────────────
+    print("\n── Demo 4: Deny-list (block COMMIT + ACT) ──")
+    no_commit = SutraSandbox(
+        agent_id="no-commit",
+        denied_keywords={"COMMIT", "ACT"},
+    )
+    result = no_commit.execute('''
+INTENT explore(topic="sandbox");
+FACT known(feature="deny-list");
+COMMIT deliver(item="blocked") BY "2025-01-01";
+ACT blocked_action(target="test");
+''')
+    print(f"  Status: {'✅ CLEAN' if result.is_clean else '⚠️  VIOLATIONS'}")
+    print(f"  Executed: {result.stats['statements_executed']}/{result.stats['statements_total']}")
+    for r in result.responses:
+        print(f"    {r}")
+    if result.violations:
+        print(f"  Blocked:")
+        for v in result.violations:
+            print(f"    ✗ {v}")
+
+    # ── Demo 5: Full audit report ────────────────────────
+    print("\n── Demo 5: Full audit report ──")
+    audited = SutraSandbox(
+        agent_id="audit-demo",
+        allowed_keywords={"FACT", "QUERY", "INTENT"},
+    )
+    report = audited.explain('''
+INTENT investigate(topic="audit");
+FACT evidence(type="digital", confidence=0.95);
+QUERY evidence(type="digital") FROM "forensics";
+COMMIT seal(case="001") BY "2025-07-01";
+''')
+    print(report)
+
+    print("\n" + "═" * 60)
+    print("  ✓ Sandbox demo complete.")
+    print("  ✓ Untrusted SUTRA code runs safely with capability restrictions.")
+    print("  ✓ Browser playground: open wasm/index.html\n")
+
+
+# ── Hardened Demo (v0.6) ───────────────────────────────────
+
+def cmd_hardened_demo(_args):
+    """Demonstrate all v0.6 security hardening features."""
+
+    print("\n" + "═" * 60)
+    print("  🕉  SUTRA v0.6 — Security Hardening Demo")
+    print("═" * 60)
+
+    # ── 1. Replay Protection ─────────────────────────────
+    print("\n─── 1. Replay Protection (Nonce-based) ───")
+    from .security import ReplayGuard
+
+    guard = ReplayGuard(max_age_s=60)
+    nonce1 = ReplayGuard.generate_nonce()
+    nonce2 = ReplayGuard.generate_nonce()
+
+    print(f"  Generated nonce: {nonce1[:24]}...")
+    ok1, _ = guard.check(nonce1)
+    ok1r, reason = guard.check(nonce1)
+    ok2, _ = guard.check(nonce2)
+    print(f"  First use:   {'✅ accepted' if ok1 else '✗ rejected'}")
+    print(f"  Replay:      {'✗ rejected' if not ok1r else '✅ accepted'} ({reason})")
+    print(f"  New nonce:   {'✅ accepted' if ok2 else '✗ rejected'}")
+
+    # ── 2. Message Encryption ────────────────────────────
+    print("\n─── 2. Message Encryption ───")
+    from .security import MessageEncryptor
+
+    enc = MessageEncryptor()
+    secret = MessageEncryptor.generate_shared_secret()
+    enc.register_pair("buyer@market", "seller@market", secret)
+
+    plaintext = 'OFFER sell(item="laptop", price=75000);'
+    ciphertext = enc.encrypt("buyer@market", "seller@market", plaintext)
+    decrypted = enc.decrypt("buyer@market", "seller@market", ciphertext)
+
+    print(f"  Plaintext:   {plaintext}")
+    print(f"  Encrypted:   {ciphertext['ciphertext'][:32]}...")
+    print(f"  Decrypted:   {decrypted}")
+    print(f"  Match:       {'✅' if decrypted == plaintext else '✗'}")
+
+    # ── 3. Token Authentication ──────────────────────────
+    print("\n─── 3. Token Authentication ───")
+    from .security import TokenAuth
+
+    auth = TokenAuth()
+    token = TokenAuth.generate_token()
+    auth.register("buyer@market", token)
+    print(f"  Issued token: {token[:24]}...")
+    print(f"  Verify valid:   {'✅' if auth.verify('buyer@market', token) else '✗'}")
+    print(f"  Verify garbage: {'✗' if not auth.verify('buyer@market', 'fake-token') else '✅'}")
+    # Revoke by re-registering with a new token (invalidates old)
+    auth.register("buyer@market", TokenAuth.generate_token())
+    print(f"  After revoke:   {'✗ revoked' if not auth.verify('buyer@market', token) else '✅'}")
+
+    # ── 4. Message Ordering ──────────────────────────────
+    print("\n─── 4. Sequence-based Message Ordering ───")
+    from .security import SequenceTracker
+
+    tracker = SequenceTracker()
+    s1 = tracker.next_seq("A", "B")
+    s2 = tracker.next_seq("A", "B")
+    s3 = tracker.next_seq("A", "B")
+    print(f"  Sequence A→B: {s1}, {s2}, {s3}")
+    # Verify incoming: check expects 0, 1, 2 in order
+    ok0, _ = tracker.check("A", "B", 0)
+    ok1, _ = tracker.check("A", "B", 1)
+    ok2, _ = tracker.check("A", "B", 2)
+    print(f"  Verify seq 0,1,2: {'✅ all accepted' if all([ok0, ok1, ok2]) else '✗'}")
+    ok_dup, reason = tracker.check("A", "B", 1)
+    print(f"  Replay seq 1: {'✗ rejected' if not ok_dup else '✅'} ({reason})")
+
+    # ── 5. Transaction & Rollback ────────────────────────
+    print("\n─── 5. Transactions with Rollback ───")
+    from .agent import Agent
+    from .transaction import SutraTransaction
+
+    agent = Agent("test-agent")
+    tx = SutraTransaction(agent)
+    tx.begin()
+
+    # Add some state
+    from .interpreter import Interpreter
+    from .lexer import Lexer
+    from .parser import Parser
+
+    code = 'FACT item(name="laptop", price=75000);'
+    prog = Parser(Lexer(code).tokenize()).parse()
+    Interpreter(agent).execute(prog)
+    beliefs_after = len(agent.belief_base)
+    print(f"  After FACT:  {beliefs_after} belief(s)")
+
+    # Rollback
+    tx.rollback()
+    beliefs_rolled = len(agent.belief_base)
+    print(f"  After rollback: {beliefs_rolled} belief(s)")
+    print(f"  Rollback:    {'✅ state restored' if beliefs_rolled < beliefs_after else '✗'}")
+
+    # ── 6. Persistence ───────────────────────────────────
+    print("\n─── 6. State Persistence ───")
+    from .persistence import StateStore
+
+    store = StateStore()
+    agent2 = Agent("persist-test")
+    prog2 = Parser(Lexer('INTENT buy(item="phone");').tokenize()).parse()
+    Interpreter(agent2).execute(prog2)
+
+    store.save(agent2)
+    loaded = store.load("persist-test")
+    print(f"  Saved agent:  persist-test ({len(agent2.goal_set)} goals)")
+    if loaded:
+        print(f"  Loaded goals: {len(loaded.goal_set)}")
+        print(f"  Persistence: {'✅ round-trip OK' if len(loaded.goal_set) == len(agent2.goal_set) else '✗'}")
+    else:
+        print("  Persistence: ✗ load failed")
+
+    # Cleanup
+    store.delete("persist-test")
+
+    # ── 7. Deadlock Detection ────────────────────────────
+    print("\n─── 7. Deadlock Detection ───")
+    from .runtime import SutraRuntime, DeadlockError
+
+    rt = SutraRuntime(hardened=True)
+    rt.spawn("A")
+    rt.spawn("B")
+
+    # Simulate circular wait by manually setting _waiting_on
+    rt._waiting_on["B"] = "A"
+    try:
+        # This should detect that A→B while B→A = deadlock
+        rt.ask("A", "B", 'QUERY item(name="test");')
+        print("  Deadlock: ✗ not detected")
+    except DeadlockError as e:
+        print(f"  Deadlock: ✅ {e}")
+    finally:
+        rt._waiting_on.clear()
+
+    # ── 8. Hardened Runtime (Full Flow) ──────────────────
+    print("\n─── 8. Hardened Runtime (Full Flow) ───")
+    rt2 = SutraRuntime(hardened=True)
+    seller = rt2.spawn("seller@shop")
+    buyer = rt2.spawn("buyer@mall")
+
+    # Load seller facts
+    seller_code = '''
+FACT item(name="phone", price=25000);
+FACT item(name="laptop", price=75000);
+'''
+    rt2.send("admin", "seller@shop", seller_code)
+
+    # Buyer queries (with nonces + sequences)
+    msg, reply = rt2.ask("buyer@mall", "seller@shop", 'QUERY item(name="phone") FROM "buyer@mall";')
+    print(f"  Message nonce:    {msg.nonce[:16] if msg.nonce else 'none'}...")
+    print(f"  Message sequence: {msg.sequence}")
+    print(f"  Query response:   {reply.body if reply else 'none'}")
+
+    # Offer flow
+    msg2, reply2 = rt2.ask(
+        "buyer@mall", "seller@shop",
+        '''OFFER id="deal-001" TO "seller@shop" {
+    give: {money: 25000},
+    want: {item: "phone"},
+    expires: "2026-12-31T23:59"
+};''',
+    )
+    print(f"  Offer sequence:   {msg2.sequence}")
+    print(f"  Offer response:   {reply2.body if reply2 else 'pending'}")
+
+    # Transcript
+    print(f"  Transcript:       {len(rt2.transcript)} messages")
+    for m in rt2.transcript:
+        nonce_tag = f" [nonce:{m.nonce[:8]}]" if m.nonce else ""
+        seq_tag = f" [seq:{m.sequence}]" if m.sequence is not None else ""
+        print(f"    {m.from_agent} → {m.to_agent}{nonce_tag}{seq_tag}")
+
+    # ── 9. OS-Level Sandbox ──────────────────────────────
+    print("\n─── 9. OS-Level Sandbox (resource module) ───")
+    from .sandbox import SutraSandbox, OSResourceLimits, _HAS_RESOURCE
+
+    if _HAS_RESOURCE:
+        print("  resource module: ✅ available")
+        sandbox = SutraSandbox(
+            agent_id="hardened-sandbox",
+            os_limits=OSResourceLimits(
+                enabled=True,
+                max_cpu_seconds=2,
+                max_memory_bytes=64 * 1024 * 1024,  # 64MB
+            ),
+        )
+        result = sandbox.execute('FACT test(status="secure"); QUERY test(status="secure") FROM "hardened-sandbox";')
+        print(f"  Execution:       {'✅ OK' if result.success else '✗ failed'}")
+        print(f"  OS limits applied: ✅")
+        for a in result.audit:
+            if "RLIMIT" in a.detail or "resource" in a.detail.lower():
+                print(f"    {a}")
+    else:
+        print("  resource module: ⚠️  not available (Windows?)")
+        print("  Skipping OS-level sandbox test.")
+
+    # ── Summary ──────────────────────────────────────────
+    print("\n" + "═" * 60)
+    print("  ✓ All v0.6 security hardening features demonstrated:")
+    print("    1. Replay protection (nonce-based)")
+    print("    2. Message encryption (AES-256-GCM / HMAC fallback)")
+    print("    3. Token authentication (SHA-256 hashed)")
+    print("    4. Message ordering (per-pair sequences)")
+    print("    5. Transaction rollback (snapshot-based)")
+    print("    6. State persistence (atomic writes)")
+    print("    7. Deadlock detection (cycle detection)")
+    print("    8. Hardened runtime (full flow)")
+    print("    9. OS-level sandbox (resource limits)")
+    print("  ✓ Formal verification deferred to v1.0\n")
+
+
+def cmd_playground(_args):
+    """Serve the browser playground."""
+    import http.server
+    import functools
+
+    wasm_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "wasm")
+    if not os.path.isdir(wasm_dir):
+        print("Error: wasm/ directory not found.")
+        sys.exit(1)
+
+    port = getattr(_args, "port", 8080) or 8080
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=wasm_dir)
+
+    print(f"\n  🕉  SUTRA Playground")
+    print(f"  Serving wasm/ at http://localhost:{port}")
+    print(f"  Press Ctrl+C to stop.\n")
+
+    with http.server.HTTPServer(("127.0.0.1", port), handler) as srv:
+        try:
+            srv.serve_forever()
+        except KeyboardInterrupt:
+            print("\n  Playground stopped.")
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="sutra",
-        description="SUTRA v0.4 — Agent-to-Agent Communication Language",
+        description="SUTRA v0.6 — Agent-to-Agent Communication Language",
     )
     sub = parser.add_subparsers(dest="command")
 
@@ -916,6 +1270,16 @@ def main():
     # runtime-demo command (v0.4)
     sub.add_parser("runtime-demo", help="Run multi-agent runtime demo (agents talking in-process)")
 
+    # sandbox-demo command (v0.5)
+    sub.add_parser("sandbox-demo", help="Run sandboxed interpreter demo with capability restrictions")
+
+    # hardened-demo command (v0.6)
+    sub.add_parser("hardened-demo", help="Run security hardening demo (replay, encryption, auth, etc.)")
+
+    # playground command (v0.5)
+    play_p = sub.add_parser("playground", help="Open SUTRA browser playground")
+    play_p.add_argument("--port", type=int, default=8080, help="Port (default: 8080)")
+
     args = parser.parse_args()
 
     if args.command == "run":
@@ -940,6 +1304,12 @@ def main():
         cmd_signed_demo(args)
     elif args.command == "runtime-demo":
         cmd_runtime_demo(args)
+    elif args.command == "sandbox-demo":
+        cmd_sandbox_demo(args)
+    elif args.command == "hardened-demo":
+        cmd_hardened_demo(args)
+    elif args.command == "playground":
+        cmd_playground(args)
     else:
         parser.print_help()
 

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SUTRA Playground — Agent Communication Language</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --text: #e0e0ec;
+    --dim: #6a6a8a;
+    --accent: #f59e0b;
+    --accent2: #8b5cf6;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --mono: "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code", monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ──────────────────────────────────── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .logo span { color: var(--accent); }
+  .logo-sub { font-size: 11px; color: var(--dim); margin-left: 12px; font-weight: 400; }
+  .version { font-size: 11px; color: var(--dim); background: var(--surface2); padding: 4px 10px; border-radius: 12px; }
+
+  /* ── Main layout ─────────────────────────────── */
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .panel:last-of-type { border-right: none; }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── Editor ──────────────────────────────────── */
+  #editor {
+    flex: 1;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 16px;
+    tab-size: 2;
+    overflow-y: auto;
+  }
+  #editor::placeholder { color: var(--dim); }
+
+  /* ── Output ──────────────────────────────────── */
+  #output {
+    flex: 1;
+    background: var(--bg);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 16px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .out-line { margin-bottom: 2px; }
+  .out-intent { color: var(--blue); }
+  .out-fact { color: var(--green); }
+  .out-query { color: var(--accent); }
+  .out-offer { color: var(--accent2); }
+  .out-accept { color: #22d3ee; }
+  .out-reject { color: var(--red); }
+  .out-commit { color: #f472b6; }
+  .out-act { color: #a3e635; }
+  .out-error { color: var(--red); font-weight: 600; }
+  .out-state { color: var(--dim); }
+
+  /* ── Toolbar ─────────────────────────────────── */
+  .toolbar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--border); }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { background: #d97706; border-color: #d97706; }
+
+  .btn kbd {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .spacer { flex: 1; }
+  .status { font-size: 11px; color: var(--dim); font-family: var(--mono); }
+
+  /* ── Examples dropdown ───────────────────────── */
+  select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+  }
+  select:hover { background: var(--border); }
+
+  /* ── Sandbox indicator ───────────────────────── */
+  .sandbox-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--green);
+    background: rgba(34, 197, 94, 0.1);
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .sandbox-badge::before {
+    content: "🛡️";
+    font-size: 12px;
+  }
+
+  /* ── Agent state panel ───────────────────────── */
+  #state-panel {
+    grid-column: 1 / -1;
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--dim);
+    white-space: pre-wrap;
+    display: none;
+  }
+  #state-panel.visible { display: block; }
+
+  /* ── Responsive ──────────────────────────────── */
+  @media (max-width: 768px) {
+    main { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr auto; }
+    .panel { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <span class="logo">𑗘 <span>SUTRA</span></span>
+    <span class="logo-sub">Browser Playground</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <span class="sandbox-badge">Sandboxed</span>
+    <span class="version">v0.6.0</span>
+  </div>
+</header>
+
+<main>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Editor</span>
+      <span style="font-size:10px; font-weight:400">Ctrl+Enter to run</span>
+    </div>
+    <textarea id="editor" spellcheck="false" placeholder="Write SUTRA code here..."></textarea>
+  </div>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Output</span>
+      <span id="elapsed" style="font-size:10px; font-weight:400"></span>
+    </div>
+    <div id="output"><span style="color:var(--dim)">Press ▶ Run or Ctrl+Enter to execute...</span></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="run()">▶ Run <kbd>⌃↵</kbd></button>
+    <button class="btn" onclick="clear_()">Clear</button>
+    <button class="btn" onclick="toggleState()">Agent State</button>
+    <select id="examples" onchange="loadExample()">
+      <option value="">Load Example…</option>
+      <option value="buyer">Buyer Agent</option>
+      <option value="seller">Seller Agent</option>
+      <option value="knowledge">Knowledge Exchange</option>
+      <option value="negotiation">Full Negotiation</option>
+      <option value="sandbox">Sandbox Demo</option>
+    </select>
+    <div class="spacer"></div>
+    <span class="status" id="status">Ready</span>
+  </div>
+
+  <div id="state-panel"></div>
+</main>
+
+<script src="sutra.js"></script>
+<script>
+// ── VM instance ───────────────────────────────
+const vm = new SUTRA.SutraVM("playground-agent");
+const sandbox = new SUTRA.SutraSandbox({
+  agentId: "playground-agent",
+  maxStatements: 200,
+  maxTimeMs: 3000,
+});
+
+// ── Examples ──────────────────────────────────
+const EXAMPLES = {
+  buyer: `#from "buyer-agent"
+#to "seller-agent"
+
+// Buyer declares intent and known facts
+INTENT purchase(item="Laptop", budget=75000);
+FACT known(item="Laptop", preferred_brand="ThinkPad");
+
+// Make an offer
+OFFER id="offer-001" TO "seller-agent" {
+  item: "ThinkPad X1 Carbon",
+  price: 72000,
+  currency: "INR"
+};`,
+
+  seller: `#from "seller-agent"
+#to "buyer-agent"
+
+// Seller's inventory facts
+FACT available(item="ThinkPad X1 Carbon", stock=5);
+FACT pricing(item="ThinkPad X1 Carbon", mrp=85000, min_price=70000);
+
+// Accept the offer
+ACCEPT "offer-001";
+
+// Commit to delivery
+COMMIT deliver(item="ThinkPad X1 Carbon", quantity=1) BY "2025-02-01";`,
+
+  knowledge: `#from "research-agent"
+
+// Build a knowledge base
+FACT known(topic="SUTRA", type="language");
+FACT known(topic="SUTRA", designer="Subhajit");
+FACT known(topic="SUTRA", keywords=8);
+FACT known(topic="Sanskrit", type="language");
+
+// Query the knowledge base
+QUERY known(topic="SUTRA") FROM "self";
+QUERY known(type="language") FROM "self";
+QUERY known(topic="Python") FROM "self";`,
+
+  negotiation: `#from "agent-alpha"
+#to "agent-beta"
+
+// Alpha declares intent
+INTENT negotiate(deal="cloud-hosting", target_price=5000);
+
+// Alpha knows some facts
+FACT known(provider="Azure", price=7000);
+FACT known(provider="AWS", price=6500);
+FACT known(provider="GCP", price=5500);
+
+// Alpha makes an offer
+OFFER id="hosting-001" TO "agent-beta" {
+  provider: "GCP",
+  price: 5000,
+  term: "12 months",
+  sla: "99.9%"
+};
+
+// Beta rejects — too low
+REJECT "hosting-001" REASON "Price below minimum threshold";
+
+// Revised offer
+OFFER id="hosting-002" TO "agent-beta" {
+  provider: "GCP",
+  price: 5500,
+  term: "12 months",
+  sla: "99.9%"
+};
+
+// Beta accepts
+ACCEPT "hosting-002";
+
+// Both commit
+COMMIT provision(provider="GCP", term="12 months") BY "2025-03-01";
+ACT deploy(service="cloud-hosting", provider="GCP");`,
+
+  sandbox: `// This demo shows sandboxed execution
+// Try adding COMMIT or ACT — they'll be blocked!
+
+INTENT explore(topic="SUTRA Sandbox");
+FACT known(feature="capability-based security");
+FACT known(feature="resource limits");
+FACT known(feature="audit trail");
+QUERY known(feature="capability-based security") FROM "self";
+
+// Uncomment these to see sandbox violations:
+// COMMIT deliver(item="test") BY "2025-01-01";
+// ACT deploy(service="test");`,
+};
+
+// ── Editor setup ──────────────────────────────
+const editor = document.getElementById("editor");
+const output = document.getElementById("output");
+const statePanel = document.getElementById("state-panel");
+
+// Load buyer example by default
+editor.value = EXAMPLES.buyer;
+
+// Tab key inserts spaces
+editor.addEventListener("keydown", e => {
+  if (e.key === "Tab") {
+    e.preventDefault();
+    const s = editor.selectionStart;
+    editor.value = editor.value.substring(0, s) + "  " + editor.value.substring(editor.selectionEnd);
+    editor.selectionStart = editor.selectionEnd = s + 2;
+  }
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    run();
+  }
+});
+
+// ── Run ───────────────────────────────────────
+function run() {
+  const source = editor.value;
+  if (!source.trim()) { output.innerHTML = '<span class="out-error">No code to execute</span>'; return; }
+
+  const exSelect = document.getElementById("examples");
+  const isSandboxDemo = exSelect.value === "sandbox";
+
+  let results, elapsed;
+
+  if (isSandboxDemo) {
+    // Use restricted sandbox for sandbox demo
+    const restricted = new SUTRA.SutraSandbox({
+      agentId: "sandboxed-agent",
+      maxStatements: 50,
+      allowedKeywords: ["INTENT", "FACT", "QUERY"],  // no OFFER, ACCEPT, REJECT, COMMIT, ACT
+    });
+    const res = restricted.execute(source);
+    results = res.responses;
+    elapsed = res.elapsed;
+
+    // Show sandbox audit info
+    if (res.violations.length > 0) {
+      results.push("");
+      results.push("⚠️  SANDBOX VIOLATIONS:");
+      for (const v of res.violations) results.push(`  ✗ ${v}`);
+    }
+    results.push("");
+    results.push(`🛡️ Sandbox: ${res.audit.length} audit entries, ${res.violations.length} violations`);
+  } else {
+    // Normal execution — reset agent state
+    vm.reset("playground-agent");
+    const start = performance.now();
+    try {
+      results = vm.execute(source);
+    } catch (e) {
+      output.innerHTML = `<span class="out-error">Error: ${escapeHtml(e.message)}</span>`;
+      document.getElementById("status").textContent = "Error";
+      return;
+    }
+    elapsed = performance.now() - start;
+  }
+
+  // Render output
+  const html = results.map(line => {
+    const escaped = escapeHtml(line);
+    if (line.startsWith("[INTENT]")) return `<span class="out-line out-intent">${escaped}</span>`;
+    if (line.startsWith("[FACT]")) return `<span class="out-line out-fact">${escaped}</span>`;
+    if (line.startsWith("[QUERY")) return `<span class="out-line out-query">${escaped}</span>`;
+    if (line.startsWith("[OFFER]")) return `<span class="out-line out-offer">${escaped}</span>`;
+    if (line.startsWith("[ACCEPT")) return `<span class="out-line out-accept">${escaped}</span>`;
+    if (line.startsWith("[REJECT")) return `<span class="out-line out-reject">${escaped}</span>`;
+    if (line.startsWith("[COMMIT]")) return `<span class="out-line out-commit">${escaped}</span>`;
+    if (line.startsWith("[ACT]")) return `<span class="out-line out-act">${escaped}</span>`;
+    if (line.startsWith("⚠️") || line.startsWith("  ✗")) return `<span class="out-line out-error">${escaped}</span>`;
+    if (line.startsWith("🛡️")) return `<span class="out-line out-state">${escaped}</span>`;
+    return `<span class="out-line">${escaped}</span>`;
+  }).join("\n");
+
+  output.innerHTML = html || '<span style="color:var(--dim)">No output</span>';
+  document.getElementById("elapsed").textContent = `${elapsed.toFixed(1)}ms`;
+  document.getElementById("status").textContent = `${results.length} line${results.length !== 1 ? "s" : ""} • ${elapsed.toFixed(1)}ms`;
+
+  // Update state panel if visible
+  if (statePanel.classList.contains("visible")) {
+    statePanel.textContent = isSandboxDemo ? "(Sandbox mode — isolated state)" : vm.state();
+  }
+}
+
+function clear_() {
+  output.innerHTML = '<span style="color:var(--dim)">Cleared.</span>';
+  document.getElementById("elapsed").textContent = "";
+  document.getElementById("status").textContent = "Ready";
+  statePanel.textContent = "";
+}
+
+function toggleState() {
+  statePanel.classList.toggle("visible");
+  if (statePanel.classList.contains("visible")) {
+    statePanel.textContent = vm.state();
+  }
+}
+
+function loadExample() {
+  const sel = document.getElementById("examples");
+  const ex = EXAMPLES[sel.value];
+  if (ex) {
+    editor.value = ex;
+    vm.reset("playground-agent");
+    output.innerHTML = '<span style="color:var(--dim)">Example loaded. Press ▶ Run.</span>';
+    document.getElementById("status").textContent = "Example loaded";
+  }
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+</script>
+</body>
+</html>

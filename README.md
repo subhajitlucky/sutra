@@ -189,7 +189,15 @@ sutra/
 │   ├── crypto.py         # v0.3 — Ed25519 signing & verification
 │   ├── keystore.py       # v0.3 — Persistent key storage
 │   ├── message.py        # v0.4 — Message envelope (routing metadata)
-│   └── runtime.py        # v0.4 — Multi-agent runtime + Conversation
+│   ├── runtime.py        # v0.4 — Multi-agent runtime + Conversation
+│   ├── sandbox.py        # v0.5 — Sandboxed interpreter
+│   ├── security.py       # v0.6 — Replay, encryption, auth, ordering
+│   ├── persistence.py    # v0.6 — State persistence (atomic writes)
+│   └── transaction.py    # v0.6 — Transaction rollback (snapshots)
+├── wasm/
+│   ├── sutra.js          # v0.5 — Full JavaScript interpreter
+│   ├── index.html        # v0.5 — Browser playground
+│   └── package.json      # v0.5 — npm package config
 ├── spec/
 │   ├── SUTRA_SPEC.md     # Full language specification
 │   └── GRAMMAR.ebnf      # Formal grammar
@@ -462,13 +470,178 @@ conv.print_transcript()
 
 ---
 
+## Sandboxed Interpreter (v0.5)
+
+SUTRA v0.5 introduces **sandboxed execution** — run untrusted SUTRA code safely with capability-based security and resource limits. Plus a **complete JavaScript interpreter** that runs in browsers.
+
+### Python Sandbox
+
+```python
+from sutra.sandbox import SutraSandbox, SandboxLimits
+
+# Read-only sandbox — only FACT and QUERY allowed
+sandbox = SutraSandbox(
+    agent_id="untrusted",
+    allowed_keywords={"FACT", "QUERY"},
+)
+
+result = sandbox.execute('''
+FACT known(topic="SUTRA", version=5);
+QUERY known(topic="SUTRA") FROM "self";
+COMMIT deliver(item="blocked") BY "2025-01-01";
+''')
+
+print(result.success)       # False — COMMIT was blocked
+print(result.violations)    # ["Keyword 'COMMIT' not allowed in this sandbox"]
+print(result.responses)     # Only FACT and QUERY responses
+print(result.stats)         # {statements_total: 3, statements_executed: 2, ...}
+```
+
+### Sandbox Features
+
+| Feature | Description |
+|---------|-------------|
+| **Capability restrictions** | Allow/deny specific keywords per sandbox |
+| **Resource limits** | Max statements, beliefs, offers, commits, time |
+| **Source size limits** | Prevent excessively large scripts (default: 64KB) |
+| **Audit trail** | Full log of allowed/blocked/error events |
+| **Deny-lists** | Block specific keywords: `denied_keywords={"COMMIT", "ACT"}` |
+| **Safety report** | `sandbox.explain(source)` for human-readable audit |
+
+### CLI Commands
+
+```bash
+python -m sutra sandbox-demo     # Run sandboxed interpreter demo
+python -m sutra playground       # Open browser playground (http://localhost:8080)
+```
+
+### JavaScript / Browser Interpreter
+
+A complete JavaScript port of the SUTRA interpreter lives in `wasm/sutra.js` — zero dependencies, runs in any browser or Node.js:
+
+```javascript
+const { SutraVM, SutraSandbox } = require("./wasm/sutra.js");
+
+// Direct execution
+const vm = new SutraVM("my-agent");
+const result = vm.execute('FACT known(item="TV", price=50000);');
+console.log(result);  // ["[FACT] known(item=\"TV\", price=50000)"]
+
+// Sandboxed execution
+const sandbox = new SutraSandbox({
+    agentId: "untrusted",
+    allowedKeywords: ["FACT", "QUERY"],
+    maxStatements: 50,
+});
+const res = sandbox.execute('COMMIT steal(data="secret");');
+console.log(res.violations);  // ["Keyword 'COMMIT' not allowed"]
+```
+
+### Browser Playground
+
+Open `wasm/index.html` in any browser or run:
+
+```bash
+python -m sutra playground --port 8080
+```
+
+Features:
+- Live SUTRA editor with syntax-aware output coloring
+- 5 built-in examples (buyer, seller, knowledge, negotiation, sandbox)
+- Sandboxed execution mode for untrusted code demos
+- Agent state inspector
+- Zero dependencies — pure HTML/JS, no build step
+
+---
+
+## Security Hardening (v0.6)
+
+v0.6 addresses 9 infrastructure-level security gaps identified through systematic audit. All protections are opt-in via `hardened=True` mode for backward compatibility.
+
+### Threat Mitigations
+
+| Threat | Mitigation | Module |
+|--------|-----------|--------|
+| Replay attacks | Nonce-based deduplication (UUID4 + TTL) | `security.py` |
+| Eavesdropping | AES-256-GCM encryption (HMAC-XOR-SHA256 fallback) | `security.py` |
+| Unauthorized access | Bearer token auth (SHA-256 hashed storage) | `security.py` |
+| Out-of-order messages | Per-pair monotonic sequence counters | `security.py` |
+| State corruption | Transaction boundaries with snapshot rollback | `transaction.py` |
+| State loss | Atomic persistence to disk (~/.sutra/state/) | `persistence.py` |
+| Deadlocks | Circular wait detection in `ask()` | `runtime.py` |
+| Resource exhaustion | OS-level RLIMIT (CPU, memory, files) | `sandbox.py` |
+| Timeout hangs | Configurable `ask_timeout_s` + SIGALRM | `runtime.py` / `sandbox.py` |
+
+### Hardened Runtime
+
+```python
+from sutra.runtime import SutraRuntime
+from sutra.agent import Agent
+
+# Enable all v0.6 protections
+rt = SutraRuntime(hardened=True, ask_timeout_s=5.0)
+rt.register(Agent("buyer"))
+rt.register(Agent("seller"))
+
+# Messages now carry nonces + sequence numbers automatically
+msg, reply = rt.ask("buyer", "seller", 'QUERY item(name="phone");')
+print(msg.nonce)     # UUID4 nonce for replay protection
+print(msg.sequence)  # Monotonic sequence number
+```
+
+### Message Encryption
+
+```python
+from sutra.security import MessageEncryptor
+
+enc = MessageEncryptor()
+key = enc.generate_key()
+enc.add_key("buyer", "seller", key)
+
+ciphertext = enc.encrypt("buyer", "seller", 'OFFER buy(item="phone");')
+plaintext = enc.decrypt("buyer", "seller", ciphertext)
+```
+
+### Transaction Rollback
+
+```python
+from sutra.transaction import SutraTransaction
+
+tx = SutraTransaction(agent)
+tx.begin()
+try:
+    # execute SUTRA statements...
+    tx.commit()
+except Exception:
+    tx.rollback()  # restores agent to pre-transaction state
+```
+
+### State Persistence
+
+```python
+from sutra.persistence import StateStore
+
+store = StateStore()
+store.save(agent)               # atomic write to ~/.sutra/state/
+loaded = store.load("agent-id") # full round-trip
+```
+
+### Demo
+
+```bash
+python -m sutra hardened-demo
+```
+
+---
+
 ## Roadmap
 
 - [x] v0.1 — Core language spec + Python interpreter
 - [x] v0.2 — HTTP transport layer (agents communicate over network)
 - [x] v0.3 — Cryptographic signatures for COMMIT
 - [x] v0.4 — Multi-agent runtime (agents talk in one process)
-- [ ] v0.5 — WASM-based sandboxed interpreter
+- [x] v0.5 — Sandboxed interpreter + JavaScript port + browser playground
+- [x] v0.6 — Security hardening (replay, encryption, auth, transactions, persistence)
 - [ ] v1.0 — Formal verification + production runtime
 
 ---
@@ -497,4 +670,4 @@ The result: a language that captures the **universal consensus** of what agents 
 
 **Author:** Subhajit
 
-**Version:** 0.4.0
+**Version:** 0.5.0

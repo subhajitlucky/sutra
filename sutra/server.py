@@ -1,4 +1,4 @@
-"""SUTRA v0.3 — HTTP Transport Server
+"""SUTRA v0.6 — HTTP Transport Server (Hardened)
 
 Hosts a SUTRA agent as an HTTP endpoint. Other agents send SUTRA
 messages via POST /sutra, the server processes them and returns results.
@@ -6,15 +6,25 @@ messages via POST /sutra, the server processes them and returns results.
 v0.3: Agents expose public keys, sign COMMITs/OFFERs, and include
 signatures in HTTP responses for cryptographic verification.
 
+v0.6: Security hardening:
+  - Bearer token authentication (Authorization header)
+  - Nonce-based replay protection
+  - Per-pair message ordering (sequence numbers)
+  - Message TTL / expiry enforcement
+
 Protocol:
     POST /sutra
     Content-Type: application/json
+    Authorization: Bearer <token>   (v0.6 — optional, if auth enabled)
 
     Request:
     {
         "from": "buyer@home",
         "body": "QUERY availability(item=\\"SmartTV\\") FROM \\"seller@store\\";",
-        "reply_format": "sutra"   // "sutra" | "json" (default: "json")
+        "nonce": "a1b2c3...",         // v0.6 — replay protection
+        "seq": 5,                      // v0.6 — message ordering
+        "ttl": 300,                    // v0.6 — seconds until expiry
+        "reply_format": "sutra"        // "sutra" | "json" (default: "json")
     }
 
     Response:
@@ -63,7 +73,7 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("X-Sutra-Version", "v0.3")
+        self.send_header("X-Sutra-Version", "v0.6")
         self.end_headers()
         self.wfile.write(body)
 
@@ -159,6 +169,15 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
         self._send_json(200, {"status": "registered", "agent_id": agent_id})
 
     def _handle_sutra_message(self):
+        # ── v0.6: Bearer token auth ─────────────────────
+        token_auth = getattr(self.server, "sutra_token_auth", None)
+        if token_auth is not None:
+            auth = self.headers.get("Authorization")
+            valid, info = token_auth.verify_header(auth)
+            if not valid:
+                self._send_json(401, {"error": f"Unauthorized: {info}"})
+                return
+
         # Parse request
         try:
             data = json.loads(self._read_body())
@@ -171,6 +190,35 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
         if not body.strip():
             self._send_json(400, {"error": "Empty SUTRA body"})
             return
+
+        # ── v0.6: TTL / expiry check ───────────────────
+        ttl = data.get("ttl", 0)
+        msg_ts = data.get("timestamp", 0)
+        if ttl > 0 and msg_ts > 0:
+            import time
+            age = time.time() - msg_ts
+            if age > ttl:
+                self._send_json(400, {"error": f"Message expired: {age:.0f}s old (TTL={ttl}s)"})
+                return
+
+        # ── v0.6: Replay protection ────────────────────
+        replay_guard = getattr(self.server, "sutra_replay_guard", None)
+        nonce = data.get("nonce")
+        if replay_guard is not None and nonce:
+            valid, reason = replay_guard.check(nonce, msg_ts or None)
+            if not valid:
+                self._send_json(409, {"error": f"Replay rejected: {reason}"})
+                return
+
+        # ── v0.6: Sequence ordering ────────────────────
+        seq_tracker = getattr(self.server, "sutra_seq_tracker", None)
+        seq = data.get("seq")
+        if seq_tracker is not None and seq is not None:
+            agent_id = self.server.sutra_agent.agent_id
+            valid, reason = seq_tracker.check(sender, agent_id, seq)
+            if not valid:
+                self._send_json(409, {"error": f"Ordering rejected: {reason}"})
+                return
 
         # Execute SUTRA against this agent
         agent: Agent = self.server.sutra_agent
@@ -230,6 +278,9 @@ class SutraServer:
         on_message: Callable | None = None,
         keystore: KeyStore | None = None,
         auto_sign: bool = False,
+        token_auth=None,
+        replay_guard=None,
+        seq_tracker=None,
     ):
         self.agent = agent
         self.host = host
@@ -237,6 +288,10 @@ class SutraServer:
         self.registry = registry or AgentRegistry()
         self.on_message = on_message
         self.keystore = keystore
+        # v0.6 security
+        self.token_auth = token_auth
+        self.replay_guard = replay_guard
+        self.seq_tracker = seq_tracker
 
         # v0.3: Auto-assign keypair to agent if requested
         if auto_sign and agent.keypair is None:
@@ -254,6 +309,10 @@ class SutraServer:
         httpd.sutra_agent = self.agent
         httpd.sutra_registry = self.registry
         httpd.sutra_on_message = self.on_message
+        # v0.6 security
+        httpd.sutra_token_auth = self.token_auth
+        httpd.sutra_replay_guard = self.replay_guard
+        httpd.sutra_seq_tracker = self.seq_tracker
         return httpd
 
     def start(self, blocking: bool = False):

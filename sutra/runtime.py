@@ -1,4 +1,4 @@
-"""SUTRA v0.4 — Multi-Agent Runtime
+"""SUTRA v0.6 — Multi-Agent Runtime (Hardened)
 
 Spawn multiple agents in a single process. They communicate directly
 via SUTRA messages — no HTTP, no serialization overhead.
@@ -10,11 +10,18 @@ Key features:
   - Conversation tracking: full transcript with message threading
   - Conversation API: natural multi-turn dialogs between agents
 
-This is the layer that lets agents "talk normally."
+v0.6 hardening:
+  - Deadlock detection: circular wait identification
+  - Configurable timeouts on ask() operations
+  - Replay protection (nonces on every message)
+  - Message ordering (per-pair sequence numbers)
+  - Transaction-safe execution (rollback on failure)
 """
 
 from __future__ import annotations
 
+import time
+import threading
 from typing import Callable, Any
 
 from .agent import Agent
@@ -23,9 +30,16 @@ from .lexer import Lexer
 from .parser import Parser
 from .interpreter import Interpreter
 from .ast_nodes import Program, QueryStmt, OfferStmt
+from .security import ReplayGuard, SequenceTracker
+from .transaction import SutraTransaction
 
 
 class AgentNotFound(Exception):
+    pass
+
+
+class DeadlockError(Exception):
+    """Raised when a circular wait is detected between agents."""
     pass
 
 
@@ -48,10 +62,17 @@ class SutraRuntime:
         rt.print_transcript()
     """
 
-    def __init__(self):
+    def __init__(self, hardened: bool = False, ask_timeout_s: float = 5.0):
         self.agents: dict[str, Agent] = {}
         self.transcript: list[SutraMessage] = []
         self._offer_evaluators: dict[str, Callable] = {}
+        # v0.6 hardening
+        self.hardened = hardened
+        self.ask_timeout_s = ask_timeout_s
+        self._replay_guard = ReplayGuard() if hardened else None
+        self._seq_tracker = SequenceTracker() if hardened else None
+        self._waiting_on: dict[str, str] = {}  # agent → waiting_for_agent (deadlock detection)
+        self._lock = threading.Lock()
 
     # ── Agent lifecycle ─────────────────────────────────
 
@@ -94,17 +115,32 @@ class SutraRuntime:
         """Send a SUTRA message. Executes on the TARGET agent.
 
         OFFERs are automatically synced to sender's ledger (bilateral).
+        v0.6: Includes nonce + sequence for hardened mode.
         Returns the message with execution responses.
         """
         if to_id not in self.agents:
             raise AgentNotFound(to_id)
 
+        # v0.6: Security checks
+        nonce = None
+        seq = None
+        if self.hardened:
+            nonce = ReplayGuard.generate_nonce()
+            seq = self._seq_tracker.next_seq(from_id, to_id)
+
         target = self.agents[to_id]
         program = self._parse(body)
 
-        # Execute on target
-        interp = Interpreter(target)
-        responses = interp.execute(program)
+        # v0.6: Transaction-safe execution
+        tx = SutraTransaction(target)
+        tx.begin()
+        try:
+            interp = Interpreter(target)
+            responses = interp.execute(program)
+            tx.commit()
+        except Exception:
+            tx.rollback()
+            raise
 
         # Bilateral: sync OFFERs to sender's ledger too
         if from_id in self.agents and from_id != to_id:
@@ -115,6 +151,8 @@ class SutraRuntime:
             to_agent=to_id,
             body=body.strip(),
             responses=responses,
+            nonce=nonce,
+            sequence=seq,
         )
         self.transcript.append(msg)
         return msg
@@ -128,59 +166,124 @@ class SutraRuntime:
         The response is executed on BOTH target and sender so both
         agents' states stay in sync.
 
+        v0.6: Deadlock detection + timeout enforcement.
+
         Returns (original_message, reply_message_or_None).
         """
         if to_id not in self.agents:
             raise AgentNotFound(to_id)
 
-        target = self.agents[to_id]
-        sender = self.agents.get(from_id)
-        program = self._parse(body)
+        # v0.6: Deadlock detection
+        if self.hardened:
+            with self._lock:
+                # Check for circular wait: if to_id is already waiting on from_id
+                cycle = self._detect_cycle(from_id, to_id)
+                if cycle:
+                    raise DeadlockError(
+                        f"Deadlock detected: {' → '.join(cycle)}"
+                    )
+                self._waiting_on[from_id] = to_id
 
-        # Execute on target
-        interp = Interpreter(target)
-        responses = interp.execute(program)
+        start_time = time.monotonic()
 
-        # Bilateral: sync OFFERs to sender's ledger
-        if sender and from_id != to_id:
-            self._bilateral_sync(program, sender)
+        try:
+            # v0.6: Security metadata
+            nonce = None
+            seq = None
+            if self.hardened:
+                nonce = ReplayGuard.generate_nonce()
+                seq = self._seq_tracker.next_seq(from_id, to_id)
 
-        msg = SutraMessage(
-            from_agent=from_id,
-            to_agent=to_id,
-            body=body.strip(),
-            responses=responses,
-        )
-        self.transcript.append(msg)
+            target = self.agents[to_id]
+            sender = self.agents.get(from_id)
+            program = self._parse(body)
 
-        # Generate auto-response
-        reply_body = self._auto_respond(program, target, from_id)
-        reply_msg = None
+            # v0.6: Transaction-safe execution on target
+            tx = SutraTransaction(target)
+            tx.begin()
+            try:
+                interp = Interpreter(target)
+                responses = interp.execute(program)
+                tx.commit()
+            except Exception:
+                tx.rollback()
+                raise
 
-        if reply_body:
-            reply_program = self._parse(reply_body)
+            # Bilateral: sync OFFERs to sender's ledger
+            if sender and from_id != to_id:
+                self._bilateral_sync(program, sender)
 
-            # Execute response on target (update target's state)
-            target_ri = Interpreter(target)
-            target_ri.execute(reply_program)
+            # v0.6: Timeout check
+            if self.hardened:
+                elapsed = time.monotonic() - start_time
+                if elapsed > self.ask_timeout_s:
+                    raise TimeoutError(
+                        f"ask() timed out: {elapsed:.1f}s > {self.ask_timeout_s}s"
+                    )
 
-            # Execute response on sender (sender sees the result)
-            reply_responses = []
-            if sender:
-                sender_ri = Interpreter(sender)
-                reply_responses = sender_ri.execute(reply_program)
-
-            reply_msg = SutraMessage(
-                from_agent=to_id,
-                to_agent=from_id,
-                body=reply_body.strip(),
-                responses=reply_responses,
-                reply_to=msg.id,
+            msg = SutraMessage(
+                from_agent=from_id,
+                to_agent=to_id,
+                body=body.strip(),
+                responses=responses,
+                nonce=nonce,
+                sequence=seq,
             )
-            self.transcript.append(reply_msg)
-            msg.reply_body = reply_body
+            self.transcript.append(msg)
 
-        return msg, reply_msg
+            # Generate auto-response
+            reply_body = self._auto_respond(program, target, from_id)
+            reply_msg = None
+
+            if reply_body:
+                reply_program = self._parse(reply_body)
+
+                # Execute response on target (update target's state)
+                target_ri = Interpreter(target)
+                target_ri.execute(reply_program)
+
+                # Execute response on sender (sender sees the result)
+                reply_responses = []
+                if sender:
+                    sender_ri = Interpreter(sender)
+                    reply_responses = sender_ri.execute(reply_program)
+
+                reply_msg = SutraMessage(
+                    from_agent=to_id,
+                    to_agent=from_id,
+                    body=reply_body.strip(),
+                    responses=reply_responses,
+                    reply_to=msg.id,
+                )
+                self.transcript.append(reply_msg)
+                msg.reply_body = reply_body
+
+            return msg, reply_msg
+
+        finally:
+            # Clear waiting state
+            if self.hardened:
+                with self._lock:
+                    self._waiting_on.pop(from_id, None)
+
+    def _detect_cycle(self, from_id: str, to_id: str) -> list[str] | None:
+        """Detect circular wait chains (deadlocks).
+
+        Follows the _waiting_on graph from to_id. If it loops back
+        to from_id, there's a deadlock.
+        """
+        visited = [from_id, to_id]
+        current = to_id
+        while current in self._waiting_on:
+            next_id = self._waiting_on[current]
+            if next_id == from_id:
+                visited.append(next_id)
+                return visited
+            if next_id in visited:
+                break  # cycle but not involving from_id
+            visited.append(next_id)
+            current = next_id
+        return None
 
     def broadcast(self, from_id: str, body: str) -> list[SutraMessage]:
         """Send SUTRA to ALL agents except sender."""

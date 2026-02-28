@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUTRA — Agent Communication Language</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;600;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px;
+  }
+
+  .card {
+    width: 1200px;
+    min-height: 630px;
+    background: linear-gradient(145deg, #0d0d0d 0%, #1a1a2e 50%, #16213e 100%);
+    border-radius: 24px;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 153, 51, 0.15);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 153, 51, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    left: -150px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .om {
+    position: absolute;
+    top: 50px;
+    right: 60px;
+    font-size: 64px;
+    opacity: 0.12;
+    color: #ff9933;
+  }
+
+  .header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 40px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(255, 153, 51, 0.12);
+    border: 1px solid rgba(255, 153, 51, 0.3);
+    color: #ff9933;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 48px;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, #ff9933, #ff6600);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .content {
+    display: flex;
+    gap: 50px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .code-panel {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14.5px;
+    line-height: 1.8;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+
+  .code-title {
+    margin-left: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 12px;
+  }
+
+  .kw { color: #ff9933; font-weight: 600; }
+  .str { color: #98c379; }
+  .num { color: #d19a66; }
+  .cm { color: rgba(255, 255, 255, 0.25); font-style: italic; }
+  .punc { color: rgba(255, 255, 255, 0.5); }
+  .id { color: #61afef; }
+  .line { color: rgba(255, 255, 255, 0.85); }
+
+  .keywords-panel {
+    flex: 0 0 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 5px;
+  }
+
+  .kw-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .kw-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 14px;
+    color: #ff9933;
+    background: rgba(255, 153, 51, 0.1);
+    border: 1px solid rgba(255, 153, 51, 0.2);
+    padding: 5px 12px;
+    border-radius: 8px;
+    min-width: 90px;
+    text-align: center;
+  }
+
+  .kw-sanskrit {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.35);
+    font-style: italic;
+    min-width: 70px;
+  }
+
+  .kw-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .footer {
+    position: relative;
+    z-index: 1;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .footer-left {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .footer-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .footer-tag strong {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .install-cmd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #28c840;
+    background: rgba(40, 200, 64, 0.08);
+    padding: 8px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(40, 200, 64, 0.2);
+  }
+
+  .install-cmd span { color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="om">🕉</div>
+
+    <div class="header">
+      <div class="badge">Agent-to-Agent Language</div>
+      <h1><span>SUTRA</span></h1>
+      <div class="subtitle">Structured Universal Transaction & Reasoning Architecture</div>
+    </div>
+
+    <div class="content">
+      <div class="code-panel">
+        <div class="code-header">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="code-title">negotiation.sutra</span>
+        </div>
+        <div class="line"><span class="cm">// Agent declares what it wants</span></div>
+        <div class="line"><span class="kw">INTENT</span> <span class="id">buy</span><span class="punc">(</span>item<span class="punc">=</span><span class="str">"SmartTV"</span><span class="punc">,</span> max_price<span class="punc">=</span><span class="num">50000</span><span class="punc">);</span></div>
+        <div class="line" style="height:12px"></div>
+        <div class="line"><span class="cm">// Query another agent's knowledge</span></div>
+        <div class="line"><span class="kw">QUERY</span> <span class="id">available</span><span class="punc">(</span>item<span class="punc">=</span><span class="str">"SmartTV"</span><span class="punc">)</span> <span class="kw">FROM</span> <span class="str">"seller@store"</span><span class="punc">;</span></div>
+        <div class="line" style="height:12px"></div>
+        <div class="line"><span class="cm">// Make an offer</span></div>
+        <div class="line"><span class="kw">OFFER</span> id<span class="punc">=</span><span class="str">"deal-001"</span> <span class="kw">TO</span> <span class="str">"seller@store"</span> <span class="punc">{</span></div>
+        <div class="line">&nbsp;&nbsp;give<span class="punc">:</span> <span class="punc">{</span>money<span class="punc">:</span> <span class="num">48000</span><span class="punc">},</span></div>
+        <div class="line">&nbsp;&nbsp;want<span class="punc">:</span> <span class="punc">{</span>item<span class="punc">:</span> <span class="str">"SmartTV"</span><span class="punc">}</span></div>
+        <div class="line"><span class="punc">};</span></div>
+        <div class="line" style="height:12px"></div>
+        <div class="line"><span class="cm">// Cryptographically signed commitment 🔏</span></div>
+        <div class="line"><span class="kw">COMMIT</span> <span class="id">pay</span><span class="punc">(</span>amount<span class="punc">=</span><span class="num">48000</span><span class="punc">)</span> <span class="kw">BY</span> <span class="str">"2026-03-02"</span><span class="punc">;</span></div>
+      </div>
+
+      <div class="keywords-panel">
+        <div class="kw-row">
+          <span class="kw-tag">INTENT</span>
+          <span class="kw-sanskrit">Sankalpa</span>
+          <span class="kw-desc">Declare intention</span>
+        </div>
+        <div class="kw-row">
+          <span class="kw-tag">FACT</span>
+          <span class="kw-sanskrit">Pramana</span>
+          <span class="kw-desc">Verified knowledge</span>
+        </div>
+        <div class="kw-row">
+          <span class="kw-tag">QUERY</span>
+          <span class="kw-sanskrit">Prashna</span>
+          <span class="kw-desc">Ask for info</span>
+        </div>
+        <div class="kw-row">
+          <span class="kw-tag">OFFER</span>
+          <span class="kw-sanskrit">Samvida</span>
+          <span class="kw-desc">Propose a deal</span>
+        </div>
+        <div class="kw-row">
+          <span class="kw-tag">ACCEPT</span>
+          <span class="kw-sanskrit">Svikrti</span>
+          <span class="kw-desc">Accept offer</span>
+        </div>
+        <div class="kw-row">
+          <span class="kw-tag">REJECT</span>
+          <span class="kw-sanskrit">Nirakrti</span>
+          <span class="kw-desc">Decline offer</span>
+        </div>
+        <div class="kw-row">
+          <span class="kw-tag">COMMIT</span>
+          <span class="kw-sanskrit">Dharma</span>
+          <span class="kw-desc">Binding obligation 🔏</span>
+        </div>
+        <div class="kw-row">
+          <span class="kw-tag">ACT</span>
+          <span class="kw-sanskrit">Kriya</span>
+          <span class="kw-desc">Execute action</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <span class="footer-tag"><strong>v0.4.0</strong> · Python · MIT</span>
+        <span class="footer-tag">Ed25519 🔏 · HTTP · Multi-Agent Runtime</span>
+      </div>
+      <div class="install-cmd"><span>$</span> npx skills add subhajitlucky/sutra</div>
+    </div>
+  </div>
+</body>
+</html>
