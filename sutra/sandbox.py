@@ -35,7 +35,7 @@ from .agent import Agent
 from .lexer import Lexer, LexerError
 from .parser import Parser, ParseError
 from .ast_nodes import (
-    Program, IntentStmt, FactStmt, QueryStmt, OfferStmt,
+    Program, IntentStmt, FactStmt, QueryStmt, OfferStmt, CounterStmt,
     AcceptStmt, RejectStmt, CommitStmt, ActStmt,
 )
 from .interpreter import Interpreter
@@ -56,6 +56,7 @@ _STMT_KEYWORD = {
     FactStmt: "FACT",
     QueryStmt: "QUERY",
     OfferStmt: "OFFER",
+    CounterStmt: "COUNTER",
     AcceptStmt: "ACCEPT",
     RejectStmt: "REJECT",
     CommitStmt: "COMMIT",

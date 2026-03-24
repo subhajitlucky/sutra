@@ -20,6 +20,10 @@ class TokenType(Enum):
     BY = auto()
     REASON = auto()
     ID = auto()
+    COUNTER = auto()
+    EXPIRES = auto()
+    IF = auto()
+    WITH = auto()
 
     # Literals
     STRING = auto()
@@ -60,10 +64,14 @@ KEYWORDS = {
     "REJECT": TokenType.REJECT,
     "COMMIT": TokenType.COMMIT,
     "ACT": TokenType.ACT,
+    "COUNTER": TokenType.COUNTER,
     "FROM": TokenType.FROM,
     "TO": TokenType.TO,
     "BY": TokenType.BY,
     "REASON": TokenType.REASON,
+    "EXPIRES": TokenType.EXPIRES,
+    "IF": TokenType.IF,
+    "WITH": TokenType.WITH,
     "id": TokenType.ID,
     "true": TokenType.TRUE,
     "false": TokenType.FALSE,

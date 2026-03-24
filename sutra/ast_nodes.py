@@ -81,15 +81,26 @@ class OfferField:
 
 @dataclass
 class OfferStmt:
-    """OFFER id="..." TO "..." { ... };"""
+    """OFFER id="..." TO "..." { ... } EXPIRES "duration";"""
     offer_id: str
     to_agent: str
     fields: list[OfferField]
+    expires: str | None = None  # v0.7: expiration duration/timestamp
+
+@dataclass
+class CounterStmt:
+    """COUNTER "original_offer_id" id="new_id" TO "agent" { ... } EXPIRES "duration";"""
+    original_offer_id: str
+    offer_id: str
+    to_agent: str
+    fields: list[OfferField]
+    expires: str | None = None
 
 @dataclass
 class AcceptStmt:
-    """ACCEPT "offer_id";"""
+    """ACCEPT "offer_id" IF predicate(...);  or  ACCEPT "offer_id";"""
     offer_id: str
+    conditions: list[Predicate] | None = None  # v0.7: conditional acceptance
 
 @dataclass
 class RejectStmt:

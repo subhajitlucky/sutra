@@ -64,6 +64,10 @@ def _serialize_agent(agent: Agent) -> dict:
                 "status": o.status,
                 "signature": o.signature,
                 "timestamp": o.timestamp,
+                "expires_at": o.expires_at,
+                "counter_to": o.counter_to,
+                "conditions": o.conditions,
+                "negotiation_round": o.negotiation_round,
             }
             for oid, o in agent.offer_ledger.items()
         },
@@ -109,6 +113,10 @@ def _deserialize_agent(data: dict, keypair=None) -> Agent:
             status=o.get("status", "open"),
             signature=o.get("signature"),
             timestamp=o.get("timestamp", 0),
+            expires_at=o.get("expires_at"),
+            counter_to=o.get("counter_to"),
+            conditions=o.get("conditions"),
+            negotiation_round=o.get("negotiation_round", 0),
         )
         agent.offer_ledger[oid] = offer
 
@@ -129,6 +137,9 @@ def _deserialize_agent(data: dict, keypair=None) -> Agent:
     for le in data.get("message_log", []):
         entry = LogEntry(event=le["event"], detail=le["detail"], timestamp=le.get("timestamp", 0))
         agent.message_log.append(entry)
+
+    # Rebuild fact predicate index for O(1) lookups
+    agent.rebuild_index()
 
     return agent
 

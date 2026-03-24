@@ -29,7 +29,7 @@ from .message import SutraMessage, _format_sutra_value
 from .lexer import Lexer
 from .parser import Parser
 from .interpreter import Interpreter
-from .ast_nodes import Program, QueryStmt, OfferStmt
+from .ast_nodes import Program, QueryStmt, OfferStmt, CounterStmt
 from .security import ReplayGuard, SequenceTracker
 from .transaction import SutraTransaction
 
@@ -312,14 +312,14 @@ class SutraRuntime:
         return parser.parse()
 
     def _bilateral_sync(self, program: Program, sender: Agent):
-        """Execute OFFER statements on sender to keep bilateral state.
+        """Execute OFFER/COUNTER statements on sender to keep bilateral state.
 
-        When buyer sends an OFFER to seller, both should have the
+        When buyer sends an OFFER or COUNTER to seller, both should have the
         offer in their ledger. This syncs the sender's copy.
         """
-        offers = [s for s in program.statements if isinstance(s, OfferStmt)]
-        if offers:
-            mini = Program(headers=program.headers, statements=offers)
+        sync_stmts = [s for s in program.statements if isinstance(s, (OfferStmt, CounterStmt))]
+        if sync_stmts:
+            mini = Program(headers=program.headers, statements=sync_stmts)
             mini_interp = Interpreter(sender)
             mini_interp.execute(mini)
 
@@ -327,8 +327,11 @@ class SutraRuntime:
         """Generate SUTRA auto-response based on incoming statements.
 
         - QUERY → matching FACTs from target's belief_base
-        - OFFER → ACCEPT/REJECT via registered evaluator
+        - OFFER/COUNTER → ACCEPT/REJECT/COUNTER via registered evaluator
         """
+        # First, expire any stale offers
+        target.expire_offers()
+
         response_lines = []
 
         for stmt in program.statements:
@@ -336,7 +339,7 @@ class SutraRuntime:
                 resp = self._respond_to_query(target, stmt)
                 if resp:
                     response_lines.append(resp)
-            elif isinstance(stmt, OfferStmt):
+            elif isinstance(stmt, (OfferStmt, CounterStmt)):
                 resp = self._respond_to_offer(target, stmt, from_id)
                 if resp:
                     response_lines.append(resp)
@@ -363,8 +366,14 @@ class SutraRuntime:
             lines.append(f"FACT {fact.predicate}({args_str});")
         return "\n".join(lines)
 
-    def _respond_to_offer(self, agent: Agent, stmt: OfferStmt, from_id: str) -> str | None:
-        """Auto-respond to OFFER using registered evaluator."""
+    def _respond_to_offer(self, agent: Agent, stmt, from_id: str) -> str | None:
+        """Auto-respond to OFFER/COUNTER using registered evaluator.
+
+        Evaluator return values:
+          - "accept" → ACCEPT
+          - "reject:<reason>" → REJECT with reason
+          - "counter:<json_fields>" → COUNTER with new terms
+        """
         evaluator = self._offer_evaluators.get(agent.agent_id)
         if evaluator is None:
             return None
@@ -373,13 +382,35 @@ class SutraRuntime:
         for f in stmt.fields:
             fields[f.key] = Interpreter._resolve_value(f.value)
 
-        result = evaluator(agent, stmt.offer_id, from_id, fields)
+        try:
+            result = evaluator(agent, stmt.offer_id, from_id, fields)
+        except Exception as e:
+            # Safety: evaluator exceptions should not crash the runtime
+            return f'REJECT "{stmt.offer_id}" REASON "evaluator error: {str(e)[:100]}";'
+
+        if not result:
+            return None
 
         if result == "accept":
             return f'ACCEPT "{stmt.offer_id}";'
-        elif result and result.startswith("reject:"):
+        elif result.startswith("reject:"):
             reason = result.split(":", 1)[1]
             return f'REJECT "{stmt.offer_id}" REASON "{reason}";'
+        elif result.startswith("counter:"):
+            # Parse counter-offer fields from evaluator response
+            import json as _json
+            try:
+                counter_fields = _json.loads(result.split(":", 1)[1])
+                counter_id = f"counter-{stmt.offer_id}"
+                field_str = ", ".join(
+                    f'{k}: {_format_sutra_value(v)}' for k, v in counter_fields.items()
+                )
+                return (
+                    f'COUNTER "{stmt.offer_id}" id="{counter_id}" '
+                    f'TO "{from_id}" {{{field_str}}};'
+                )
+            except (_json.JSONDecodeError, Exception):
+                return f'REJECT "{stmt.offer_id}" REASON "invalid counter-offer";'
         return None
 
     # ── Display ─────────────────────────────────────────

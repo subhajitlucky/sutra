@@ -9,7 +9,7 @@ from .tokens import Token, TokenType
 from .ast_nodes import (
     Program, Header,
     IntentStmt, FactStmt, QueryStmt, OfferStmt, OfferField,
-    AcceptStmt, RejectStmt, CommitStmt, ActStmt,
+    CounterStmt, AcceptStmt, RejectStmt, CommitStmt, ActStmt,
     Predicate, NamedArg,
     StringVal, NumberVal, BoolVal, NullVal, MapVal, ListVal,
 )
@@ -74,22 +74,15 @@ class Parser:
 
     # ── statements ──────────────────────────────────────
 
+    # Class-level dispatch for statement parsing
+    _STMT_DISPATCH = None  # initialized after class definition
+
     def _parse_statement(self):
         tt = self._peek_type()
-        dispatch = {
-            TokenType.INTENT: self._parse_intent,
-            TokenType.FACT: self._parse_fact,
-            TokenType.QUERY: self._parse_query,
-            TokenType.OFFER: self._parse_offer,
-            TokenType.ACCEPT: self._parse_accept,
-            TokenType.REJECT: self._parse_reject,
-            TokenType.COMMIT: self._parse_commit,
-            TokenType.ACT: self._parse_act,
-        }
-        fn = dispatch.get(tt)
+        fn = Parser._STMT_DISPATCH.get(tt)
         if fn is None:
             raise ParseError(f"Unexpected token: {self._current().value!r}", self._current())
-        return fn()
+        return fn(self)
 
     def _parse_intent(self) -> IntentStmt:
         self._expect(TokenType.INTENT)
@@ -121,8 +114,38 @@ class Parser:
         self._expect(TokenType.LBRACE, "Expected '{' to open OFFER body")
         fields = self._parse_offer_fields()
         self._expect(TokenType.RBRACE, "Expected '}' to close OFFER body")
+        # v0.7: Optional EXPIRES clause
+        expires = None
+        if self._match(TokenType.EXPIRES):
+            expires_tok = self._expect(TokenType.STRING, "Expected expiry string after EXPIRES")
+            expires = expires_tok.value
         self._expect(TokenType.SEMICOLON, "Expected ';' after OFFER")
-        return OfferStmt(offer_id=offer_id.value, to_agent=to_agent.value, fields=fields)
+        return OfferStmt(offer_id=offer_id.value, to_agent=to_agent.value, fields=fields, expires=expires)
+
+    def _parse_counter(self) -> CounterStmt:
+        """COUNTER "original_id" id="new_id" TO "agent" { ... } EXPIRES "duration";"""
+        self._expect(TokenType.COUNTER)
+        original_id = self._expect(TokenType.STRING, "Expected original offer id string")
+        self._expect(TokenType.ID, "Expected 'id' in COUNTER")
+        self._expect(TokenType.EQUALS, "Expected '=' after 'id'")
+        new_id = self._expect(TokenType.STRING, "Expected counter-offer id string")
+        self._expect(TokenType.TO, "Expected 'TO' in COUNTER")
+        to_agent = self._expect(TokenType.STRING, "Expected agent string after TO")
+        self._expect(TokenType.LBRACE, "Expected '{' to open COUNTER body")
+        fields = self._parse_offer_fields()
+        self._expect(TokenType.RBRACE, "Expected '}' to close COUNTER body")
+        expires = None
+        if self._match(TokenType.EXPIRES):
+            expires_tok = self._expect(TokenType.STRING, "Expected expiry string after EXPIRES")
+            expires = expires_tok.value
+        self._expect(TokenType.SEMICOLON, "Expected ';' after COUNTER")
+        return CounterStmt(
+            original_offer_id=original_id.value,
+            offer_id=new_id.value,
+            to_agent=to_agent.value,
+            fields=fields,
+            expires=expires,
+        )
 
     def _parse_offer_fields(self) -> list[OfferField]:
         fields: list[OfferField] = []
@@ -137,8 +160,15 @@ class Parser:
     def _parse_accept(self) -> AcceptStmt:
         self._expect(TokenType.ACCEPT)
         offer_id = self._expect(TokenType.STRING, "Expected offer id string")
+        # v0.7: Optional IF conditions
+        conditions = None
+        if self._match(TokenType.IF):
+            conditions = []
+            conditions.append(self._parse_predicate())
+            while self._match(TokenType.COMMA):
+                conditions.append(self._parse_predicate())
         self._expect(TokenType.SEMICOLON, "Expected ';' after ACCEPT")
-        return AcceptStmt(offer_id=offer_id.value)
+        return AcceptStmt(offer_id=offer_id.value, conditions=conditions)
 
     def _parse_reject(self) -> RejectStmt:
         self._expect(TokenType.REJECT)
@@ -234,3 +264,17 @@ class Parser:
             self._match(TokenType.COMMA)
         self._expect(TokenType.RBRACKET)
         return ListVal(items=items)
+
+
+# Initialize dispatch table after class definition
+Parser._STMT_DISPATCH = {
+    TokenType.INTENT: Parser._parse_intent,
+    TokenType.FACT: Parser._parse_fact,
+    TokenType.QUERY: Parser._parse_query,
+    TokenType.OFFER: Parser._parse_offer,
+    TokenType.COUNTER: Parser._parse_counter,
+    TokenType.ACCEPT: Parser._parse_accept,
+    TokenType.REJECT: Parser._parse_reject,
+    TokenType.COMMIT: Parser._parse_commit,
+    TokenType.ACT: Parser._parse_act,
+}
