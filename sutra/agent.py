@@ -109,6 +109,8 @@ class Agent:
         self.message_log: list[LogEntry] = []
         self.keypair = keypair  # v0.3: SutraKeyPair or None
         self.trusted_keys: dict[str, str] = {}  # agent_id → public_key_hex
+        # v0.7: Predicate index for O(1) belief lookups
+        self._fact_index: dict[str, list[Fact]] = {}
 
     def _log(self, event: str, detail: str):
         self.message_log.append(LogEntry(event=event, detail=detail))
@@ -118,6 +120,10 @@ class Agent:
     def add_fact(self, predicate: str, args: dict[str, Any]):
         fact = Fact(predicate=predicate, args=args)
         self.belief_base.append(fact)
+        # Maintain predicate index
+        if predicate not in self._fact_index:
+            self._fact_index[predicate] = []
+        self._fact_index[predicate].append(fact)
         self._log("FACT", str(fact))
 
     def add_intent(self, predicate: str, args: dict[str, Any]):
@@ -168,19 +174,34 @@ class Agent:
         self._log("ACT", str(action))
 
     def query_facts(self, predicate: str, args: dict[str, Any]) -> list[Fact]:
-        """Query belief_base for matching facts (simple subset match)."""
+        """Query belief_base for matching facts (indexed by predicate, subset match).
+
+        Uses _fact_index for O(1) predicate lookup instead of scanning all facts.
+        """
+        candidates = self._fact_index.get(predicate)
+        if not candidates:
+            return []
+        if not args:
+            return list(candidates)
         results = []
-        for fact in self.belief_base:
-            if fact.predicate != predicate:
-                continue
+        for fact in candidates:
             match = True
+            fact_args = fact.args
             for k, v in args.items():
-                if k in fact.args and fact.args[k] != v:
+                if k in fact_args and fact_args[k] != v:
                     match = False
                     break
             if match:
                 results.append(fact)
         return results
+
+    def rebuild_index(self):
+        """Rebuild the fact predicate index from belief_base (use after deserialization)."""
+        self._fact_index.clear()
+        for fact in self.belief_base:
+            if fact.predicate not in self._fact_index:
+                self._fact_index[fact.predicate] = []
+            self._fact_index[fact.predicate].append(fact)
 
     # ── Display ─────────────────────────────────────────
 

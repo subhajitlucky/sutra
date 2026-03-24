@@ -130,6 +130,9 @@ def _deserialize_agent(data: dict, keypair=None) -> Agent:
         entry = LogEntry(event=le["event"], detail=le["detail"], timestamp=le.get("timestamp", 0))
         agent.message_log.append(entry)
 
+    # Rebuild fact predicate index for O(1) lookups
+    agent.rebuild_index()
+
     return agent
 
 

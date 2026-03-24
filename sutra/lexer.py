@@ -14,15 +14,33 @@ class LexerError(Exception):
 
 
 class Lexer:
+    # Class-level lookup table — avoids per-iteration dict creation
+    _SIMPLE_TOKENS = {
+        "(": TokenType.LPAREN,
+        ")": TokenType.RPAREN,
+        "{": TokenType.LBRACE,
+        "}": TokenType.RBRACE,
+        "[": TokenType.LBRACKET,
+        "]": TokenType.RBRACKET,
+        ",": TokenType.COMMA,
+        ":": TokenType.COLON,
+        ";": TokenType.SEMICOLON,
+        "=": TokenType.EQUALS,
+        "#": TokenType.HASH,
+    }
+    _ESCAPE_MAP = {"n": "\n", "t": "\t", "\\": "\\", '"': '"'}
+    _WHITESPACE = frozenset((" ", "\t", "\r"))
+
     def __init__(self, source: str):
         self.source = source
         self.pos = 0
         self.line = 1
         self.col = 1
         self.tokens: list[Token] = []
+        self._len = len(source)  # cache length
 
     def _peek(self) -> str | None:
-        if self.pos < len(self.source):
+        if self.pos < self._len:
             return self.source[self.pos]
         return None
 
@@ -37,115 +55,148 @@ class Lexer:
         return ch
 
     def _skip_whitespace(self):
-        while self.pos < len(self.source) and self.source[self.pos] in (" ", "\t", "\r"):
-            self._advance()
+        src = self.source
+        pos = self.pos
+        length = self._len
+        ws = self._WHITESPACE
+        while pos < length and src[pos] in ws:
+            if src[pos] == "\n":
+                self.line += 1
+                self.col = 1
+            else:
+                self.col += 1
+            pos += 1
+        self.pos = pos
 
     def _skip_comment(self):
         """Skip // line comments."""
         if (
-            self.pos + 1 < len(self.source)
+            self.pos + 1 < self._len
             and self.source[self.pos] == "/"
             and self.source[self.pos + 1] == "/"
         ):
-            while self.pos < len(self.source) and self.source[self.pos] != "\n":
-                self._advance()
+            src = self.source
+            pos = self.pos
+            length = self._len
+            while pos < length and src[pos] != "\n":
+                pos += 1
+            self.col += (pos - self.pos)
+            self.pos = pos
 
     def _read_string(self) -> Token:
         line, col = self.line, self.col
         self._advance()  # skip opening "
+        src = self.source
+        pos = self.pos
+        length = self._len
+        escape_map = self._ESCAPE_MAP
         buf = []
-        while self.pos < len(self.source):
-            ch = self.source[self.pos]
+        buf_append = buf.append
+        while pos < length:
+            ch = src[pos]
             if ch == '"':
-                self._advance()  # skip closing "
+                pos += 1
+                self.col += 1
+                self.pos = pos
                 return Token(TokenType.STRING, "".join(buf), line, col)
             if ch == "\\":
-                self._advance()
-                esc = self._advance()
-                escape_map = {"n": "\n", "t": "\t", "\\": "\\", '"': '"'}
-                buf.append(escape_map.get(esc, esc))
+                pos += 1
+                self.col += 1
+                esc = src[pos]
+                pos += 1
+                self.col += 1
+                buf_append(escape_map.get(esc, esc))
             else:
-                buf.append(ch)
-                self._advance()
+                buf_append(ch)
+                pos += 1
+                if ch == "\n":
+                    self.line += 1
+                    self.col = 1
+                else:
+                    self.col += 1
+        self.pos = pos
         raise LexerError("Unterminated string", line, col)
 
     def _read_number(self) -> Token:
         line, col = self.line, self.col
-        buf = []
-        if self._peek() == "-":
-            buf.append(self._advance())
-        while self.pos < len(self.source) and self.source[self.pos].isdigit():
-            buf.append(self._advance())
-        if self.pos < len(self.source) and self.source[self.pos] == ".":
-            buf.append(self._advance())
-            while self.pos < len(self.source) and self.source[self.pos].isdigit():
-                buf.append(self._advance())
-        return Token(TokenType.NUMBER, "".join(buf), line, col)
+        src = self.source
+        start = self.pos
+        pos = self.pos
+        length = self._len
+        if src[pos] == "-":
+            pos += 1
+        while pos < length and src[pos].isdigit():
+            pos += 1
+        if pos < length and src[pos] == ".":
+            pos += 1
+            while pos < length and src[pos].isdigit():
+                pos += 1
+        advance = pos - start
+        self.col += advance
+        self.pos = pos
+        return Token(TokenType.NUMBER, src[start:pos], line, col)
 
     def _read_identifier(self) -> Token:
         line, col = self.line, self.col
-        buf = []
-        while self.pos < len(self.source) and (
-            self.source[self.pos].isalnum() or self.source[self.pos] == "_"
-        ):
-            buf.append(self._advance())
-        word = "".join(buf)
+        src = self.source
+        start = self.pos
+        pos = self.pos
+        length = self._len
+        while pos < length and (src[pos].isalnum() or src[pos] == "_"):
+            pos += 1
+        advance = pos - start
+        self.col += advance
+        self.pos = pos
+        word = src[start:pos]
         token_type = KEYWORDS.get(word, TokenType.IDENTIFIER)
         return Token(token_type, word, line, col)
 
     def tokenize(self) -> list[Token]:
-        self.tokens = []
-        while self.pos < len(self.source):
+        tokens: list[Token] = []
+        tokens_append = tokens.append
+        simple = self._SIMPLE_TOKENS
+        src = self.source
+
+        while self.pos < self._len:
             self._skip_whitespace()
             self._skip_comment()
 
-            if self.pos >= len(self.source):
+            if self.pos >= self._len:
                 break
 
-            ch = self.source[self.pos]
+            ch = src[self.pos]
             line, col = self.line, self.col
 
             # Newlines
             if ch == "\n":
                 self._advance()
-                self.tokens.append(Token(TokenType.NEWLINE, "\\n", line, col))
+                tokens_append(Token(TokenType.NEWLINE, "\\n", line, col))
                 continue
 
             # Single-char tokens
-            simple = {
-                "(": TokenType.LPAREN,
-                ")": TokenType.RPAREN,
-                "{": TokenType.LBRACE,
-                "}": TokenType.RBRACE,
-                "[": TokenType.LBRACKET,
-                "]": TokenType.RBRACKET,
-                ",": TokenType.COMMA,
-                ":": TokenType.COLON,
-                ";": TokenType.SEMICOLON,
-                "=": TokenType.EQUALS,
-                "#": TokenType.HASH,
-            }
-            if ch in simple:
+            tt = simple.get(ch)
+            if tt is not None:
                 self._advance()
-                self.tokens.append(Token(simple[ch], ch, line, col))
+                tokens_append(Token(tt, ch, line, col))
                 continue
 
             # Strings
             if ch == '"':
-                self.tokens.append(self._read_string())
+                tokens_append(self._read_string())
                 continue
 
             # Numbers
-            if ch.isdigit() or (ch == "-" and self.pos + 1 < len(self.source) and self.source[self.pos + 1].isdigit()):
-                self.tokens.append(self._read_number())
+            if ch.isdigit() or (ch == "-" and self.pos + 1 < self._len and src[self.pos + 1].isdigit()):
+                tokens_append(self._read_number())
                 continue
 
             # Identifiers and keywords
             if ch.isalpha() or ch == "_":
-                self.tokens.append(self._read_identifier())
+                tokens_append(self._read_identifier())
                 continue
 
             raise LexerError(f"Unexpected character: {ch!r}", line, col)
 
-        self.tokens.append(Token(TokenType.EOF, "", self.line, self.col))
-        return self.tokens
+        tokens_append(Token(TokenType.EOF, "", self.line, self.col))
+        self.tokens = tokens
+        return tokens

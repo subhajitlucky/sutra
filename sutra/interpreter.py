@@ -27,31 +27,29 @@ class RuntimeError(Exception):
 class Interpreter:
     """Executes SUTRA programs against an Agent state."""
 
+    # Class-level dispatch table — avoids per-statement isinstance chains
+    _DISPATCH = None  # initialized after class definition
+
     def __init__(self, agent: Agent):
         self.agent = agent
         self.responses: list[str] = []
 
     # ── Value resolution ────────────────────────────────
 
+    # Type-indexed dispatch for value resolution — O(1) lookup vs isinstance chain
+    _VALUE_RESOLVERS = None  # initialized after class definition
+
     @staticmethod
     def _resolve_value(node) -> object:
-        if isinstance(node, StringVal):
-            return node.value
-        if isinstance(node, NumberVal):
-            return node.value
-        if isinstance(node, BoolVal):
-            return node.value
-        if isinstance(node, NullVal):
-            return None
-        if isinstance(node, MapVal):
-            return {k: Interpreter._resolve_value(v) for k, v in node.entries.items()}
-        if isinstance(node, ListVal):
-            return [Interpreter._resolve_value(i) for i in node.items]
+        resolver = Interpreter._VALUE_RESOLVERS.get(type(node))
+        if resolver is not None:
+            return resolver(node)
         raise RuntimeError(f"Cannot resolve value: {node}")
 
     @staticmethod
     def _pred_args(pred: Predicate) -> dict[str, object]:
-        return {arg.name: Interpreter._resolve_value(arg.value) for arg in pred.args}
+        resolve = Interpreter._resolve_value
+        return {arg.name: resolve(arg.value) for arg in pred.args}
 
     # ── Execution ───────────────────────────────────────
 
@@ -62,42 +60,34 @@ class Interpreter:
         # Extract metadata
         meta = {h.key: h.value for h in program.headers}
 
+        dispatch = Interpreter._DISPATCH
         for stmt in program.statements:
-            self._exec_statement(stmt, meta)
+            handler = dispatch.get(type(stmt))
+            if handler is not None:
+                handler(self, stmt, meta)
+            else:
+                raise RuntimeError(f"Unknown statement type: {type(stmt).__name__}")
 
         return self.responses
 
     def _exec_statement(self, stmt, meta: dict):
-        if isinstance(stmt, IntentStmt):
-            self._exec_intent(stmt)
-        elif isinstance(stmt, FactStmt):
-            self._exec_fact(stmt)
-        elif isinstance(stmt, QueryStmt):
-            self._exec_query(stmt)
-        elif isinstance(stmt, OfferStmt):
-            self._exec_offer(stmt, meta)
-        elif isinstance(stmt, AcceptStmt):
-            self._exec_accept(stmt)
-        elif isinstance(stmt, RejectStmt):
-            self._exec_reject(stmt)
-        elif isinstance(stmt, CommitStmt):
-            self._exec_commit(stmt)
-        elif isinstance(stmt, ActStmt):
-            self._exec_act(stmt)
+        handler = Interpreter._DISPATCH.get(type(stmt))
+        if handler is not None:
+            handler(self, stmt, meta)
         else:
             raise RuntimeError(f"Unknown statement type: {type(stmt).__name__}")
 
-    def _exec_intent(self, stmt: IntentStmt):
+    def _exec_intent(self, stmt: IntentStmt, meta: dict):
         args = self._pred_args(stmt.predicate)
         self.agent.add_intent(stmt.predicate.name, args)
         self.responses.append(f"[INTENT] {stmt.predicate.name}({_fmt_args(args)})")
 
-    def _exec_fact(self, stmt: FactStmt):
+    def _exec_fact(self, stmt: FactStmt, meta: dict):
         args = self._pred_args(stmt.predicate)
         self.agent.add_fact(stmt.predicate.name, args)
         self.responses.append(f"[FACT] {stmt.predicate.name}({_fmt_args(args)})")
 
-    def _exec_query(self, stmt: QueryStmt):
+    def _exec_query(self, stmt: QueryStmt, meta: dict):
         args = self._pred_args(stmt.predicate)
         results = self.agent.query_facts(stmt.predicate.name, args)
         if results:
@@ -107,9 +97,8 @@ class Interpreter:
             self.responses.append(f"[QUERY] No matching facts for {stmt.predicate.name}({_fmt_args(args)})")
 
     def _exec_offer(self, stmt: OfferStmt, meta: dict):
-        fields = {}
-        for f in stmt.fields:
-            fields[f.key] = self._resolve_value(f.value)
+        resolve = self._resolve_value
+        fields = {f.key: resolve(f.value) for f in stmt.fields}
         from_agent = meta.get("from", self.agent.agent_id)
         # v0.3: Auto-sign if agent has a keypair
         sig_dict = None
@@ -128,14 +117,14 @@ class Interpreter:
         )
         self.responses.append(f"[OFFER] id={stmt.offer_id!r} → {stmt.to_agent}{sig_info}")
 
-    def _exec_accept(self, stmt: AcceptStmt):
+    def _exec_accept(self, stmt: AcceptStmt, meta: dict):
         ok = self.agent.accept_offer(stmt.offer_id)
         if ok:
             self.responses.append(f"[ACCEPT] Offer {stmt.offer_id!r} accepted")
         else:
             self.responses.append(f"[ACCEPT FAILED] Offer {stmt.offer_id!r} not found or not open")
 
-    def _exec_reject(self, stmt: RejectStmt):
+    def _exec_reject(self, stmt: RejectStmt, meta: dict):
         ok = self.agent.reject_offer(stmt.offer_id, stmt.reason)
         if ok:
             reason_part = f" — {stmt.reason}" if stmt.reason else ""
@@ -143,7 +132,7 @@ class Interpreter:
         else:
             self.responses.append(f"[REJECT FAILED] Offer {stmt.offer_id!r} not found or not open")
 
-    def _exec_commit(self, stmt: CommitStmt):
+    def _exec_commit(self, stmt: CommitStmt, meta: dict):
         args = self._pred_args(stmt.predicate)
         # v0.3: Auto-sign if agent has a keypair
         sig_dict = None
@@ -159,7 +148,7 @@ class Interpreter:
         dl = f" BY {stmt.deadline}" if stmt.deadline else ""
         self.responses.append(f"[COMMIT] {stmt.predicate.name}({_fmt_args(args)}){dl}{sig_info}")
 
-    def _exec_act(self, stmt: ActStmt):
+    def _exec_act(self, stmt: ActStmt, meta: dict):
         args = self._pred_args(stmt.predicate)
         self.agent.add_action(stmt.predicate.name, args)
         self.responses.append(f"[ACT] {stmt.predicate.name}({_fmt_args(args)})")
@@ -167,3 +156,26 @@ class Interpreter:
 
 def _fmt_args(args: dict) -> str:
     return ", ".join(f"{k}={v!r}" for k, v in args.items())
+
+
+# ── Initialize dispatch tables after class definition ──
+
+Interpreter._DISPATCH = {
+    IntentStmt: Interpreter._exec_intent,
+    FactStmt: Interpreter._exec_fact,
+    QueryStmt: Interpreter._exec_query,
+    OfferStmt: Interpreter._exec_offer,
+    AcceptStmt: Interpreter._exec_accept,
+    RejectStmt: Interpreter._exec_reject,
+    CommitStmt: Interpreter._exec_commit,
+    ActStmt: Interpreter._exec_act,
+}
+
+Interpreter._VALUE_RESOLVERS = {
+    StringVal: lambda n: n.value,
+    NumberVal: lambda n: n.value,
+    BoolVal: lambda n: n.value,
+    NullVal: lambda n: None,
+    MapVal: lambda n: {k: Interpreter._resolve_value(v) for k, v in n.entries.items()},
+    ListVal: lambda n: [Interpreter._resolve_value(i) for i in n.items],
+}
