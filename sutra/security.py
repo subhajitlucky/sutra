@@ -75,10 +75,18 @@ class ReplayGuard:
             # Record
             self._seen[nonce] = now
 
-            # Evict oldest if full
+            # Time-based eviction: remove expired nonces first
             if len(self._seen) > self.max_seen:
-                oldest = min(self._seen, key=self._seen.get)
-                del self._seen[oldest]
+                expired_nonces = [
+                    n for n, t in self._seen.items()
+                    if now - t > self.max_age_s
+                ]
+                for n in expired_nonces:
+                    del self._seen[n]
+                # If still full after time eviction, evict oldest
+                if len(self._seen) > self.max_seen:
+                    oldest = min(self._seen, key=self._seen.get)
+                    del self._seen[oldest]
 
         return True, "ok"
 
@@ -318,3 +326,92 @@ class TokenAuth:
     @property
     def registered_agents(self) -> list[str]:
         return list(self._tokens.keys())
+
+
+# ════════════════════════════════════════════════════════
+#  RATE LIMITER
+# ════════════════════════════════════════════════════════
+
+class RateLimiter:
+    """Token-bucket rate limiter for per-agent request throttling.
+
+    Each agent gets a bucket with `max_tokens` capacity, refilling at
+    `refill_rate` tokens per second. Each request consumes one token.
+    """
+
+    def __init__(self, max_tokens: int = 60, refill_rate: float = 10.0):
+        self.max_tokens = max_tokens
+        self.refill_rate = refill_rate
+        self._buckets: dict[str, tuple[float, float]] = {}  # agent_id → (tokens, last_refill)
+        self._lock = threading.Lock()
+
+    def check(self, agent_id: str) -> tuple[bool, str]:
+        """Check if a request from agent_id is allowed.
+
+        Returns (allowed, reason).
+        """
+        now = time.time()
+        with self._lock:
+            tokens, last = self._buckets.get(agent_id, (float(self.max_tokens), now))
+            # Refill tokens based on elapsed time
+            elapsed = now - last
+            tokens = min(self.max_tokens, tokens + elapsed * self.refill_rate)
+            if tokens >= 1.0:
+                self._buckets[agent_id] = (tokens - 1.0, now)
+                return True, "ok"
+            else:
+                self._buckets[agent_id] = (tokens, now)
+                return False, f"Rate limited: {agent_id} (retry after {(1.0 - tokens) / self.refill_rate:.1f}s)"
+
+    def reset(self, agent_id: str):
+        """Reset rate limit for an agent."""
+        with self._lock:
+            self._buckets.pop(agent_id, None)
+
+
+# ════════════════════════════════════════════════════════
+#  INPUT SANITIZER
+# ════════════════════════════════════════════════════════
+
+class InputValidator:
+    """Validates and sanitizes SUTRA message inputs.
+
+    Prevents:
+      - Oversized messages (DoS via payload size)
+      - Control character injection
+      - Null byte injection
+    """
+
+    def __init__(
+        self,
+        max_body_bytes: int = 65536,  # 64KB max SUTRA source
+        max_agent_id_len: int = 256,
+    ):
+        self.max_body_bytes = max_body_bytes
+        self.max_agent_id_len = max_agent_id_len
+
+    def validate_body(self, body: str) -> tuple[bool, str]:
+        """Validate a SUTRA message body."""
+        if not body or not body.strip():
+            return False, "Empty body"
+        body_bytes = len(body.encode("utf-8"))
+        if body_bytes > self.max_body_bytes:
+            return False, f"Body too large: {body_bytes} bytes (max {self.max_body_bytes})"
+        # Check for null bytes (injection vector)
+        if "\x00" in body:
+            return False, "Null bytes not allowed in body"
+        return True, "ok"
+
+    def validate_agent_id(self, agent_id: str) -> tuple[bool, str]:
+        """Validate an agent identifier."""
+        if not agent_id:
+            return False, "Empty agent ID"
+        if len(agent_id) > self.max_agent_id_len:
+            return False, f"Agent ID too long: {len(agent_id)} (max {self.max_agent_id_len})"
+        # Only allow printable ASCII + common symbols
+        if not all(32 <= ord(c) <= 126 for c in agent_id):
+            return False, "Agent ID contains invalid characters"
+        # Prevent path traversal
+        if ".." in agent_id or "/" in agent_id or "\\" in agent_id:
+            return False, "Agent ID contains path traversal characters"
+        return True, "ok"

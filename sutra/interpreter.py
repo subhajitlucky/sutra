@@ -16,10 +16,16 @@ from .ast_nodes import (
 )
 from .agent import Agent
 from .crypto import (
-    sign, commitment_content, offer_content, SutraSignature,
+    sign, verify, commitment_content, offer_content, SutraSignature,
 )
 
 import time as _time
+
+
+# Maximum predicate name length to prevent abuse
+_MAX_PREDICATE_LEN = 128
+# Maximum number of arguments per predicate
+_MAX_PREDICATE_ARGS = 64
 
 
 class RuntimeError(Exception):
@@ -50,6 +56,14 @@ class Interpreter:
 
     @staticmethod
     def _pred_args(pred: Predicate) -> dict[str, object]:
+        if len(pred.name) > _MAX_PREDICATE_LEN:
+            raise RuntimeError(
+                f"Predicate name too long: {len(pred.name)} chars (max {_MAX_PREDICATE_LEN})"
+            )
+        if len(pred.args) > _MAX_PREDICATE_ARGS:
+            raise RuntimeError(
+                f"Too many predicate arguments: {len(pred.args)} (max {_MAX_PREDICATE_ARGS})"
+            )
         resolve = Interpreter._resolve_value
         return {arg.name: resolve(arg.value) for arg in pred.args}
 

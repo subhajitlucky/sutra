@@ -57,8 +57,12 @@ from .interpreter import Interpreter
 from .interpreter import RuntimeError as SutraRuntimeError
 from .registry import AgentRegistry
 from .keystore import KeyStore
+from .security import RateLimiter, InputValidator
 
 logger = logging.getLogger("sutra.server")
+
+# Maximum request body size (1MB) to prevent DoS
+_MAX_REQUEST_BODY = 1_048_576
 
 
 class SutraRequestHandler(BaseHTTPRequestHandler):
@@ -73,12 +77,20 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("X-Sutra-Version", "v0.6")
+        self.send_header("X-Sutra-Version", "v0.7")
+        # Security headers
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(body)
 
     def _read_body(self) -> bytes:
         length = int(self.headers.get("Content-Length", 0))
+        if length > _MAX_REQUEST_BODY:
+            return b""  # will be handled as error downstream
+        if length <= 0:
+            return b""
         return self.rfile.read(length)
 
     # ── GET endpoints ───────────────────────────────────
@@ -169,6 +181,12 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
         self._send_json(200, {"status": "registered", "agent_id": agent_id})
 
     def _handle_sutra_message(self):
+        # ── Request size check ───────────────────────────
+        content_length = int(self.headers.get("Content-Length", 0))
+        if content_length > _MAX_REQUEST_BODY:
+            self._send_json(413, {"error": f"Request too large: {content_length} bytes (max {_MAX_REQUEST_BODY})"})
+            return
+
         # ── v0.6: Bearer token auth ─────────────────────
         token_auth = getattr(self.server, "sutra_token_auth", None)
         if token_auth is not None:
@@ -179,17 +197,42 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
                 return
 
         # Parse request
+        raw_body = self._read_body()
+        if not raw_body:
+            self._send_json(400, {"error": "Empty request body"})
+            return
         try:
-            data = json.loads(self._read_body())
+            data = json.loads(raw_body)
         except json.JSONDecodeError as e:
             self._send_json(400, {"error": f"Invalid JSON: {e}"})
             return
 
         sender = data.get("from", "unknown")
         body = data.get("body", "")
+
+        # ── v0.7: Input validation ───────────────────────
+        validator: InputValidator | None = getattr(self.server, "sutra_input_validator", None)
+        if validator is not None:
+            valid, reason = validator.validate_agent_id(sender)
+            if not valid:
+                self._send_json(400, {"error": f"Invalid sender: {reason}"})
+                return
+            valid, reason = validator.validate_body(body)
+            if not valid:
+                self._send_json(400, {"error": f"Invalid body: {reason}"})
+                return
+
         if not body.strip():
             self._send_json(400, {"error": "Empty SUTRA body"})
             return
+
+        # ── v0.7: Rate limiting ──────────────────────────
+        rate_limiter: RateLimiter | None = getattr(self.server, "sutra_rate_limiter", None)
+        if rate_limiter is not None:
+            allowed, reason = rate_limiter.check(sender)
+            if not allowed:
+                self._send_json(429, {"error": reason})
+                return
 
         # ── v0.6: TTL / expiry check ───────────────────
         ttl = data.get("ttl", 0)
@@ -281,6 +324,8 @@ class SutraServer:
         token_auth=None,
         replay_guard=None,
         seq_tracker=None,
+        rate_limiter=None,
+        input_validator=None,
     ):
         self.agent = agent
         self.host = host
@@ -292,6 +337,9 @@ class SutraServer:
         self.token_auth = token_auth
         self.replay_guard = replay_guard
         self.seq_tracker = seq_tracker
+        # v0.7 security
+        self.rate_limiter = rate_limiter
+        self.input_validator = input_validator or InputValidator()
 
         # v0.3: Auto-assign keypair to agent if requested
         if auto_sign and agent.keypair is None:
@@ -313,6 +361,9 @@ class SutraServer:
         httpd.sutra_token_auth = self.token_auth
         httpd.sutra_replay_guard = self.replay_guard
         httpd.sutra_seq_tracker = self.seq_tracker
+        # v0.7 security
+        httpd.sutra_rate_limiter = self.rate_limiter
+        httpd.sutra_input_validator = self.input_validator
         return httpd
 
     def start(self, blocking: bool = False):

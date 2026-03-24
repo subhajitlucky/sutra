@@ -17,6 +17,8 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
+from .crypto import verify as _verify_sig, SutraSignature, offer_content, commitment_content
+
 
 @dataclass
 class Fact:
@@ -282,6 +284,61 @@ class Agent:
             if fact.predicate not in self._fact_index:
                 self._fact_index[fact.predicate] = []
             self._fact_index[fact.predicate].append(fact)
+
+    # ── Signature verification ───────────────────────────
+
+    def trust_key(self, agent_id: str, public_key_hex: str):
+        """Register a trusted public key for an agent."""
+        self.trusted_keys[agent_id] = public_key_hex
+
+    def verify_offer(self, offer_id: str) -> bool:
+        """Verify the cryptographic signature on a signed offer.
+
+        Returns True if signature is valid, False if invalid or no signature.
+        """
+        offer = self.offer_ledger.get(offer_id)
+        if offer is None or offer.signature is None:
+            return False
+        sig = SutraSignature.from_dict(offer.signature)
+        content = offer_content(
+            offer.offer_id, offer.from_agent, offer.to_agent, offer.fields
+        )
+        return _verify_sig(sig, content)
+
+    def verify_commitment(self, index: int) -> bool:
+        """Verify the cryptographic signature on a signed commitment.
+
+        Returns True if signature is valid, False if invalid or no signature.
+        """
+        if index < 0 or index >= len(self.commit_ledger):
+            return False
+        commit = self.commit_ledger[index]
+        if commit.signature is None:
+            return False
+        sig = SutraSignature.from_dict(commit.signature)
+        content = commitment_content(
+            commit.predicate, commit.args,
+            sig.signer, commit.deadline
+        )
+        return _verify_sig(sig, content)
+
+    def verify_all_signatures(self) -> dict[str, list]:
+        """Verify all signed offers and commitments. Returns report."""
+        report = {"valid_offers": [], "invalid_offers": [],
+                  "valid_commits": [], "invalid_commits": []}
+        for oid, offer in self.offer_ledger.items():
+            if offer.signature:
+                if self.verify_offer(oid):
+                    report["valid_offers"].append(oid)
+                else:
+                    report["invalid_offers"].append(oid)
+        for i, commit in enumerate(self.commit_ledger):
+            if commit.signature:
+                if self.verify_commitment(i):
+                    report["valid_commits"].append(i)
+                else:
+                    report["invalid_commits"].append(i)
+        return report
 
     # ── Display ─────────────────────────────────────────
 
