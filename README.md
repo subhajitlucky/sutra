@@ -76,7 +76,7 @@ ACT transfer(amount=48000, to="seller@store");
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/sutra.git
+git clone https://github.com/subhajitlucky/sutra.git
 cd sutra
 
 # Run a .sutra file
