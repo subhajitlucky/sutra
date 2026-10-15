@@ -115,7 +115,37 @@ JSON-RPC/MCP envelopes (~69.8 tokens/message), not lean JSON:
 Cumulative journey: current SUTRA 330 → v1 139 → v2 80 → v3 **75** tokens for
 the 12-message corpus.
 
-## Round 4 (planned)
+## Round 4 — comprehension (`comprehension.py`)
+
+Real-model emit/parse through the local codex CLI (batched cells of 12 messages;
+EMIT = JSON → protocol, PARSE = protocol → JSON; scored with the real decoders).
+
+| cell | correct | output tokens |
+|---|---|---|
+| json/parse (control) | 12/12 | 497 |
+| sutra/parse (readable) | 10/12 | 796 |
+| sutra/emit (readable) | 11/12 | 435 |
+| **c1/parse** (6.1 tok/msg) | **12/12** | 854 |
+| **c1/emit** | **12/12** | **103** |
+
+Findings:
+
+1. **Compression does not break comprehension** — the compact form matched or
+   beat the readable form on both directions. (Single run per cell; an earlier
+   run slipped once on direction, so variance is real and n>1 reruns belong in
+   round 5.)
+2. **The model taught the protocol a trick:** it spontaneously concatenated the
+   broadcast prefix (`sF`, not `s F`). Adopted — the round-3 champion dropped
+   from 75 to **73 tokens** (6.1/message).
+3. **Readable SUTRA has two real gaps the tests exposed:** a QUERY carries no
+   sender (the FROM clause reads as the sender), and `in_reply_to` travels as a
+   comment — invisible to the repo's own parser.
+4. **The price of compactness is dictionary:** C1 needs a 356-token spec vs 158
+   for readable. Per-message wins; session setup loses.
+5. Accuracy-adjusted emission cost: ~8.6 tokens per correct message (c1) vs
+   ~39.5 (readable) — ~4.6×.
+
+## Round 5 (planned)
 
 - **Entity dictionaries:** values (items, ids, amounts) become session handles
   after first mention — the payload itself gets compressed.

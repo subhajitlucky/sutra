@@ -233,7 +233,9 @@ def text_encode(m, cfg, sess):
     prefix = ""
     if cfg["route"] == "fold":
         if f["route"] in (2, 3):
-            prefix = ("b " if f["route"] == 2 else "s ")
+            # broadcast prefix concatenates with the primitive (bI, sF) —
+            # adopted from model behaviour in the round-4 comprehension tests.
+            prefix = "b" if f["route"] == 2 else "s"
         else:
             if KWCASE[cfg["kw"]]:
                 K = K.lower() if f["route"] == 0 else K.upper()
@@ -275,9 +277,16 @@ def text_encode(m, cfg, sess):
 def text_decode(text, cfg, sess):
     tokens = text.split()
     route = None
+    rev_kw_all = {str(v).upper() for v in KW_STYLES[cfg["kw"]].values()}
     if cfg["route"] == "fold":
         if tokens and tokens[0] in ("b", "s"):
             route = 2 if tokens.pop(0) == "b" else 3
+        elif (tokens and len(tokens[0]) > 1 and tokens[0][0] in ("b", "s")
+              and tokens[0][1:].upper() in rev_kw_all):
+            # concatenated broadcast prefix: bI, sF (only when the remainder
+            # is exactly a primitive token — 'set' stays 'set')
+            route = 2 if tokens[0][0] == "b" else 3
+            tokens = [tokens[0][1:]] + tokens[1:]
     else:
         r = tokens.pop(0)
         route = {".": None, ">": 0, "<": 1, "b": 2, "s": 3}[r]

@@ -1,17 +1,37 @@
 [
  {
   "cfg": {
-   "kw": "l1",
+   "kw": "tni",
    "route": "fold",
    "delta": "values",
    "numbers": "b36",
    "wire": "text"
   },
-  "total": 75
+  "total": 73
  },
  {
   "cfg": {
    "kw": "tni",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 74
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 74
+ },
+ {
+  "cfg": {
+   "kw": "l1",
    "route": "fold",
    "delta": "values",
    "numbers": "b36",
@@ -43,21 +63,31 @@
   "cfg": {
    "kw": "tni",
    "route": "fold",
-   "delta": "values",
-   "numbers": "dec",
+   "delta": "off",
+   "numbers": "b36",
    "wire": "text"
   },
-  "total": 76
+  "total": 79
  },
  {
   "cfg": {
    "kw": "tni",
    "route": "fold",
-   "delta": "values",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 80
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "off",
    "numbers": "k",
    "wire": "text"
   },
-  "total": 76
+  "total": 80
  },
  {
   "cfg": {
@@ -71,16 +101,6 @@
  },
  {
   "cfg": {
-   "kw": "tni",
-   "route": "fold",
-   "delta": "off",
-   "numbers": "b36",
-   "wire": "text"
-  },
-  "total": 81
- },
- {
-  "cfg": {
    "kw": "l1",
    "route": "fold",
    "delta": "off",
@@ -92,26 +112,6 @@
  {
   "cfg": {
    "kw": "l1",
-   "route": "fold",
-   "delta": "off",
-   "numbers": "k",
-   "wire": "text"
-  },
-  "total": 82
- },
- {
-  "cfg": {
-   "kw": "tni",
-   "route": "fold",
-   "delta": "off",
-   "numbers": "dec",
-   "wire": "text"
-  },
-  "total": 82
- },
- {
-  "cfg": {
-   "kw": "tni",
    "route": "fold",
    "delta": "off",
    "numbers": "k",
