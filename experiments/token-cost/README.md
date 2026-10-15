@@ -182,10 +182,42 @@ Findings:
 5. Logging caught a scoring bug (case-sensitive `Intent` vs `INTENT`); the
    archived first-pass logs document it rather than hiding it.
 
-## Round 6 (planned)
+## Round 6 — mechanisms read out of the Panini literature (`sweep3.py`)
 
-- Second model family (needs a provider other than the ChatGPT-plan codex CLI).
-- Longer sessions (50+ messages) to test drift and ellipsis-state discipline.
+Sources: Kiparsky's accounts of the Ashtadhyayi's economy (ordering, blocking,
+anuvrtti, adhikara, pratyahara; Minimum Description Length as the stated goal),
+the Sivasutra/pratyahara studies, and the katapayadi/bhutasankhya number-coding
+literature. Three mechanisms were implemented, all round-trip verified:
+
+1. **Rule-order channel (ordering/blocking as information).** Panini's rule
+   *order* carries meaning. When a conversation follows a known template
+   (negotiated once, like an adhikara heading), the message type, predicate,
+   routing, counterparty addresses and reply threading are all implied by
+   position; only new payload values are transmitted. Template sessions:
+   59 tokens for the deal → 17.1× vs JSON-RPC at N=500.
+2. **Chandas meter (fixed-width fields + sandhi concat).** Vedic meter is
+   fixed-width syllables. With per-field fixed widths the payload concatenates
+   to one separator-free string: `o48000am` = a complete OFFER; `48000739676`
+   = COMMIT amount + deadline; `a` = the whole QUERY. Dialogue: **52 tokens
+   incl handshake, 2.83/message → 23.2× at N=200 and 24.0× at N=500 vs
+   JSON-RPC; crosses 20× at N≈60.** Sample payloads are in the script output.
+3. **Pratyahara ranges.** A linear ordering of handles plus an inclusive
+   end marker names a whole set: `bD` = items b..d. Saves 1 token at three
+   items, scaling with range length.
+4. **Katapayadi digits — negative.** Numbers as consonants (`48000` →
+   `yvnnn`) tokenize worse than plain digits (83 vs 76 corpus total).
+   Published like every other negative.
+
+Caveats, stated for the record: meter/template modes assume the agreed
+template — a deviation needs a fallback encoding plus a resync marker (round
+7); the meter mode is token-verified but not yet comprehension-tested with a
+model; all counts are o200k on the 12-message corpus / 6-message deal.
+
+## Round 7 (planned)
+
+- Comprehension-test the meter mode (can a model emit `o48000am` reliably?).
+- Fallback + resync path for template deviations; measure the cost of a miss.
+- Second model family; longer sessions (50+ messages) for drift.
 - Freeze SUTRA-C: spec + encoder/decoder in the package; make `;` optional in
   the readable parser (the semicolon lesson).
 
