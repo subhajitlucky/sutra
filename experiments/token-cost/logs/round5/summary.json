@@ -1,0 +1,116 @@
+{
+ "json/parse@xhigh": {
+  "reps": [
+   "12/12"
+  ],
+  "failures": {},
+  "mean": 1.0,
+  "min": 1.0,
+  "max": 1.0
+ },
+ "sutra/parse@xhigh": {
+  "reps": [
+   "11/12",
+   "11/12",
+   "10/12"
+  ],
+  "failures": {
+   "extra": 3,
+   "to": 1
+  },
+  "mean": 0.889,
+  "min": 0.8333333333333334,
+  "max": 0.9166666666666666
+ },
+ "sutra/emit@xhigh": {
+  "reps": [
+   "0/12",
+   "0/12",
+   "11/12"
+  ],
+  "failures": {
+   "undecodable": 24,
+   "fields": 1
+  },
+  "mean": 0.306,
+  "min": 0.0,
+  "max": 0.9166666666666666
+ },
+ "c1/parse@xhigh": {
+  "reps": [
+   "9/12",
+   "10/12",
+   "12/12"
+  ],
+  "failures": {
+   "body": 4,
+   "primitive": 1
+  },
+  "mean": 0.861,
+  "min": 0.75,
+  "max": 1.0
+ },
+ "c1/emit@xhigh": {
+  "reps": [
+   "12/12",
+   "10/12",
+   "12/12"
+  ],
+  "failures": {
+   "fields": 2
+  },
+  "mean": 0.944,
+  "min": 0.8333333333333334,
+  "max": 1.0
+ },
+ "c1/parse@low": {
+  "reps": [
+   "7/12",
+   "10/12"
+  ],
+  "failures": {
+   "body": 4,
+   "primitive": 1,
+   "from": 1,
+   "args": 1
+  },
+  "mean": 0.708,
+  "min": 0.5833333333333334,
+  "max": 0.8333333333333334
+ },
+ "c1/emit@low": {
+  "reps": [
+   "9/12",
+   "11/12"
+  ],
+  "failures": {
+   "undecodable": 3,
+   "fields": 1
+  },
+  "mean": 0.833,
+  "min": 0.75,
+  "max": 0.9166666666666666
+ },
+ "c1/emit-novel@xhigh": {
+  "reps": [
+   "3/3",
+   "3/3"
+  ],
+  "failures": {},
+  "mean": 1.0,
+  "min": 1.0,
+  "max": 1.0
+ },
+ "c1/parse-novel@xhigh": {
+  "reps": [
+   "2/3",
+   "3/3"
+  ],
+  "failures": {
+   "body": 1
+  },
+  "mean": 0.833,
+  "min": 0.6666666666666666,
+  "max": 1.0
+ }
+}

@@ -145,25 +145,61 @@ Findings:
 5. Accuracy-adjusted emission cost: ~8.6 tokens per correct message (c1) vs
    ~39.5 (readable) — ~4.6×.
 
-## Round 5 (planned)
+## Round 5 — error bars, effort axis, novel entities, logging (`round5.py`)
 
-- **Entity dictionaries:** values (items, ids, amounts) become session handles
-  after first mention — the payload itself gets compressed.
-- **Binary wire:** canonical form → packed bytes → base64/base85 text,
-  measured with the same tokenizers (expect ~1 token per 2 chars).
-- **Number/date micro-encodings** beyond epoch days.
-- **Full schema mode:** primitives + predicates + arg positions + entity
-  handles all dictionary-negotiated; measures the text-encoding floor.
-- **Comprehension checks (separate axis):** a cheap protocol is useless if
-  models emit or read it unreliably; later rounds must measure agent error
-  rates per encoding, not just token counts.
+Every call is logged: `logs/round5/` holds one file per call (metadata + full
+prompt + raw output), `index.jsonl` one record per call with per-message
+verdicts and failure reasons, `summary.json` the aggregates. The first scoring
+pass (before the case-normalization fix) is archived under
+`logs/round5-firstpass/`. 21 calls, 216 message-level tests this round.
+
+| cell | reps | mean | min–max | dominant failures |
+|---|---|---|---|---|
+| json/parse (control) | 12/12 | 1.00 | — | — |
+| sutra/parse | 11,11,10 /12 | 0.89 | 0.83–0.92 | `extra` (3), `to` (1) |
+| **sutra/emit** | **0,0,11 /12** | **0.31** | **0.00–0.92** | undecodable (24) |
+| c1/parse | 9,10,12 /12 | 0.86 | 0.75–1.00 | `body` (4), `primitive` (1) |
+| **c1/emit** | **12,10,12 /12** | **0.94** | 0.83–1.00 | `fields` (2) |
+| c1/parse @ low effort | 7,10 /12 | 0.71 | 0.58–0.83 | `body` (4), mixed (3) |
+| c1/emit @ low effort | 9,11 /12 | 0.83 | 0.75–0.92 | undecodable (3) |
+| **c1/emit-novel** | **3,3 /3** | **1.00** | — | — |
+| c1/parse-novel | 2,3 /3 | 0.83 | 0.67–1.00 | `body` (1) |
+
+Findings:
+
+1. **Readable SUTRA's emission is a coin flip; compact's is not.** Two of three
+   runs produced 12/12 *undecodable* statements — the entire difference is a
+   single character: the mandatory `;` terminator, which the model drops.
+   SUTRA-C1 has no terminator (message boundary = statement boundary), so the
+   failure mode cannot occur. Compact emit: mean 0.94 and **95 output tokens
+   in every rep** — stable, near-minimal generation.
+2. **Parsing is statistically tied** (sutra 0.89 vs c1 0.86 at high effort);
+   c1 errors cluster in OFFER/COUNTER bodies.
+3. **Reasoning effort is a real cost/accuracy knob:** at low effort parse drops
+   0.86→0.71 and emit 0.94→0.83, but calls run 2–3× faster.
+4. **The dictionary fallback works:** novel values (`Laptop`, `Asus`,
+   `off-777`) emitted 6/6 correct, parsed 5/6 — no hallucinated aliases.
+5. Logging caught a scoring bug (case-sensitive `Intent` vs `INTENT`); the
+   archived first-pass logs document it rather than hiding it.
+
+## Round 6 (planned)
+
+- Second model family (needs a provider other than the ChatGPT-plan codex CLI).
+- Longer sessions (50+ messages) to test drift and ellipsis-state discipline.
+- Freeze SUTRA-C: spec + encoder/decoder in the package; make `;` optional in
+  the readable parser (the semicolon lesson).
 
 ## Files
 
 - `corpus.py` — canonical messages (semantic form) + dialogue subset
 - `renderers.py` — lossless renderers, one function per representation
-- `bench.py` — runs the matrix, validates the SUTRA baseline with the repo
-  parser, writes `results-v1.json`, prints the leaderboard
-- `results-v1.json` — full per-message counts and rendered texts
+- `bench.py` — v1 matrix; validates the SUTRA baseline with the repo parser
+- `sweep.py` — 384-encoding combinatorial sweep (v2), decoder-verified
+- `sweep2.py` — v3 mechanisms: anuvrtti ellipsis, number alphabets, binary
+  wires (negative result); the C1 encoder/decoder used by later rounds
+- `comprehension.py` — round-4 model-in-the-loop emit/parse tests
+- `round5.py` — round-5 repeats, effort axis, novel entities, full logging
+- `logs/` — per-call prompts, raw outputs, `index.jsonl`, `summary.json`
+- `results-*.json` — machine-readable results per round
 
-Run: `.venv/bin/python experiments/token-cost/bench.py`
+Run: `.venv/bin/python experiments/token-cost/<bench|sweep|sweep2|comprehension|round5>.py`

@@ -1,0 +1,175 @@
+META: {"ts": "2026-10-15T14:02:58", "round": 5, "backend": "codex", "model": "gpt-6-luna", "effort": "xhigh", "cell": "sutra/parse", "rep": 2, "messages": ["m01-intent", "m02-fact", "m03-query", "m04-offer", "m05-counter", "m06-accept", "m07-reject", "m08-commit", "m09-act", "m10-fact-committed", "m11-unsupported", "m12-query-response"], "prompt_tokens": 646, "output_tokens": 813, "correct": 0, "total": 12}
+PER-MESSAGE: [{"id": "m01-intent", "ok": false, "why": "primitive"}, {"id": "m02-fact", "ok": false, "why": "primitive"}, {"id": "m03-query", "ok": false, "why": "primitive"}, {"id": "m04-offer", "ok": false, "why": "primitive"}, {"id": "m05-counter", "ok": false, "why": "primitive"}, {"id": "m06-accept", "ok": false, "why": "primitive"}, {"id": "m07-reject", "ok": false, "why": "primitive"}, {"id": "m08-commit", "ok": false, "why": "primitive"}, {"id": "m09-act", "ok": false, "why": "primitive"}, {"id": "m10-fact-committed", "ok": false, "why": "primitive"}, {"id": "m11-unsupported", "ok": false, "why": "primitive"}, {"id": "m12-query-response", "ok": false, "why": "primitive"}]
+
+PROMPT:
+SUTRA protocol (readable): statements are one of
+INTENT pred(k=v, ...);  FACT pred(k=v, ...);  QUERY pred(k=v, ...) FROM "agent";
+OFFER id="x" TO "agent" { give: {k: v}, want: {k: v} };
+COUNTER "orig" id="x" TO "agent" { give: {...}, want: {...} };
+ACCEPT "x";  REJECT "x" REASON "why";  COMMIT pred(k=v, ...) BY "date";  ACT pred(k=v, ...);
+Optional header lines start with #, e.g. #from "buyer@home", #to "seller@store".
+Strings are double-quoted; numbers bare.
+
+Decode each numbered message into a JSON object with keys: primitive, predicate, args (object), from, to (null if absent), extra (object), body (only for OFFER/COUNTER). Schema per primitive: OFFER -> args={id}, COUNTER -> args={orig,id}, ACCEPT/REJECT -> args={id} with reason (if any) in extra.reason, COMMIT -> extra.by. Expand the primitive to its full English name and write deadline/by as ISO dates (YYYY-MM-DD), omit absent fields. Reply with ONLY a JSON array of 12 objects, same order. No markdown, no commentary.
+
+1. #from "buyer@home" INTENT buy(item="SmartTV", max_price=50000, deadline="2026-03-01");
+2. #from "seller@store" FACT available(item="SmartTV", seller="seller@store", price=48000);
+3. QUERY availability(item="SmartTV") FROM "seller@store";
+4. OFFER id="off-001" TO "seller@store" { give: {money: 48000}, want: {item: "SmartTV", brand: "Samsung"} };
+5. COUNTER "off-001" id="off-001-c" TO "buyer@home" { give: {money: 46000}, want: {item: "SmartTV"} };
+6. #from "buyer@home" #to "seller@store" ACCEPT "off-001";
+7. #from "seller@store" #to "buyer@home" REJECT "off-001" REASON "price_too_high";
+8. #from "buyer@home" #to "seller@store" COMMIT pay(amount=48000, to="seller@store") BY "2026-03-01";
+9. #from "buyer@home" #to "seller@store" ACT transfer(amount=48000, to="seller@store");
+10. #from "seller@store" FACT committed(id="off-001", status="signed");
+11. #from "seller@store" #to "buyer@home" REJECT "off-999" REASON "unsupported";
+12. #from "seller@store" #to "buyer@home" FACT available(item="SmartTV", price=48000); // in_reply_to=m03-query
+
+---OUTPUT---
+[
+  {
+    "primitive": "intention",
+    "predicate": "buy",
+    "args": {
+      "item": "SmartTV",
+      "max_price": 50000,
+      "deadline": "2026-03-01"
+    },
+    "from": "buyer@home",
+    "to": null,
+    "extra": {}
+  },
+  {
+    "primitive": "fact",
+    "predicate": "available",
+    "args": {
+      "item": "SmartTV",
+      "seller": "seller@store",
+      "price": 48000
+    },
+    "from": "seller@store",
+    "to": null,
+    "extra": {}
+  },
+  {
+    "primitive": "query",
+    "predicate": "availability",
+    "args": {
+      "item": "SmartTV"
+    },
+    "to": "seller@store",
+    "extra": {}
+  },
+  {
+    "primitive": "offer",
+    "args": {
+      "id": "off-001"
+    },
+    "to": "seller@store",
+    "extra": {},
+    "body": {
+      "give": {
+        "money": 48000
+      },
+      "want": {
+        "item": "SmartTV",
+        "brand": "Samsung"
+      }
+    }
+  },
+  {
+    "primitive": "counteroffer",
+    "args": {
+      "orig": "off-001",
+      "id": "off-001-c"
+    },
+    "to": "buyer@home",
+    "extra": {},
+    "body": {
+      "give": {
+        "money": 46000
+      },
+      "want": {
+        "item": "SmartTV"
+      }
+    }
+  },
+  {
+    "primitive": "acceptance",
+    "args": {
+      "id": "off-001"
+    },
+    "from": "buyer@home",
+    "to": "seller@store",
+    "extra": {}
+  },
+  {
+    "primitive": "rejection",
+    "args": {
+      "id": "off-001"
+    },
+    "from": "seller@store",
+    "to": "buyer@home",
+    "extra": {
+      "reason": "price_too_high"
+    }
+  },
+  {
+    "primitive": "commitment",
+    "predicate": "pay",
+    "args": {
+      "amount": 48000,
+      "to": "seller@store"
+    },
+    "from": "buyer@home",
+    "to": "seller@store",
+    "extra": {
+      "by": "2026-03-01"
+    }
+  },
+  {
+    "primitive": "action",
+    "predicate": "transfer",
+    "args": {
+      "amount": 48000,
+      "to": "seller@store"
+    },
+    "from": "buyer@home",
+    "to": "seller@store",
+    "extra": {}
+  },
+  {
+    "primitive": "fact",
+    "predicate": "committed",
+    "args": {
+      "id": "off-001",
+      "status": "signed"
+    },
+    "from": "seller@store",
+    "to": null,
+    "extra": {}
+  },
+  {
+    "primitive": "rejection",
+    "args": {
+      "id": "off-999"
+    },
+    "from": "seller@store",
+    "to": "buyer@home",
+    "extra": {
+      "reason": "unsupported"
+    }
+  },
+  {
+    "primitive": "fact",
+    "predicate": "available",
+    "args": {
+      "item": "SmartTV",
+      "price": 48000
+    },
+    "from": "seller@store",
+    "to": "buyer@home",
+    "extra": {}
+  }
+]
+

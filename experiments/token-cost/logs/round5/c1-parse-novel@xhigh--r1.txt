@@ -1,0 +1,68 @@
+META: {"ts": "2026-10-15T14:12:49", "round": 5, "backend": "codex", "model": "gpt-6-luna", "effort": "xhigh", "cell": "c1/parse-novel", "rep": 1, "messages": ["n1-query-laptop", "n2-fact-laptop", "n3-offer-asus"], "prompt_tokens": 529, "output_tokens": 205, "correct": 2, "total": 3}
+PER-MESSAGE: [{"id": "n1-query-laptop", "ok": true, "why": ""}, {"id": "n2-fact-laptop", "ok": true, "why": ""}, {"id": "n3-offer-asus", "ok": false, "why": "body"}]
+
+PROMPT:
+SUTRA-C1 protocol (compact):
+Primitives: I INTENT, F FACT, Q QUERY, O OFFER, K COUNTER, A ACCEPT, R REJECT, C COMMIT, X ACT.
+Routing: a statement with NO route prefix is directed buyer@home -> seller@store when the
+primitive letter is lowercase; UPPERCASE means seller@store -> buyer@home. A broadcast keeps
+a one-letter sender prefix CONCATENATED to the primitive: bI, sF (b buyer, s seller).
+Arguments are positional, in fixed order, space-separated; use - for an absent middle slot:
+  I buy <item> <max_price> <deadline>
+  F available <item> <seller> <price>         F committed <id> <status>
+  Q availability <item>
+  C pay <amount> <to>                         X transfer <amount> <to>
+  O <id> <give.money> <want.item> <want.brand>
+  K <orig> <id> <give.money> <want.item>
+  A <id>                R <id> (!reason optional, attached as !x)
+OFFER/COUNTER have no predicate word. COMMIT deadline: append ~day (ordinal day number).
+Entity table: a=SmartTV m=Samsung o=off-001 p=off-001-c z=off-999 g=signed h=price_too_high u=unsupported
+Other values: bare if alphanumeric (letters/digits/@/./-), else double-quoted.
+Numbers are decimal. Dates: for the deadline field use the ordinal day number
+(2026-03-01 = 739676). in_reply_to is attached as ^id.
+
+Decode each numbered message into a JSON object with keys: primitive, predicate, args (object), from, to (null if absent), extra (object), body (only for OFFER/COUNTER). Schema per primitive: OFFER -> args={id}, COUNTER -> args={orig,id}, ACCEPT/REJECT -> args={id} with reason (if any) in extra.reason, COMMIT -> extra.by. Expand the primitive to its full English name in upper case (write INTENT, not Intent), write deadline/by as ISO dates (YYYY-MM-DD), and omit absent fields entirely (no null values). Reply with ONLY a JSON array of 3 objects, same order. No markdown, no commentary.
+
+1. q availability Laptop
+2. sF available Laptop seller@store 33000
+3. o off-777 30000 Laptop Asus
+
+---OUTPUT---
+[
+  {
+    "primitive": "QUERY",
+    "predicate": "availability",
+    "args": {
+      "item": "Laptop"
+    },
+    "from": "buyer@home",
+    "to": "seller@store",
+    "extra": {}
+  },
+  {
+    "primitive": "FACT",
+    "predicate": "available",
+    "args": {
+      "item": "Laptop",
+      "seller": "seller@store",
+      "price": 33000
+    },
+    "from": "seller@store",
+    "to": null,
+    "extra": {}
+  },
+  {
+    "primitive": "OFFER",
+    "args": {
+      "id": "off-777"
+    },
+    "from": "buyer@home",
+    "to": "seller@store",
+    "body": {
+      "give.money": 30000,
+      "want.item": "Laptop",
+      "want.brand": "Asus"
+    }
+  }
+]
+

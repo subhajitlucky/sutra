@@ -97,6 +97,22 @@ def canon(m):
 
 PRIM_EXPAND = {"I": "INTENT", "F": "FACT", "Q": "QUERY", "O": "OFFER", "K": "COUNTER",
                "A": "ACCEPT", "R": "REJECT", "C": "COMMIT", "X": "ACT"}
+PRIM_NAMES = list(PRIM_EXPAND.values())
+
+
+def norm_primitive(p):
+    if not isinstance(p, str):
+        return p
+    up = p.strip().upper()
+    if up in PRIM_NAMES:
+        return up
+    if up in PRIM_EXPAND:
+        return PRIM_EXPAND[up]
+    return p
+
+
+def norm_word(x):
+    return x.strip().lower() if isinstance(x, str) else x
 
 
 def _norm_date_field(key, v):
@@ -115,8 +131,7 @@ def parse_visible(guess, m, encoding):
     readable SUTRA), and tolerating compact primitive letters."""
     if not isinstance(guess, dict):
         return False
-    if isinstance(guess.get("primitive"), str) and guess["primitive"] in PRIM_EXPAND:
-        guess = dict(guess, primitive=PRIM_EXPAND[guess["primitive"]])
+    guess = dict(guess, primitive=norm_primitive(guess.get("primitive")))
     try:
         g = {
             "primitive": guess.get("primitive"),
@@ -132,15 +147,21 @@ def parse_visible(guess, m, encoding):
     w = canon(m)
     if g["primitive"] != w["primitive"]:
         return False
-    if (g["predicate"] or None) != (w["predicate"] or None):
+    if norm_word(g["predicate"]) != norm_word(w["predicate"]):
         return False
-    g_args = {k: _norm_date_field(k, n(v)) for k, v in g["args"].items() if v is not None}
+    try:
+        g_args = {k: _norm_date_field(k, n(v)) for k, v in g["args"].items() if v is not None}
+    except AttributeError:
+        return False
     if g_args != {k: n(v) for k, v in w["args"].items()}:
         return False
     if g["body"] is not None or "body" in w:
         gb = g["body"] or {}
         wb = w.get("body", {})
-        if {k: {kk: n(vv) for kk, vv in v.items()} for k, v in gb.items()} != wb:
+        try:
+            if {k: {kk: n(vv) for kk, vv in v.items()} for k, v in gb.items()} != wb:
+                return False
+        except AttributeError:
             return False
     # routing: SUTRA readable cannot carry the envelope sender for Q/O/K
     p = w["primitive"]
