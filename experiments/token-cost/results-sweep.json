@@ -1,0 +1,4994 @@
+[
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 80,
+  "dialogue": 94,
+  "dialogue_raw": 40
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 80,
+  "dialogue": 94,
+  "dialogue_raw": 40
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 80,
+  "dialogue": 94,
+  "dialogue_raw": 40
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 81,
+  "dialogue": 94,
+  "dialogue_raw": 40
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 81,
+  "dialogue": 94,
+  "dialogue_raw": 40
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 81,
+  "dialogue": 95,
+  "dialogue_raw": 41
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 81,
+  "dialogue": 94,
+  "dialogue_raw": 40
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 82,
+  "dialogue": 95,
+  "dialogue_raw": 41
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 83,
+  "dialogue": 95,
+  "dialogue_raw": 41
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 84,
+  "dialogue": 95,
+  "dialogue_raw": 41
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 87,
+  "dialogue": 122,
+  "dialogue_raw": 43
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 87,
+  "dialogue": 122,
+  "dialogue_raw": 43
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 87,
+  "dialogue": 122,
+  "dialogue_raw": 43
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 88,
+  "dialogue": 122,
+  "dialogue_raw": 43
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 88,
+  "dialogue": 122,
+  "dialogue_raw": 43
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 88,
+  "dialogue": 123,
+  "dialogue_raw": 44
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 88,
+  "dialogue": 122,
+  "dialogue_raw": 43
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 89,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 89,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 89,
+  "dialogue": 123,
+  "dialogue_raw": 44
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 89,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 90,
+  "dialogue": 123,
+  "dialogue_raw": 44
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 90,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 90,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 90,
+  "dialogue": 101,
+  "dialogue_raw": 47
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 90,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 91,
+  "dialogue": 123,
+  "dialogue_raw": 44
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 91,
+  "dialogue": 101,
+  "dialogue_raw": 47
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 94,
+  "dialogue": 102,
+  "dialogue_raw": 48
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 95,
+  "dialogue": 102,
+  "dialogue_raw": 48
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 95,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 96,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 96,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 96,
+  "dialogue": 100,
+  "dialogue_raw": 46
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 96,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 97,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 97,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 97,
+  "dialogue": 129,
+  "dialogue_raw": 50
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 97,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 98,
+  "dialogue": 129,
+  "dialogue_raw": 50
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 101,
+  "dialogue": 130,
+  "dialogue_raw": 51
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 101,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 101,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 101,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 101,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 102,
+  "dialogue": 130,
+  "dialogue_raw": 51
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 102,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 102,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 102,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 102,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 102,
+  "dialogue": 107,
+  "dialogue_raw": 53
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 102,
+  "dialogue": 106,
+  "dialogue_raw": 52
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 103,
+  "dialogue": 128,
+  "dialogue_raw": 49
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 103,
+  "dialogue": 107,
+  "dialogue_raw": 53
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 105,
+  "dialogue": 63,
+  "dialogue_raw": 53
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 105,
+  "dialogue": 63,
+  "dialogue_raw": 53
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 105,
+  "dialogue": 63,
+  "dialogue_raw": 53
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 106,
+  "dialogue": 108,
+  "dialogue_raw": 54
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 106,
+  "dialogue": 64,
+  "dialogue_raw": 54
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 107,
+  "dialogue": 108,
+  "dialogue_raw": 54
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 108,
+  "dialogue": 64,
+  "dialogue_raw": 54
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 108,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 108,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 108,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 108,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 109,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 109,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 109,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 109,
+  "dialogue": 135,
+  "dialogue_raw": 56
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 109,
+  "dialogue": 134,
+  "dialogue_raw": 55
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 110,
+  "dialogue": 135,
+  "dialogue_raw": 56
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 112,
+  "dialogue": 91,
+  "dialogue_raw": 56
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 112,
+  "dialogue": 91,
+  "dialogue_raw": 56
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 112,
+  "dialogue": 91,
+  "dialogue_raw": 56
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 113,
+  "dialogue": 136,
+  "dialogue_raw": 57
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 113,
+  "dialogue": 67,
+  "dialogue_raw": 57
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 113,
+  "dialogue": 67,
+  "dialogue_raw": 57
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 113,
+  "dialogue": 112,
+  "dialogue_raw": 58
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 113,
+  "dialogue": 92,
+  "dialogue_raw": 57
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 113,
+  "dialogue": 67,
+  "dialogue_raw": 57
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 114,
+  "dialogue": 136,
+  "dialogue_raw": 57
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 114,
+  "dialogue": 69,
+  "dialogue_raw": 59
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 114,
+  "dialogue": 69,
+  "dialogue_raw": 59
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 114,
+  "dialogue": 112,
+  "dialogue_raw": 58
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 114,
+  "dialogue": 68,
+  "dialogue_raw": 58
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 114,
+  "dialogue": 69,
+  "dialogue_raw": 59
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 115,
+  "dialogue": 92,
+  "dialogue_raw": 57
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 115,
+  "dialogue": 70,
+  "dialogue_raw": 60
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 116,
+  "dialogue": 68,
+  "dialogue_raw": 58
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 119,
+  "dialogue": 71,
+  "dialogue_raw": 61
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 120,
+  "dialogue": 95,
+  "dialogue_raw": 60
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 120,
+  "dialogue": 95,
+  "dialogue_raw": 60
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 120,
+  "dialogue": 140,
+  "dialogue_raw": 61
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 120,
+  "dialogue": 69,
+  "dialogue_raw": 59
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 120,
+  "dialogue": 95,
+  "dialogue_raw": 60
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 121,
+  "dialogue": 97,
+  "dialogue_raw": 62
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 121,
+  "dialogue": 97,
+  "dialogue_raw": 62
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 121,
+  "dialogue": 140,
+  "dialogue_raw": 61
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 121,
+  "dialogue": 96,
+  "dialogue_raw": 61
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 121,
+  "dialogue": 97,
+  "dialogue_raw": 62
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 122,
+  "dialogue": 73,
+  "dialogue_raw": 63
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 122,
+  "dialogue": 73,
+  "dialogue_raw": 63
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 122,
+  "dialogue": 98,
+  "dialogue_raw": 63
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 122,
+  "dialogue": 73,
+  "dialogue_raw": 63
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 123,
+  "dialogue": 96,
+  "dialogue_raw": 61
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 123,
+  "dialogue": 74,
+  "dialogue_raw": 64
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 126,
+  "dialogue": 99,
+  "dialogue_raw": 64
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 126,
+  "dialogue": 75,
+  "dialogue_raw": 65
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 126,
+  "dialogue": 75,
+  "dialogue_raw": 65
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 126,
+  "dialogue": 75,
+  "dialogue_raw": 65
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 126,
+  "dialogue": 75,
+  "dialogue_raw": 65
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 127,
+  "dialogue": 75,
+  "dialogue_raw": 65
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 127,
+  "dialogue": 97,
+  "dialogue_raw": 62
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 127,
+  "dialogue": 76,
+  "dialogue_raw": 66
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 128,
+  "dialogue": 73,
+  "dialogue_raw": 63
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 129,
+  "dialogue": 101,
+  "dialogue_raw": 66
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 129,
+  "dialogue": 101,
+  "dialogue_raw": 66
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 129,
+  "dialogue": 101,
+  "dialogue_raw": 66
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 130,
+  "dialogue": 102,
+  "dialogue_raw": 67
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 131,
+  "dialogue": 77,
+  "dialogue_raw": 67
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 131,
+  "dialogue": 123,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 131,
+  "dialogue": 123,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 131,
+  "dialogue": 123,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 132,
+  "dialogue": 123,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 132,
+  "dialogue": 123,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 132,
+  "dialogue": 124,
+  "dialogue_raw": 70
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 132,
+  "dialogue": 123,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 133,
+  "dialogue": 103,
+  "dialogue_raw": 68
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 133,
+  "dialogue": 103,
+  "dialogue_raw": 68
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 133,
+  "dialogue": 103,
+  "dialogue_raw": 68
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 133,
+  "dialogue": 124,
+  "dialogue_raw": 70
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 133,
+  "dialogue": 103,
+  "dialogue_raw": 68
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 134,
+  "dialogue": 103,
+  "dialogue_raw": 68
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 134,
+  "dialogue": 124,
+  "dialogue_raw": 70
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 134,
+  "dialogue": 79,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 134,
+  "dialogue": 79,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 134,
+  "dialogue": 79,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 134,
+  "dialogue": 104,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 134,
+  "dialogue": 79,
+  "dialogue_raw": 69
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 135,
+  "dialogue": 124,
+  "dialogue_raw": 70
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 135,
+  "dialogue": 101,
+  "dialogue_raw": 66
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 135,
+  "dialogue": 80,
+  "dialogue_raw": 70
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 138,
+  "dialogue": 105,
+  "dialogue_raw": 70
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 138,
+  "dialogue": 151,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 138,
+  "dialogue": 151,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 138,
+  "dialogue": 81,
+  "dialogue_raw": 71
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 138,
+  "dialogue": 151,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 139,
+  "dialogue": 81,
+  "dialogue_raw": 71
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 139,
+  "dialogue": 151,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 139,
+  "dialogue": 151,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 139,
+  "dialogue": 152,
+  "dialogue_raw": 73
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 139,
+  "dialogue": 151,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 140,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 140,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 140,
+  "dialogue": 152,
+  "dialogue_raw": 73
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 140,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 141,
+  "dialogue": 152,
+  "dialogue_raw": 73
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 141,
+  "dialogue": 107,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 141,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 141,
+  "dialogue": 107,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 141,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 141,
+  "dialogue": 107,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 141,
+  "dialogue": 130,
+  "dialogue_raw": 76
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 141,
+  "dialogue": 107,
+  "dialogue_raw": 72
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 141,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 142,
+  "dialogue": 152,
+  "dialogue_raw": 73
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 142,
+  "dialogue": 108,
+  "dialogue_raw": 73
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 142,
+  "dialogue": 130,
+  "dialogue_raw": 76
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 145,
+  "dialogue": 131,
+  "dialogue_raw": 77
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 145,
+  "dialogue": 109,
+  "dialogue_raw": 74
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 146,
+  "dialogue": 109,
+  "dialogue_raw": 74
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 146,
+  "dialogue": 131,
+  "dialogue_raw": 77
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 146,
+  "dialogue": 85,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 146,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 147,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 147,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 147,
+  "dialogue": 129,
+  "dialogue_raw": 75
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 147,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 148,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 148,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 148,
+  "dialogue": 158,
+  "dialogue_raw": 79
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 148,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 149,
+  "dialogue": 158,
+  "dialogue_raw": 79
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 152,
+  "dialogue": 159,
+  "dialogue_raw": 80
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 152,
+  "dialogue": 126,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 152,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 152,
+  "dialogue": 126,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 152,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 152,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 152,
+  "dialogue": 126,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 152,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 153,
+  "dialogue": 159,
+  "dialogue_raw": 80
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 126,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 126,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 153,
+  "dialogue": 113,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 153,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 127,
+  "dialogue_raw": 83
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 136,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 126,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 153,
+  "dialogue": 135,
+  "dialogue_raw": 81
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 154,
+  "dialogue": 157,
+  "dialogue_raw": 78
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 154,
+  "dialogue": 127,
+  "dialogue_raw": 83
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 154,
+  "dialogue": 136,
+  "dialogue_raw": 82
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 157,
+  "dialogue": 128,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 157,
+  "dialogue": 137,
+  "dialogue_raw": 83
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 158,
+  "dialogue": 128,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 158,
+  "dialogue": 137,
+  "dialogue_raw": 83
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 159,
+  "dialogue": 154,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 159,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 159,
+  "dialogue": 154,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 159,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 159,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 159,
+  "dialogue": 154,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 159,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 154,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 154,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 155,
+  "dialogue_raw": 86
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 164,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 154,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 160,
+  "dialogue": 163,
+  "dialogue_raw": 84
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 161,
+  "dialogue": 155,
+  "dialogue_raw": 86
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 161,
+  "dialogue": 164,
+  "dialogue_raw": 85
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 164,
+  "dialogue": 156,
+  "dialogue_raw": 87
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 164,
+  "dialogue": 165,
+  "dialogue_raw": 86
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 164,
+  "dialogue": 132,
+  "dialogue_raw": 88
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 164,
+  "dialogue": 141,
+  "dialogue_raw": 87
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 165,
+  "dialogue": 156,
+  "dialogue_raw": 87
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 165,
+  "dialogue": 165,
+  "dialogue_raw": 86
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 165,
+  "dialogue": 132,
+  "dialogue_raw": 88
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 165,
+  "dialogue": 141,
+  "dialogue_raw": 87
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 171,
+  "dialogue": 101,
+  "dialogue_raw": 91
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 171,
+  "dialogue": 101,
+  "dialogue_raw": 91
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 171,
+  "dialogue": 160,
+  "dialogue_raw": 91
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 171,
+  "dialogue": 169,
+  "dialogue_raw": 90
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 171,
+  "dialogue": 101,
+  "dialogue_raw": 91
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 172,
+  "dialogue": 160,
+  "dialogue_raw": 91
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 172,
+  "dialogue": 169,
+  "dialogue_raw": 90
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 172,
+  "dialogue": 102,
+  "dialogue_raw": 92
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 174,
+  "dialogue": 102,
+  "dialogue_raw": 92
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 177,
+  "dialogue": 95,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 177,
+  "dialogue": 95,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 177,
+  "dialogue": 95,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 178,
+  "dialogue": 129,
+  "dialogue_raw": 94
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 178,
+  "dialogue": 129,
+  "dialogue_raw": 94
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 178,
+  "dialogue": 96,
+  "dialogue_raw": 96
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 178,
+  "dialogue": 129,
+  "dialogue_raw": 94
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 179,
+  "dialogue": 105,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 179,
+  "dialogue": 105,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 179,
+  "dialogue": 130,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 179,
+  "dialogue": 105,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 180,
+  "dialogue": 107,
+  "dialogue_raw": 97
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 180,
+  "dialogue": 107,
+  "dialogue_raw": 97
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 180,
+  "dialogue": 106,
+  "dialogue_raw": 96
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 180,
+  "dialogue": 107,
+  "dialogue_raw": 97
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 181,
+  "dialogue": 130,
+  "dialogue_raw": 95
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 181,
+  "dialogue": 108,
+  "dialogue_raw": 98
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 182,
+  "dialogue": 97,
+  "dialogue_raw": 97
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 182,
+  "dialogue": 106,
+  "dialogue_raw": 96
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 184,
+  "dialogue": 122,
+  "dialogue_raw": 98
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 184,
+  "dialogue": 122,
+  "dialogue_raw": 98
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 184,
+  "dialogue": 122,
+  "dialogue_raw": 98
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 185,
+  "dialogue": 109,
+  "dialogue_raw": 99
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 185,
+  "dialogue": 99,
+  "dialogue_raw": 99
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 185,
+  "dialogue": 99,
+  "dialogue_raw": 99
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 185,
+  "dialogue": 123,
+  "dialogue_raw": 99
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 185,
+  "dialogue": 99,
+  "dialogue_raw": 99
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 186,
+  "dialogue": 133,
+  "dialogue_raw": 98
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 186,
+  "dialogue": 133,
+  "dialogue_raw": 98
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 186,
+  "dialogue": 107,
+  "dialogue_raw": 97
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 186,
+  "dialogue": 100,
+  "dialogue_raw": 100
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 186,
+  "dialogue": 133,
+  "dialogue_raw": 98
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 187,
+  "dialogue": 135,
+  "dialogue_raw": 100
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 187,
+  "dialogue": 135,
+  "dialogue_raw": 100
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 187,
+  "dialogue": 134,
+  "dialogue_raw": 99
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 187,
+  "dialogue": 135,
+  "dialogue_raw": 100
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 188,
+  "dialogue": 111,
+  "dialogue_raw": 101
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 188,
+  "dialogue": 111,
+  "dialogue_raw": 101
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 188,
+  "dialogue": 136,
+  "dialogue_raw": 101
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 188,
+  "dialogue": 111,
+  "dialogue_raw": 101
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 189,
+  "dialogue": 124,
+  "dialogue_raw": 100
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 189,
+  "dialogue": 134,
+  "dialogue_raw": 99
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 189,
+  "dialogue": 101,
+  "dialogue_raw": 101
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 189,
+  "dialogue": 112,
+  "dialogue_raw": 102
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 190,
+  "dialogue": 101,
+  "dialogue_raw": 101
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 192,
+  "dialogue": 137,
+  "dialogue_raw": 102
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 192,
+  "dialogue": 126,
+  "dialogue_raw": 102
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 192,
+  "dialogue": 113,
+  "dialogue_raw": 103
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 192,
+  "dialogue": 126,
+  "dialogue_raw": 102
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 192,
+  "dialogue": 113,
+  "dialogue_raw": 103
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 192,
+  "dialogue": 113,
+  "dialogue_raw": 103
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 192,
+  "dialogue": 126,
+  "dialogue_raw": 102
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 192,
+  "dialogue": 113,
+  "dialogue_raw": 103
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 193,
+  "dialogue": 113,
+  "dialogue_raw": 103
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 193,
+  "dialogue": 135,
+  "dialogue_raw": 100
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 193,
+  "dialogue": 127,
+  "dialogue_raw": 103
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 193,
+  "dialogue": 114,
+  "dialogue_raw": 104
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 194,
+  "dialogue": 111,
+  "dialogue_raw": 101
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 195,
+  "dialogue": 139,
+  "dialogue_raw": 104
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 195,
+  "dialogue": 139,
+  "dialogue_raw": 104
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 195,
+  "dialogue": 139,
+  "dialogue_raw": 104
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 196,
+  "dialogue": 128,
+  "dialogue_raw": 104
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 196,
+  "dialogue": 140,
+  "dialogue_raw": 105
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 197,
+  "dialogue": 128,
+  "dialogue_raw": 104
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 197,
+  "dialogue": 115,
+  "dialogue_raw": 105
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 197,
+  "dialogue": 105,
+  "dialogue_raw": 105
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 199,
+  "dialogue": 141,
+  "dialogue_raw": 106
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 199,
+  "dialogue": 141,
+  "dialogue_raw": 106
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 199,
+  "dialogue": 141,
+  "dialogue_raw": 106
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 199,
+  "dialogue": 141,
+  "dialogue_raw": 106
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 200,
+  "dialogue": 141,
+  "dialogue_raw": 106
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 200,
+  "dialogue": 117,
+  "dialogue_raw": 107
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 200,
+  "dialogue": 117,
+  "dialogue_raw": 107
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 200,
+  "dialogue": 117,
+  "dialogue_raw": 107
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 200,
+  "dialogue": 142,
+  "dialogue_raw": 107
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 200,
+  "dialogue": 117,
+  "dialogue_raw": 107
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "fold",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 201,
+  "dialogue": 139,
+  "dialogue_raw": 104
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 201,
+  "dialogue": 118,
+  "dialogue_raw": 108
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 203,
+  "dialogue": 155,
+  "dialogue_raw": 111
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 203,
+  "dialogue": 155,
+  "dialogue_raw": 111
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 203,
+  "dialogue": 155,
+  "dialogue_raw": 111
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 204,
+  "dialogue": 143,
+  "dialogue_raw": 108
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 204,
+  "dialogue": 155,
+  "dialogue_raw": 111
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 204,
+  "dialogue": 155,
+  "dialogue_raw": 111
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "schema",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 204,
+  "dialogue": 132,
+  "dialogue_raw": 108
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 204,
+  "dialogue": 119,
+  "dialogue_raw": 109
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 204,
+  "dialogue": 156,
+  "dialogue_raw": 112
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 204,
+  "dialogue": 155,
+  "dialogue_raw": 111
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 205,
+  "dialogue": 119,
+  "dialogue_raw": 109
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 205,
+  "dialogue": 156,
+  "dialogue_raw": 112
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 207,
+  "dialogue": 145,
+  "dialogue_raw": 110
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 207,
+  "dialogue": 145,
+  "dialogue_raw": 110
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "session",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 207,
+  "dialogue": 145,
+  "dialogue_raw": 110
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 207,
+  "dialogue": 145,
+  "dialogue_raw": 110
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 208,
+  "dialogue": 157,
+  "dialogue_raw": 113
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 208,
+  "dialogue": 146,
+  "dialogue_raw": 111
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 209,
+  "dialogue": 157,
+  "dialogue_raw": 113
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 210,
+  "dialogue": 183,
+  "dialogue_raw": 114
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 210,
+  "dialogue": 183,
+  "dialogue_raw": 114
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 210,
+  "dialogue": 183,
+  "dialogue_raw": 114
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 211,
+  "dialogue": 183,
+  "dialogue_raw": 114
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 211,
+  "dialogue": 183,
+  "dialogue_raw": 114
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 211,
+  "dialogue": 147,
+  "dialogue_raw": 112
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 211,
+  "dialogue": 184,
+  "dialogue_raw": 115
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 211,
+  "dialogue": 183,
+  "dialogue_raw": 114
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 212,
+  "dialogue": 147,
+  "dialogue_raw": 112
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 212,
+  "dialogue": 123,
+  "dialogue_raw": 113
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 212,
+  "dialogue": 184,
+  "dialogue_raw": 115
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 215,
+  "dialogue": 185,
+  "dialogue_raw": 116
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 215,
+  "dialogue": 161,
+  "dialogue_raw": 117
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 216,
+  "dialogue": 185,
+  "dialogue_raw": 116
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 216,
+  "dialogue": 161,
+  "dialogue_raw": 117
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "alias",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 219,
+  "dialogue": 151,
+  "dialogue_raw": 116
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 222,
+  "dialogue": 189,
+  "dialogue_raw": 120
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": true,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 223,
+  "dialogue": 189,
+  "dialogue_raw": 120
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 243,
+  "dialogue": 133,
+  "dialogue_raw": 133
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 243,
+  "dialogue": 133,
+  "dialogue_raw": 133
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 243,
+  "dialogue": 133,
+  "dialogue_raw": 133
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 244,
+  "dialogue": 134,
+  "dialogue_raw": 134
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 248,
+  "dialogue": 135,
+  "dialogue_raw": 135
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 250,
+  "dialogue": 160,
+  "dialogue_raw": 136
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 250,
+  "dialogue": 160,
+  "dialogue_raw": 136
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 250,
+  "dialogue": 160,
+  "dialogue_raw": 136
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 251,
+  "dialogue": 137,
+  "dialogue_raw": 137
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 251,
+  "dialogue": 137,
+  "dialogue_raw": 137
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 251,
+  "dialogue": 161,
+  "dialogue_raw": 137
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 251,
+  "dialogue": 137,
+  "dialogue_raw": 137
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 252,
+  "dialogue": 138,
+  "dialogue_raw": 138
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 255,
+  "dialogue": 162,
+  "dialogue_raw": 138
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": false
+  },
+  "total": 255,
+  "dialogue": 139,
+  "dialogue_raw": 139
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 256,
+  "dialogue": 139,
+  "dialogue_raw": 139
+ },
+ {
+  "cfg": {
+   "kw": "l2",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 258,
+  "dialogue": 164,
+  "dialogue_raw": 140
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 258,
+  "dialogue": 164,
+  "dialogue_raw": 140
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 258,
+  "dialogue": 164,
+  "dialogue_raw": 140
+ },
+ {
+  "cfg": {
+   "kw": "san",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 259,
+  "dialogue": 165,
+  "dialogue_raw": 141
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "ordinal",
+   "preds": true
+  },
+  "total": 262,
+  "dialogue": 166,
+  "dialogue_raw": 142
+ },
+ {
+  "cfg": {
+   "kw": "eng",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 263,
+  "dialogue": 166,
+  "dialogue_raw": 142
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": false
+  },
+  "total": 263,
+  "dialogue": 143,
+  "dialogue_raw": 143
+ },
+ {
+  "cfg": {
+   "kw": "dig",
+   "route": "full",
+   "args": "named",
+   "entity": false,
+   "dates": "iso",
+   "preds": true
+  },
+  "total": 270,
+  "dialogue": 170,
+  "dialogue_raw": 146
+ }
+]

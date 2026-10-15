@@ -1,0 +1,1570 @@
+{
+ "english": {
+  "total": {
+   "o200k": 263,
+   "cl100k": 251
+  },
+  "dialogue": {
+   "o200k": 140,
+   "cl100k": 134
+  },
+  "chars": 967,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home intends to buy: item SmartTV, max_price 50000, deadline 2026-03-01.",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 26
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store states as fact: available: item SmartTV, seller seller@store, price 48000.",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 21
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home asks seller@store about availability: item SmartTV.",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home offers seller@store the deal off-001: giving money 48000; wanting item SmartTV, brand Samsung.",
+    "tokens": {
+     "o200k": 27,
+     "cl100k": 26
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store counters the offer off-001 to buyer@home with deal off-001-c: giving money 46000; wanting item SmartTV.",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 30
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home accepts the offer off-001. Sent to seller@store.",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store rejects the offer off-001 because price_too_high. Sent to buyer@home.",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home commits to pay: amount 48000, to seller@store, by 2026-03-01.",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 25
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home performs the action transfer: amount 48000, to seller@store.",
+    "tokens": {
+     "o200k": 18,
+     "cl100k": 17
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store states as fact: committed: id off-001, status signed.",
+    "tokens": {
+     "o200k": 17,
+     "cl100k": 16
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store rejects the offer off-999 because unsupported. Sent to buyer@home.",
+    "tokens": {
+     "o200k": 18,
+     "cl100k": 17
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store states as fact: available: item SmartTV, price 48000. (in reply to m03-query)",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 25
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "json": {
+  "total": {
+   "o200k": 514,
+   "cl100k": 488
+  },
+  "dialogue": {
+   "o200k": 273,
+   "cl100k": 260
+  },
+  "chars": 1773,
+  "messages": {
+   "m01-intent": {
+    "text": "{\"primitive\":\"INTENT\",\"predicate\":\"buy\",\"args\":{\"item\":\"SmartTV\",\"max_price\":50000,\"deadline\":\"2026-03-01\"},\"from\":\"buyer@home\",\"to\":null,\"extra\":{}}",
+    "tokens": {
+     "o200k": 47,
+     "cl100k": 46
+    }
+   },
+   "m02-fact": {
+    "text": "{\"primitive\":\"FACT\",\"predicate\":\"available\",\"args\":{\"item\":\"SmartTV\",\"seller\":\"seller@store\",\"price\":48000},\"from\":\"seller@store\",\"to\":null,\"extra\":{}}",
+    "tokens": {
+     "o200k": 41,
+     "cl100k": 39
+    }
+   },
+   "m03-query": {
+    "text": "{\"primitive\":\"QUERY\",\"predicate\":\"availability\",\"args\":{\"item\":\"SmartTV\"},\"from\":\"buyer@home\",\"to\":\"seller@store\",\"extra\":{}}",
+    "tokens": {
+     "o200k": 33,
+     "cl100k": 31
+    }
+   },
+   "m04-offer": {
+    "text": "{\"primitive\":\"OFFER\",\"predicate\":null,\"args\":{\"id\":\"off-001\"},\"from\":\"buyer@home\",\"to\":\"seller@store\",\"extra\":{},\"body\":{\"give\":{\"money\":48000},\"want\":{\"item\":\"SmartTV\",\"brand\":\"Samsung\"}}}",
+    "tokens": {
+     "o200k": 56,
+     "cl100k": 54
+    }
+   },
+   "m05-counter": {
+    "text": "{\"primitive\":\"COUNTER\",\"predicate\":null,\"args\":{\"orig\":\"off-001\",\"id\":\"off-001-c\"},\"from\":\"seller@store\",\"to\":\"buyer@home\",\"extra\":{},\"body\":{\"give\":{\"money\":46000},\"want\":{\"item\":\"SmartTV\"}}}",
+    "tokens": {
+     "o200k": 59,
+     "cl100k": 57
+    }
+   },
+   "m06-accept": {
+    "text": "{\"primitive\":\"ACCEPT\",\"predicate\":null,\"args\":{\"id\":\"off-001\"},\"from\":\"buyer@home\",\"to\":\"seller@store\",\"extra\":{}}",
+    "tokens": {
+     "o200k": 35,
+     "cl100k": 32
+    }
+   },
+   "m07-reject": {
+    "text": "{\"primitive\":\"REJECT\",\"predicate\":null,\"args\":{\"id\":\"off-001\"},\"from\":\"seller@store\",\"to\":\"buyer@home\",\"extra\":{\"reason\":\"price_too_high\"}}",
+    "tokens": {
+     "o200k": 40,
+     "cl100k": 38
+    }
+   },
+   "m08-commit": {
+    "text": "{\"primitive\":\"COMMIT\",\"predicate\":\"pay\",\"args\":{\"amount\":48000,\"to\":\"seller@store\"},\"from\":\"buyer@home\",\"to\":\"seller@store\",\"extra\":{\"by\":\"2026-03-01\"}}",
+    "tokens": {
+     "o200k": 47,
+     "cl100k": 44
+    }
+   },
+   "m09-act": {
+    "text": "{\"primitive\":\"ACT\",\"predicate\":\"transfer\",\"args\":{\"amount\":48000,\"to\":\"seller@store\"},\"from\":\"buyer@home\",\"to\":\"seller@store\",\"extra\":{}}",
+    "tokens": {
+     "o200k": 39,
+     "cl100k": 36
+    }
+   },
+   "m10-fact-committed": {
+    "text": "{\"primitive\":\"FACT\",\"predicate\":\"committed\",\"args\":{\"id\":\"off-001\",\"status\":\"signed\"},\"from\":\"seller@store\",\"to\":null,\"extra\":{}}",
+    "tokens": {
+     "o200k": 37,
+     "cl100k": 34
+    }
+   },
+   "m11-unsupported": {
+    "text": "{\"primitive\":\"REJECT\",\"predicate\":null,\"args\":{\"id\":\"off-999\"},\"from\":\"seller@store\",\"to\":\"buyer@home\",\"extra\":{\"reason\":\"unsupported\"}}",
+    "tokens": {
+     "o200k": 37,
+     "cl100k": 35
+    }
+   },
+   "m12-query-response": {
+    "text": "{\"primitive\":\"FACT\",\"predicate\":\"available\",\"args\":{\"item\":\"SmartTV\",\"price\":48000},\"from\":\"seller@store\",\"to\":\"buyer@home\",\"extra\":{\"in_reply_to\":\"m03-query\"}}",
+    "tokens": {
+     "o200k": 43,
+     "cl100k": 42
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_current": {
+  "total": {
+   "o200k": 330,
+   "cl100k": 316
+  },
+  "dialogue": {
+   "o200k": 180,
+   "cl100k": 173
+  },
+  "chars": 999,
+  "messages": {
+   "m01-intent": {
+    "text": "#from \"buyer@home\"\nINTENT buy(item=\"SmartTV\", max_price=50000, deadline=\"2026-03-01\");",
+    "tokens": {
+     "o200k": 29,
+     "cl100k": 29
+    }
+   },
+   "m02-fact": {
+    "text": "#from \"seller@store\"\nFACT available(item=\"SmartTV\", seller=\"seller@store\", price=48000);",
+    "tokens": {
+     "o200k": 24,
+     "cl100k": 22
+    }
+   },
+   "m03-query": {
+    "text": "QUERY availability(item=\"SmartTV\") FROM \"seller@store\";",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m04-offer": {
+    "text": "OFFER id=\"off-001\" TO \"seller@store\" { give: {money: 48000}, want: {item: \"SmartTV\", brand: \"Samsung\"} };",
+    "tokens": {
+     "o200k": 39,
+     "cl100k": 38
+    }
+   },
+   "m05-counter": {
+    "text": "COUNTER \"off-001\" id=\"off-001-c\" TO \"buyer@home\" { give: {money: 46000}, want: {item: \"SmartTV\"} };",
+    "tokens": {
+     "o200k": 40,
+     "cl100k": 40
+    }
+   },
+   "m06-accept": {
+    "text": "#from \"buyer@home\" #to \"seller@store\"\nACCEPT \"off-001\";",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 18
+    }
+   },
+   "m07-reject": {
+    "text": "#from \"seller@store\" #to \"buyer@home\"\nREJECT \"off-001\" REASON \"price_too_high\";",
+    "tokens": {
+     "o200k": 28,
+     "cl100k": 27
+    }
+   },
+   "m08-commit": {
+    "text": "#from \"buyer@home\" #to \"seller@store\"\nCOMMIT pay(amount=48000, to=\"seller@store\") BY \"2026-03-01\";",
+    "tokens": {
+     "o200k": 36,
+     "cl100k": 34
+    }
+   },
+   "m09-act": {
+    "text": "#from \"buyer@home\" #to \"seller@store\"\nACT transfer(amount=48000, to=\"seller@store\");",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 24
+    }
+   },
+   "m10-fact-committed": {
+    "text": "#from \"seller@store\"\nFACT committed(id=\"off-001\", status=\"signed\");",
+    "tokens": {
+     "o200k": 18,
+     "cl100k": 17
+    }
+   },
+   "m11-unsupported": {
+    "text": "#from \"seller@store\" #to \"buyer@home\"\nREJECT \"off-999\" REASON \"unsupported\";",
+    "tokens": {
+     "o200k": 25,
+     "cl100k": 24
+    }
+   },
+   "m12-query-response": {
+    "text": "#from \"seller@store\" #to \"buyer@home\"\nFACT available(item=\"SmartTV\", price=48000); // in_reply_to=m03-query",
+    "tokens": {
+     "o200k": 32,
+     "cl100k": 31
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_short2": {
+  "total": {
+   "o200k": 240,
+   "cl100k": 227
+  },
+  "dialogue": {
+   "o200k": 132,
+   "cl100k": 125
+  },
+  "chars": 723,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>-INbuy(item=SmartTVmax_price=50000deadline=2026-03-01)",
+    "tokens": {
+     "o200k": 24,
+     "cl100k": 24
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>-FAavailable(item=SmartTVseller=seller@storeprice=48000)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 18
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@storeQUavailability(item=SmartTV)",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@storeOFid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@homeCNoff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@storeACoff-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@homeRJoff-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 16
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@storeCMpay(amount=48000to=seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 24
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@storeATtransfer(amount=48000to=seller@store)",
+    "tokens": {
+     "o200k": 19,
+     "cl100k": 17
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>-FAcommitted(id=off-001status=signed)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@homeRJoff-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 13
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@homeFAavailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_letters": {
+  "total": {
+   "o200k": 239,
+   "cl100k": 225
+  },
+  "dialogue": {
+   "o200k": 131,
+   "cl100k": 125
+  },
+  "chars": 711,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>-Ibuy(item=SmartTVmax_price=50000deadline=2026-03-01)",
+    "tokens": {
+     "o200k": 24,
+     "cl100k": 24
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>-Favailable(item=SmartTVseller=seller@storeprice=48000)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 18
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@storeQavailability(item=SmartTV)",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@storeOid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 29,
+     "cl100k": 29
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@homeKoff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@storeAoff-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@homeRoff-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@storeCpay(amount=48000to=seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 24
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@storeXtransfer(amount=48000to=seller@store)",
+    "tokens": {
+     "o200k": 19,
+     "cl100k": 17
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>-Fcommitted(id=off-001status=signed)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@homeRoff-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@homeFavailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_letters_spaced": {
+  "total": {
+   "o200k": 249,
+   "cl100k": 235
+  },
+  "dialogue": {
+   "o200k": 136,
+   "cl100k": 129
+  },
+  "chars": 757,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>- I buy(item=SmartTV, max_price=50000, deadline=2026-03-01)",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 26
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>- F available(item=SmartTV, seller=seller@store, price=48000)",
+    "tokens": {
+     "o200k": 22,
+     "cl100k": 20
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@store Q availability(item=SmartTV)",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@store O id=off-001 {give(money=48000)|want(item=SmartTV, brand=Samsung)}",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 30
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@home K off-001,off-001-c {give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@store A off-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@home R off-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@store C pay(amount=48000, to=seller@store) ~2026-03-01",
+    "tokens": {
+     "o200k": 27,
+     "cl100k": 25
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@store X transfer(amount=48000, to=seller@store)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 18
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>- F committed(id=off-001, status=signed)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@home R off-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@home F available(item=SmartTV, price=48000) ^m03-query",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 22
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_digits": {
+  "total": {
+   "o200k": 240,
+   "cl100k": 225
+  },
+  "dialogue": {
+   "o200k": 132,
+   "cl100k": 125
+  },
+  "chars": 711,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>-0buy(item=SmartTVmax_price=50000deadline=2026-03-01)",
+    "tokens": {
+     "o200k": 24,
+     "cl100k": 24
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>-1available(item=SmartTVseller=seller@storeprice=48000)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 18
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@store2availability(item=SmartTV)",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@store3id=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@home4off-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@store5off-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@home6off-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@store7pay(amount=48000to=seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 24
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@store8transfer(amount=48000to=seller@store)",
+    "tokens": {
+     "o200k": 19,
+     "cl100k": 17
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>-1committed(id=off-001status=signed)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@home6off-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@home1available(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_symbols": {
+  "total": {
+   "o200k": 245,
+   "cl100k": 234
+  },
+  "dialogue": {
+   "o200k": 135,
+   "cl100k": 131
+  },
+  "chars": 711,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>-»buy(item=SmartTVmax_price=50000deadline=2026-03-01)",
+    "tokens": {
+     "o200k": 24,
+     "cl100k": 24
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>-·available(item=SmartTVseller=seller@storeprice=48000)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 18
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@store?availability(item=SmartTV)",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@store↔id=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 30
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@home⇄off-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 31
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@store✓off-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 11
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@home✗off-001!price_too_high",
+    "tokens": {
+     "o200k": 17,
+     "cl100k": 16
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@store⚑pay(amount=48000to=seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 27,
+     "cl100k": 26
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@store▶transfer(amount=48000to=seller@store)",
+    "tokens": {
+     "o200k": 19,
+     "cl100k": 18
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>-·committed(id=off-001status=signed)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@home✗off-999!unsupported",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@home·available(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_sanskrit": {
+  "total": {
+   "o200k": 241,
+   "cl100k": 226
+  },
+  "dialogue": {
+   "o200k": 133,
+   "cl100k": 126
+  },
+  "chars": 724,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>-SKbuy(item=SmartTVmax_price=50000deadline=2026-03-01)",
+    "tokens": {
+     "o200k": 24,
+     "cl100k": 24
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>-PRavailable(item=SmartTVseller=seller@storeprice=48000)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 18
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@storePVavailability(item=SmartTV)",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@storeSVid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@homeKRToff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 30
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@storeSToff-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@homeNRoff-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@storeDHpay(amount=48000to=seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 26,
+     "cl100k": 24
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@storeKYtransfer(amount=48000to=seller@store)",
+    "tokens": {
+     "o200k": 19,
+     "cl100k": 17
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>-PRcommitted(id=off-001status=signed)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@homeNRoff-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@homePRavailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_pos": {
+  "total": {
+   "o200k": 220,
+   "cl100k": 206
+  },
+  "dialogue": {
+   "o200k": 127,
+   "cl100k": 121
+  },
+  "chars": 641,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>-Ibuy(SmartTV 50000 2026-03-01)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 20
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>-Favailable(SmartTV seller@store 48000)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@storeQavailability(SmartTV)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@storeOid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 29,
+     "cl100k": 29
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@homeKoff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@storeAoff-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@homeRoff-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@storeCpay(48000 seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 21
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@storeXtransfer(48000 seller@store)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>-Fcommitted(off-001 signed)",
+    "tokens": {
+     "o200k": 12,
+     "cl100k": 10
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@homeRoff-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@homeFavailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_pos_sanskrit": {
+  "total": {
+   "o200k": 222,
+   "cl100k": 207
+  },
+  "dialogue": {
+   "o200k": 129,
+   "cl100k": 122
+  },
+  "chars": 654,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>-SKbuy(SmartTV 50000 2026-03-01)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 20
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>-PRavailable(SmartTV seller@store 48000)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@storePVavailability(SmartTV)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@storeSVid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 30,
+     "cl100k": 29
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@homeKRToff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 30
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@storeSToff-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@homeNRoff-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@storeDHpay(48000 seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 21
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@storeKYtransfer(48000 seller@store)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>-PRcommitted(off-001 signed)",
+    "tokens": {
+     "o200k": 12,
+     "cl100k": 10
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@homeNRoff-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@homePRavailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 21,
+     "cl100k": 20
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_pos_sanskrit_spaced": {
+  "total": {
+   "o200k": 224,
+   "cl100k": 210
+  },
+  "dialogue": {
+   "o200k": 132,
+   "cl100k": 125
+  },
+  "chars": 686,
+  "messages": {
+   "m01-intent": {
+    "text": "buyer@home>- SK buy(SmartTV 50000 2026-03-01)",
+    "tokens": {
+     "o200k": 20,
+     "cl100k": 20
+    }
+   },
+   "m02-fact": {
+    "text": "seller@store>- PR available(SmartTV seller@store 48000)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m03-query": {
+    "text": "buyer@home>seller@store PV availability(SmartTV)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m04-offer": {
+    "text": "buyer@home>seller@store SV id=off-001 {give(money=48000)|want(item=SmartTV, brand=Samsung)}",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 30
+    }
+   },
+   "m05-counter": {
+    "text": "seller@store>buyer@home KRT off-001,off-001-c {give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 31,
+     "cl100k": 30
+    }
+   },
+   "m06-accept": {
+    "text": "buyer@home>seller@store ST off-001",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m07-reject": {
+    "text": "seller@store>buyer@home NR off-001!price_too_high",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m08-commit": {
+    "text": "buyer@home>seller@store DH pay(48000 seller@store) ~2026-03-01",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 21
+    }
+   },
+   "m09-act": {
+    "text": "buyer@home>seller@store KY transfer(48000 seller@store)",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 14
+    }
+   },
+   "m10-fact-committed": {
+    "text": "seller@store>- PR committed(off-001 signed)",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m11-unsupported": {
+    "text": "seller@store>buyer@home NR off-999!unsupported",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m12-query-response": {
+    "text": "seller@store>buyer@home PR available(item=SmartTV, price=48000) ^m03-query",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 22
+    }
+   }
+  },
+  "handshake": ""
+ },
+ "sutra_pos_alias": {
+  "total": {
+   "o200k": 169,
+   "cl100k": 166
+  },
+  "dialogue": {
+   "o200k": 107,
+   "cl100k": 106
+  },
+  "chars": 430,
+  "messages": {
+   "m01-intent": {
+    "text": "b>-Ibuy(SmartTV 50000 2026-03-01)",
+    "tokens": {
+     "o200k": 18,
+     "cl100k": 18
+    }
+   },
+   "m02-fact": {
+    "text": "s>-Favailable(SmartTV seller@store 48000)",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 13
+    }
+   },
+   "m03-query": {
+    "text": "b>sQavailability(SmartTV)",
+    "tokens": {
+     "o200k": 8,
+     "cl100k": 8
+    }
+   },
+   "m04-offer": {
+    "text": "b>sOid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 24,
+     "cl100k": 25
+    }
+   },
+   "m05-counter": {
+    "text": "s>bKoff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 25,
+     "cl100k": 25
+    }
+   },
+   "m06-accept": {
+    "text": "b>sAoff-001",
+    "tokens": {
+     "o200k": 6,
+     "cl100k": 6
+    }
+   },
+   "m07-reject": {
+    "text": "s>bRoff-001!price_too_high",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 11
+    }
+   },
+   "m08-commit": {
+    "text": "b>sCpay(48000 seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 18,
+     "cl100k": 17
+    }
+   },
+   "m09-act": {
+    "text": "b>sXtransfer(48000 seller@store)",
+    "tokens": {
+     "o200k": 11,
+     "cl100k": 10
+    }
+   },
+   "m10-fact-committed": {
+    "text": "s>-Fcommitted(off-001 signed)",
+    "tokens": {
+     "o200k": 10,
+     "cl100k": 9
+    }
+   },
+   "m11-unsupported": {
+    "text": "s>bRoff-999!unsupported",
+    "tokens": {
+     "o200k": 8,
+     "cl100k": 8
+    }
+   },
+   "m12-query-response": {
+    "text": "s>bFavailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 16
+    }
+   }
+  },
+  "handshake": "b=buyer@home s=seller@store"
+ },
+ "sutra_pos_session": {
+  "total": {
+   "o200k": 148,
+   "cl100k": 145
+  },
+  "dialogue": {
+   "o200k": 95,
+   "cl100k": 94
+  },
+  "chars": 397,
+  "messages": {
+   "m01-intent": {
+    "text": "bIbuy(SmartTV 50000 2026-03-01)",
+    "tokens": {
+     "o200k": 17,
+     "cl100k": 17
+    }
+   },
+   "m02-fact": {
+    "text": "sFavailable(SmartTV seller@store 48000)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m03-query": {
+    "text": "Qavailability(SmartTV)",
+    "tokens": {
+     "o200k": 6,
+     "cl100k": 6
+    }
+   },
+   "m04-offer": {
+    "text": "Oid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 22,
+     "cl100k": 23
+    }
+   },
+   "m05-counter": {
+    "text": "Koff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 23
+    }
+   },
+   "m06-accept": {
+    "text": "Aoff-001",
+    "tokens": {
+     "o200k": 4,
+     "cl100k": 4
+    }
+   },
+   "m07-reject": {
+    "text": "Roff-001!price_too_high",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 9
+    }
+   },
+   "m08-commit": {
+    "text": "Cpay(48000 seller@store)~2026-03-01",
+    "tokens": {
+     "o200k": 16,
+     "cl100k": 15
+    }
+   },
+   "m09-act": {
+    "text": "Xtransfer(48000 seller@store)",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 8
+    }
+   },
+   "m10-fact-committed": {
+    "text": "sFcommitted(off-001 signed)",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 8
+    }
+   },
+   "m11-unsupported": {
+    "text": "Roff-999!unsupported",
+    "tokens": {
+     "o200k": 6,
+     "cl100k": 6
+    }
+   },
+   "m12-query-response": {
+    "text": "Favailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 14
+    }
+   }
+  },
+  "handshake": "b=buyer@home s=seller@store"
+ },
+ "sutra_pos_session_epoch": {
+  "total": {
+   "o200k": 140,
+   "cl100k": 137
+  },
+  "dialogue": {
+   "o200k": 91,
+   "cl100k": 90
+  },
+  "chars": 389,
+  "messages": {
+   "m01-intent": {
+    "text": "bIbuy(SmartTV 50000 739676)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 13
+    }
+   },
+   "m02-fact": {
+    "text": "sFavailable(SmartTV seller@store 48000)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m03-query": {
+    "text": "Qavailability(SmartTV)",
+    "tokens": {
+     "o200k": 6,
+     "cl100k": 6
+    }
+   },
+   "m04-offer": {
+    "text": "Oid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 22,
+     "cl100k": 23
+    }
+   },
+   "m05-counter": {
+    "text": "Koff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 23
+    }
+   },
+   "m06-accept": {
+    "text": "Aoff-001",
+    "tokens": {
+     "o200k": 4,
+     "cl100k": 4
+    }
+   },
+   "m07-reject": {
+    "text": "Roff-001!price_too_high",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 9
+    }
+   },
+   "m08-commit": {
+    "text": "Cpay(48000 seller@store)~739676",
+    "tokens": {
+     "o200k": 12,
+     "cl100k": 11
+    }
+   },
+   "m09-act": {
+    "text": "Xtransfer(48000 seller@store)",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 8
+    }
+   },
+   "m10-fact-committed": {
+    "text": "sFcommitted(off-001 signed)",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 8
+    }
+   },
+   "m11-unsupported": {
+    "text": "Roff-999!unsupported",
+    "tokens": {
+     "o200k": 6,
+     "cl100k": 6
+    }
+   },
+   "m12-query-response": {
+    "text": "Favailable(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 14
+    }
+   }
+  },
+  "handshake": "b=buyer@home s=seller@store"
+ },
+ "sutra_c_max": {
+  "total": {
+   "o200k": 139,
+   "cl100k": 137
+  },
+  "dialogue": {
+   "o200k": 116,
+   "cl100k": 114
+  },
+  "chars": 343,
+  "messages": {
+   "m01-intent": {
+    "text": "bI1(SmartTV 50000 739676)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 13
+    }
+   },
+   "m02-fact": {
+    "text": "sF2(SmartTV seller@store 48000)",
+    "tokens": {
+     "o200k": 13,
+     "cl100k": 12
+    }
+   },
+   "m03-query": {
+    "text": "Q3(SmartTV)",
+    "tokens": {
+     "o200k": 6,
+     "cl100k": 6
+    }
+   },
+   "m04-offer": {
+    "text": "Oid=off-001{give(money=48000)|want(item=SmartTVbrand=Samsung)}",
+    "tokens": {
+     "o200k": 22,
+     "cl100k": 23
+    }
+   },
+   "m05-counter": {
+    "text": "Koff-001,off-001-c{give(money=46000)|want(item=SmartTV)}",
+    "tokens": {
+     "o200k": 23,
+     "cl100k": 23
+    }
+   },
+   "m06-accept": {
+    "text": "Aoff-001",
+    "tokens": {
+     "o200k": 4,
+     "cl100k": 4
+    }
+   },
+   "m07-reject": {
+    "text": "Roff-001!price_too_high",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 9
+    }
+   },
+   "m08-commit": {
+    "text": "C4(48000 seller@store)~739676",
+    "tokens": {
+     "o200k": 12,
+     "cl100k": 11
+    }
+   },
+   "m09-act": {
+    "text": "X5(48000 seller@store)",
+    "tokens": {
+     "o200k": 9,
+     "cl100k": 8
+    }
+   },
+   "m10-fact-committed": {
+    "text": "sF6(off-001 signed)",
+    "tokens": {
+     "o200k": 8,
+     "cl100k": 8
+    }
+   },
+   "m11-unsupported": {
+    "text": "Roff-999!unsupported",
+    "tokens": {
+     "o200k": 6,
+     "cl100k": 6
+    }
+   },
+   "m12-query-response": {
+    "text": "F2(item=SmartTVprice=48000)^m03-query",
+    "tokens": {
+     "o200k": 14,
+     "cl100k": 14
+    }
+   }
+  },
+  "handshake": "b=buyer@home s=seller@store 1=buy 2=available 3=availability 4=pay 5=transfer 6=committed"
+ }
+}
