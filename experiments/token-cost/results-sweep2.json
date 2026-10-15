@@ -1,0 +1,402 @@
+[
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 75
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 75
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 76
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 76
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 76
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 76
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 81
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 81
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 82
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 82
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 82
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 82
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "delta": "values",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 84
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "delta": "values",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 84
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 84
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "session",
+   "delta": "values",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 84
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "delta": "values",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "delta": "values",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "session",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "session",
+   "delta": "values",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 85
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "delta": "off",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 90
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "delta": "off",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 90
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 90
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "session",
+   "delta": "off",
+   "numbers": "b36",
+   "wire": "text"
+  },
+  "total": 90
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "session",
+   "delta": "off",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "tni",
+   "route": "session",
+   "delta": "off",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "session",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "dev",
+   "route": "session",
+   "delta": "off",
+   "numbers": "k",
+   "wire": "text"
+  },
+  "total": 91
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "b85"
+  },
+  "total": 138
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "values",
+   "numbers": "dec",
+   "wire": "b64"
+  },
+  "total": 139
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "b85"
+  },
+  "total": 160
+ },
+ {
+  "cfg": {
+   "kw": "l1",
+   "route": "fold",
+   "delta": "off",
+   "numbers": "dec",
+   "wire": "b64"
+  },
+  "total": 162
+ }
+]

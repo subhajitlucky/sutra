@@ -84,7 +84,38 @@ compaction, and the non-token lever — deterministic auto-response, which
 removes LLM roundtrips entirely (a separate multiplier on total transaction
 cost).
 
-## Round 3 (planned)
+## Sweep v3 — 162 configs (40 unique), all round-trip verified (`sweep2.py`)
+
+New mechanisms: **anuvrtti** (Panini's carry-over as session ellipsis — repeated
+values become `.`), number alphabets (base-36, `48k`), **binary wires** (packed
+varints → base85/base64), Devanagari keywords (control).
+
+**Winner: `6.25 tokens/message`, handshake 35** (letters + folded route +
+Karaka slots + entities + anuvrtti values + base-36):
+
+`o o 111c a m` — a complete OFFER in 5 tokens. `a o` = ACCEPT in 2.
+
+| finding | result |
+|---|---|
+| Anuvrtti (value ellipsis) | −6 tokens/12 msgs — real but modest after entities |
+| base-36 numbers | −1 token vs decimal |
+| **Binary wire (b85/b64)** | **LOST.** BPE is trained on text; base85 chars tokenize ~2-3 per 4 chars, and short messages pay tag overhead. For small structured messages, tuned text beats binary. Published as a negative. |
+| Devanagari primitives | neutral (स/त/श tokenize fine but buy nothing) |
+
+**The 10× question — against what agents actually emit.** Real deployments send
+JSON-RPC/MCP envelopes (~69.8 tokens/message), not lean JSON:
+
+| session length N | sutra_c | vs English | vs lean JSON | **vs JSON-RPC** |
+|---|---|---|---|---|
+| 6 | 72 | 1.8× | 3.5× | 5.8× |
+| 12 | 110 | 2.4× | 4.7× | 7.6× |
+| 50 | 348 | 3.2× | 6.2× | **10.0×** |
+| 200 | 1285 | 3.4× | 6.7× | **10.9×** |
+
+Cumulative journey: current SUTRA 330 → v1 139 → v2 80 → v3 **75** tokens for
+the 12-message corpus.
+
+## Round 4 (planned)
 
 - **Entity dictionaries:** values (items, ids, amounts) become session handles
   after first mention — the payload itself gets compressed.
