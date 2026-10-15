@@ -1,0 +1,87 @@
+{
+ "codex c1/emit": {
+  "correct": 12,
+  "total": 12,
+  "failures": []
+ },
+ "codex c1/parse": {
+  "correct": 10,
+  "total": 12,
+  "failures": [
+   "fields",
+   "fields"
+  ]
+ },
+ "codex meter/emit": {
+  "correct": 0,
+  "total": 6,
+  "tolerant": 0,
+  "failures": [
+   "fields",
+   "fields",
+   "fields",
+   "fields",
+   "fields",
+   "fields"
+  ]
+ },
+ "codex meter/parse": {
+  "correct": 1,
+  "total": 6,
+  "failures": [
+   "predicate",
+   "predicate",
+   "predicate",
+   "predicate",
+   "fields"
+  ]
+ },
+ "deepseek c1/emit": {
+  "correct": 12,
+  "total": 12,
+  "failures": []
+ },
+ "deepseek c1/parse": {
+  "correct": 12,
+  "total": 12,
+  "failures": []
+ },
+ "deepseek meter/emit": {
+  "correct": 0,
+  "total": 6,
+  "tolerant": 0,
+  "failures": [
+   "fields",
+   "fields",
+   "fields",
+   "fields",
+   "fields",
+   "fields"
+  ]
+ },
+ "deepseek meter/parse": {
+  "correct": 6,
+  "total": 6,
+  "failures": []
+ },
+ "gemini c1/emit": {
+  "correct": 0,
+  "total": 12,
+  "note": "no-array"
+ },
+ "gemini c1/parse": {
+  "correct": 0,
+  "total": 12,
+  "note": "no-array"
+ },
+ "gemini meter/emit": {
+  "correct": 0,
+  "total": 6,
+  "note": "no-array"
+ },
+ "gemini meter/parse": {
+  "correct": 0,
+  "total": 6,
+  "note": "no-array"
+ }
+}

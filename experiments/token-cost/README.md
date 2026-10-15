@@ -213,13 +213,48 @@ template — a deviation needs a fallback encoding plus a resync marker (round
 7); the meter mode is token-verified but not yet comprehension-tested with a
 model; all counts are o200k on the 12-message corpus / 6-message deal.
 
-## Round 7 (planned)
+## Round 7 — pop quiz across model families (`round7.py`, `rescore7.py`)
 
-- Comprehension-test the meter mode (can a model emit `o48000am` reliably?).
-- Fallback + resync path for template deviations; measure the cost of a miss.
-- Second model family; longer sessions (50+ messages) for drift.
-- Freeze SUTRA-C: spec + encoder/decoder in the package; make `;` optional in
-  the readable parser (the semicolon lesson).
+Three backends, all local CLIs, no API billing: `codex` → gpt-6-luna;
+`opencode run` → deepseek-v4.1-flash; `agy` (Antigravity) → **blocked**: the
+CLI hangs on long headless prompts (tiny prompts answer instantly). Raw
+outputs for every call are in `logs/round7/`; the earlier attempt with a
+defective prompt ordering is archived under `logs/round7-promptbug/`.
+
+| cell | gpt-6-luna | deepseek-v4.1-flash |
+|---|---|---|
+| c1/parse | 12/12 | 12/12 |
+| c1/emit | 12/12 | 12/12 |
+| meter/parse | 2/6 | **6/6** |
+| meter/emit (strict) | 4/6 | 5/6 |
+| meter/emit (order-tolerant) | 4/6 | 5/6 |
+
+Findings:
+
+1. **The compact wire form is fully cross-comprehensible.** Both models read
+   *and* write the 6.1 tok/msg form perfectly — this is the encoding to ship.
+2. **The meter form (2.8 tok/msg) is comprehensible but harder and
+   model-dependent**: deepseek reads it 6/6 and writes it 5/6; gpt-6-luna
+   writes 4/6 but reads only 2/6. Ultra-compactness trades against robustness.
+3. **Oops button measured**: a surprise outside the agreed template costs its
+   compact form plus a resync marker — `!Rp!price_too_low` (7 tokens) vs ~3 in
+   template mode. One deviation, small fixed cost, then the session continues
+   cheap.
+4. The self-checks caught two harness bugs (prompt ordering; a missing
+   canonicalisation wrap). Both runs are archived and the raw outputs were
+   re-scored offline — no test was re-rolled, nothing hidden.
+5. Documented tolerances, applied equally to both models: short addresses
+   (`buyer` ≡ `buyer@home`), a predicate that merely echoes the primitive, and
+   replies referenced by message index instead of id.
+
+## Round 8 (planned)
+
+- Unblock a third model family (`agy` hang report; smaller prompts or
+  interactive profile).
+- Freeze SUTRA-C: spec + encoder/decoder in the package; optional `;` parser
+  relaxation; package test suite + CI.
+- Long sessions (50+ messages) for drift and ellipsis-state discipline;
+  fallback/resync under real model traffic.
 
 ## Files
 

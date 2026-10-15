@@ -1,0 +1,14 @@
+{
+ "cells": {
+  "gemini c1/parse": "0/12",
+  "gemini c1/emit": "0/12",
+  "gemini meter/parse": "0/6",
+  "gemini meter/emit": "0/6"
+ },
+ "oops": {
+  "full_c1": "R p !price_too_low",
+  "resync": "!Rp!price_too_low",
+  "resync_tokens": 7,
+  "regular_c1_tokens": 7
+ }
+}

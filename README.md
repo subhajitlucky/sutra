@@ -8,6 +8,31 @@ SUTRA is a formal language designed for autonomous AI agents to communicate, neg
 
 ---
 
+## Token-efficiency research (2026)
+
+The protocol has been *measured*, not assumed. A dedicated lab
+([`experiments/token-cost/`](experiments/token-cost/README.md)) tests encodings
+with production tokenizers and real models. Every claim is decoder-verified;
+every failure is published.
+
+- **6.1 → 2.8 tokens per message**, via mechanisms read out of the Panini
+  literature: case-slot arguments, session dictionaries, carried-over ellipsis
+  (anuvrtti), pratyahara-style ranges, and fixed-width "meter" payloads where
+  the negotiation template is implied by order. A complete OFFER becomes
+  `o48000am`.
+- **~24× cheaper than deployed JSON-RPC/MCP envelopes** in template sessions
+  (N≥500), ~7× vs lean JSON, ~3.4× vs English.
+- **Cross-model comprehension verified**: the compact wire form reads and
+  writes at 12/12 on gpt-6-luna and deepseek-v4.1-flash; the meter form is
+  stronger on deepseek (6/6 read). Raw prompts and outputs are in the round-7
+  logs.
+- The readable syntax's mandatory `;` was the single largest emission failure
+  in model testing; the compact form removes terminators entirely (planned
+  parser relaxation, v0.7).
+
+Negatives are published too: binary wires lose to tuned text; katapayadi
+numbers lose to plain digits; vocabulary etymology buys nothing against BPE.
+
 ## Why SUTRA?
 
 Today's AI agents communicate via unstructured English or rigid JSON APIs. Neither is ideal:
@@ -642,6 +667,8 @@ python -m sutra hardened-demo
 - [x] v0.4 — Multi-agent runtime (agents talk in one process)
 - [x] v0.5 — Sandboxed interpreter + JavaScript port + browser playground
 - [x] v0.6 — Security hardening (replay, encryption, auth, transactions, persistence)
+- [x] research — token-cost lab: measured encodings, cross-model comprehension, negatives published
+- [ ] v0.7 — SUTRA-C wire format (spec + encoder/decoder in the package); optional `;` in the parser; package test suite + CI
 - [ ] v1.0 — Formal verification + production runtime
 
 ---
@@ -670,4 +697,4 @@ The result: a language that captures the **universal consensus** of what agents 
 
 **Author:** Subhajit
 
-**Version:** 0.5.0
+**Version:** 0.6.0 · research track active (`experiments/token-cost/`)
