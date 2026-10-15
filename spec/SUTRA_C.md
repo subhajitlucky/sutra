@@ -92,7 +92,7 @@ Deadlines travel as ISO dates (a 6-digit ordinal form is accepted on decode).
 ## 7. Extensions
 
 Unknown predicates fall back to named arguments inside the compact statement:
-`F weather(city=Bhubaneswar,temp=31)` — still compact, still lossless.
+`F weather city=Bhubaneswar temp=31` — still compact, still lossless.
 
 ## 8. Resync (the oops button)
 
