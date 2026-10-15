@@ -27,8 +27,21 @@ every failure is published.
   stronger on deepseek (6/6 read). Raw prompts and outputs are in the round-7
   logs.
 - The readable syntax's mandatory `;` was the single largest emission failure
-  in model testing; the compact form removes terminators entirely (planned
-  parser relaxation, v0.7).
+  in model testing; the compact form removes terminators entirely.
+
+**SUTRA-C is shipped (v0.7)**: the frozen wire format lives in
+[`sutra/compact.py`](sutra/compact.py) with its spec in
+[`spec/SUTRA_C.md`](spec/SUTRA_C.md), 17 unit tests, and an end-to-end demo:
+
+```bash
+python examples/compact_deal.py   # full deal in C1 + meter, with token accounting
+```
+
+```
+readable SUTRA  134 tok · 22.3/msg
+SUTRA-C          45 tok ·  7.5/msg   (9.7x vs JSON-RPC)
+SUTRA-C meter    17 tok ·  2.8/msg   (25.6x vs JSON-RPC)
+```
 
 Negatives are published too: binary wires lose to tuned text; katapayadi
 numbers lose to plain digits; vocabulary etymology buys nothing against BPE.
@@ -668,7 +681,8 @@ python -m sutra hardened-demo
 - [x] v0.5 — Sandboxed interpreter + JavaScript port + browser playground
 - [x] v0.6 — Security hardening (replay, encryption, auth, transactions, persistence)
 - [x] research — token-cost lab: measured encodings, cross-model comprehension, negatives published
-- [ ] v0.7 — SUTRA-C wire format (spec + encoder/decoder in the package); optional `;` in the parser; package test suite + CI
+- [x] v0.7 — SUTRA-C wire format shipped: spec, codec (`sutra/compact.py`), 17 tests, end-to-end demo
+- [ ] v0.8 — runtime template negotiation + resync wiring; optional `;` in the readable parser; package CI; long-session drift tests
 - [ ] v1.0 — Formal verification + production runtime
 
 ---
