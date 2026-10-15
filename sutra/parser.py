@@ -45,6 +45,18 @@ class Parser:
         self.pos += 1
         return tok
 
+    def _expect_name(self, msg: str = "Expected identifier") -> Token:
+        """Accept identifiers that collide with reserved words like `id`.
+
+        `id` is lexed as TokenType.ID for OFFER/COUNTER heads, but it is a
+        perfectly valid argument or map key (e.g. `FACT committed(id="x")`).
+        """
+        tok = self._current()
+        if tok.type not in (TokenType.IDENTIFIER, TokenType.ID):
+            raise ParseError(msg, tok)
+        self.pos += 1
+        return tok
+
     def _match(self, *types: TokenType) -> Token | None:
         if self._peek_type() in types:
             tok = self._current()
@@ -203,7 +215,7 @@ class Parser:
         self._expect(TokenType.LPAREN, "Expected '(' after predicate name")
         args: list[NamedArg] = []
         while not self._at(TokenType.RPAREN):
-            arg_name = self._expect(TokenType.IDENTIFIER, "Expected argument name")
+            arg_name = self._expect_name("Expected argument name")
             self._expect(TokenType.EQUALS, "Expected '=' after argument name")
             arg_val = self._parse_value()
             args.append(NamedArg(name=arg_name.value, value=arg_val))
@@ -248,7 +260,7 @@ class Parser:
         self._expect(TokenType.LBRACE)
         entries: dict[str, any] = {}
         while not self._at(TokenType.RBRACE):
-            key = self._expect(TokenType.IDENTIFIER, "Expected map key")
+            key = self._expect_name("Expected map key")
             self._expect(TokenType.COLON, "Expected ':' in map entry")
             val = self._parse_value()
             entries[key.value] = val
