@@ -25,8 +25,11 @@ import json
 import urllib.request
 import urllib.error
 from dataclasses import dataclass, field
+from typing import Iterable
 
 from .registry import AgentRegistry
+from .compact import Session as CompactSession
+from .compact import decode as c1_decode, encode as c1_encode
 
 
 class SutraClientError(Exception):
@@ -185,3 +188,72 @@ class SutraClient:
                 return json.loads(resp.read().decode("utf-8"))
         except Exception as e:
             return {"error": str(e)}
+
+
+class CompactClient:
+    """SUTRA-C over HTTP (v0.9): handshake once, then every message and reply
+    travels as compact text (7.5 tokens/message class, not 72).
+
+    Usage:
+        client = CompactClient("buyer@home")
+        client.handshake("http://localhost:8001", values=["SmartTV"])
+        wire, replies, exec_count = client.send("http://localhost:8001", message)
+    """
+
+    def __init__(self, agent_id: str, timeout: float = 10.0):
+        self.agent_id = agent_id
+        self.timeout = timeout
+        self.server_agent: str | None = None
+        self.session: CompactSession | None = None
+
+    def handshake(self, to_url: str, values: Iterable[str] = (),
+                  line: str | None = None) -> str:
+        """Negotiate the session dictionary. Returns the handshake line."""
+        seed = CompactSession(parties=(self.agent_id, "server"))
+        seed.learn(values)
+        wire_line = line if line is not None else seed.handshake()
+        endpoint = f"{to_url.rstrip('/')}/sutra/c1/handshake"
+        req = urllib.request.Request(
+            endpoint,
+            data=wire_line.encode("utf-8"),
+            headers={"Content-Type": "text/plain", "X-From": self.agent_id},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                self.server_agent = resp.headers.get("X-Sutra-Agent") or "server"
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", errors="replace")
+            raise SutraClientError(f"Handshake failed: HTTP {e.code} {detail}",
+                                   status_code=e.code) from e
+        except urllib.error.URLError as e:
+            raise SutraClientError(f"Connection failed: {e.reason}") from e
+        self.session = CompactSession(parties=(self.agent_id, self.server_agent))
+        self.session.apply_handshake(wire_line)
+        return wire_line
+
+    def send(self, to_url: str, msg: dict) -> tuple[str, list[dict], int]:
+        """Send one canonical message: returns (wire, decoded_replies, exec_count)."""
+        if self.session is None:
+            raise SutraClientError("Call handshake() first")
+        wire = c1_encode(msg, self.session)
+        endpoint = f"{to_url.rstrip('/')}/sutra/c1"
+        req = urllib.request.Request(
+            endpoint,
+            data=wire.encode("utf-8"),
+            headers={"Content-Type": "text/x-sutra-c1", "X-From": self.agent_id},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                body = resp.read().decode("utf-8")
+                exec_count = int(resp.headers.get("X-Sutra-Exec-Responses", "0"))
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", errors="replace")
+            raise SutraClientError(f"Send failed: HTTP {e.code} {detail}",
+                                   status_code=e.code) from e
+        except urllib.error.URLError as e:
+            raise SutraClientError(f"Connection failed: {e.reason}") from e
+        replies = [c1_decode(line, self.session)
+                   for line in body.splitlines() if line.strip()]
+        return wire, replies, exec_count

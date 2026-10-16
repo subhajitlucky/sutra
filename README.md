@@ -32,11 +32,14 @@ every failure is published.
 **SUTRA-C is shipped (v0.7) and bridged into the runtime (v0.8)**: the frozen
 wire format lives in [`sutra/compact.py`](sutra/compact.py) with its spec in
 [`spec/SUTRA_C.md`](spec/SUTRA_C.md); [`sutra/compact_bridge.py`](sutra/compact_bridge.py)
-carries it over the multi-agent runtime, auto-responses included. 30 unit tests
-and two demos run on every push via CI:
+carries it over the multi-agent runtime, auto-responses included, and the HTTP
+transport speaks it natively (v0.9 — handshake, compact POST, compact replies).
+36 unit tests and three demos run on every push via CI:
 
 ```bash
-python examples/compact_deal.py   # full deal in C1 + meter, with token accounting
+python examples/compact_deal.py         # full deal in C1 + meter, with token accounting
+python examples/runtime_compact_demo.py # the deal over the multi-agent runtime
+python examples/network_compact_demo.py # the deal over real HTTP
 ```
 
 ```
@@ -685,8 +688,8 @@ python -m sutra hardened-demo
 - [x] research — token-cost lab: measured encodings, cross-model comprehension, negatives published
 - [x] v0.7 — SUTRA-C wire format shipped: spec, codec (`sutra/compact.py`), end-to-end demo
 - [x] v0.8 — optional `;` terminators; compact runtime bridge (auto-responses on the wire); CI (tests + demos on every push)
-- [ ] v0.9 — HTTP transport speaks C1; template negotiation + resync in the runtime; long-session drift tests; a third model family
-- [ ] v1.0 — Formal verification + production runtime
+- [x] v0.9 — HTTP transport speaks C1: handshake, compact POST, compact auto-replies
+- [ ] v1.0 — template negotiation + resync in the runtime and server; long-session drift tests; a third model family; formal verification + production runtime
 
 ---
 

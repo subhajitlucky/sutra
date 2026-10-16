@@ -58,6 +58,9 @@ from .interpreter import RuntimeError as SutraRuntimeError
 from .registry import AgentRegistry
 from .keystore import KeyStore
 from .security import RateLimiter, InputValidator
+from .compact import CompactError, Session as CompactSession
+from .compact import decode as c1_decode, encode as c1_encode
+from .render import render_readable
 
 logger = logging.getLogger("sutra.server")
 
@@ -112,6 +115,10 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/sutra":
             self._handle_sutra_message()
+        elif self.path == "/sutra/c1":
+            self._handle_c1_message()
+        elif self.path == "/sutra/c1/handshake":
+            self._handle_c1_handshake()
         elif self.path == "/register":
             self._handle_register()
         else:
@@ -296,6 +303,103 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
             "responses": responses,
         })
 
+    # ── v0.9: SUTRA-C over HTTP ─────────────────────────
+
+    def _send_c1(self, status: int, lines: list[str], extra: dict | None = None):
+        body = ("\n".join(lines) + "\n").encode("utf-8") if lines else b""
+        self.send_response(status)
+        self.send_header("Content-Type", "text/x-sutra-c1; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("X-Sutra-Version", "v0.9")
+        self.send_header("X-Sutra-Format", "c1")
+        self.send_header("X-Sutra-Responses", str(len(lines)))
+        for key, value in (extra or {}).items():
+            self.send_header(key, value)
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        if body:
+            self.wfile.write(body)
+
+    def _handle_c1_handshake(self):
+        """POST /sutra/c1/handshake — create the compact session + dictionary."""
+        sender = self.headers.get("X-From", "")
+        if not sender:
+            self._send_json(400, {"error": "X-From header required"})
+            return
+        agent: Agent = self.server.sutra_agent
+        session = CompactSession(parties=(sender, agent.agent_id))
+        line = self._read_body().decode("utf-8", errors="replace").strip()
+        if line:
+            session.apply_handshake(line)
+        with self.server.sutra_c1_lock:
+            self.server.sutra_c1_sessions[sender] = session
+        self._send_c1(204, [], {
+            "X-Sutra-Agent": agent.agent_id,
+            "X-Sutra-Dictionary": str(len(session.entities)),
+        })
+
+    def _handle_c1_message(self):
+        """POST /sutra/c1 — one or more compact statements; replies are compact too."""
+        token_auth = getattr(self.server, "sutra_token_auth", None)
+        if token_auth is not None:
+            valid, info = token_auth.verify_header(self.headers.get("Authorization"))
+            if not valid:
+                self._send_json(401, {"error": f"Unauthorized: {info}"})
+                return
+        sender = self.headers.get("X-From", "")
+        if not sender:
+            self._send_json(400, {"error": "X-From header required"})
+            return
+        rate_limiter = getattr(self.server, "sutra_rate_limiter", None)
+        if rate_limiter is not None:
+            allowed, reason = rate_limiter.check(sender)
+            if not allowed:
+                self._send_json(429, {"error": reason})
+                return
+        with self.server.sutra_c1_lock:
+            session = self.server.sutra_c1_sessions.get(sender)
+        if session is None:
+            self._send_json(409, {"error": "No compact session: POST /sutra/c1/handshake first"})
+            return
+        raw = self._read_body()
+        if not raw:
+            self._send_json(400, {"error": "Empty C1 body"})
+            return
+
+        agent: Agent = self.server.sutra_agent
+        replies: list[str] = []
+        exec_total = 0
+        for line in raw.decode("utf-8", errors="replace").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                with self.server.sutra_c1_lock:
+                    msg = c1_decode(line, session)
+            except CompactError as e:
+                self._send_json(422, {"error": f"C1 decode error: {e}"})
+                return
+            try:
+                program = Parser(Lexer(render_readable(msg)).tokenize()).parse()
+                responses = Interpreter(agent).execute(program)
+            except (LexerError, ParseError, SutraRuntimeError) as e:
+                self._send_json(422, {"error": f"Execution error: {e}"})
+                return
+            exec_total += len(responses)
+            if msg["primitive"] == "QUERY":
+                for fact in agent.query_facts(msg["predicate"], msg.get("args") or {}):
+                    with self.server.sutra_c1_lock:
+                        replies.append(c1_encode({
+                            "primitive": "FACT", "predicate": fact.predicate,
+                            "args": dict(fact.args), "from": agent.agent_id,
+                            "to": sender, "extra": {},
+                        }, session))
+        self._send_c1(200, replies, {
+            "X-Sutra-Agent": agent.agent_id,
+            "X-Sutra-Exec-Responses": str(exec_total),
+        })
+
 
 class SutraServer:
     """HTTP server hosting a SUTRA agent.
@@ -348,6 +452,10 @@ class SutraServer:
                 self.keystore = keystore
             agent.keypair = keystore.get_or_create(agent.agent_id)
 
+        # v0.9: compact (SUTRA-C) sessions, one per client
+        self.c1_sessions: dict[str, CompactSession] = {}
+        self.c1_lock = threading.Lock()
+
         self._httpd: HTTPServer | None = None
         self._thread: threading.Thread | None = None
 
@@ -364,6 +472,9 @@ class SutraServer:
         # v0.7 security
         httpd.sutra_rate_limiter = self.rate_limiter
         httpd.sutra_input_validator = self.input_validator
+        # v0.9 compact sessions
+        httpd.sutra_c1_sessions = self.c1_sessions
+        httpd.sutra_c1_lock = self.c1_lock
         return httpd
 
     def start(self, blocking: bool = False):

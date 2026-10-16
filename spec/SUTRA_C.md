@@ -133,7 +133,30 @@ a  .-48000  o48000am  op46000.  o  48000739676
 - Not yet: runtime-level template negotiation, long-session drift tests,
   package CI. Tracked in the roadmap.
 
-## 11. Python API
+## 11. HTTP binding (v0.9)
+
+The wire format is carried directly — no JSON wrapper on the hot path:
+
+```
+POST /sutra/c1/handshake      establish the session
+  headers: X-From: <client id>
+  body:    the dictionary line (may be empty)
+  reply:   204 + X-Sutra-Agent, X-Sutra-Dictionary
+
+POST /sutra/c1                one or more compact statements, newline-separated
+  headers: X-From: <client id>
+  body:    C1 text (Content-Type: text/x-sutra-c1)
+  reply:   200 + C1 text = compact auto-replies (QUERY -> FACT)
+           X-Sutra-Responses: number of executed statements
+```
+
+Rules: one handshake per client session; stateful sessions (dictionary +
+ellipsis) are keyed by the sender and reset by re-handshaking; requests from
+unknown sessions are rejected with 409; errors are JSON (off the hot path);
+token-auth and rate-limit guards apply when configured. End-to-end measurement:
+`examples/network_compact_demo.py`.
+
+## 12. Python API
 
 ```python
 from sutra.compact import Session, encode, decode, encode_resync, TemplateSession
