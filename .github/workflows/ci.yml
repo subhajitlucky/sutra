@@ -32,3 +32,9 @@ jobs:
 
       - name: Runtime compact demo
         run: python examples/runtime_compact_demo.py > /dev/null
+
+      - name: Network compact demo (HTTP, C1)
+        run: python examples/network_compact_demo.py > /dev/null
+
+      - name: Network meter demo (HTTP, template mode)
+        run: python examples/network_meter_demo.py > /dev/null

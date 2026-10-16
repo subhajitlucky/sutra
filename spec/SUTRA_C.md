@@ -156,6 +156,26 @@ unknown sessions are rejected with 409; errors are JSON (off the hot path);
 token-auth and rate-limit guards apply when configured. End-to-end measurement:
 `examples/network_compact_demo.py`.
 
+**Template (meter) mode over HTTP (v0.10).** After the handshake, a client may
+agree on a sequential template:
+
+```
+POST /sutra/c1/template        one step per line: `<K> <pred|-> <f|r> [reply_id]`
+  reply: 204 + X-Sutra-Steps
+
+POST /sutra/c1                 X-Sutra-Mode: meter
+  body:  one meter payload for the current step (§9)
+  reply: X-Sutra-Mode: meter, body = payload(s) for the following step(s);
+         a QUERY's auto-reply occupies the next template step and advances
+         the pointer past it
+```
+
+Meter sends are strictly sequential; running past the last step is a 409
+("negotiate a new one"); a QUERY with no matching facts is a 409 (the template
+expects a reply payload); off-template messages travel as resync C1 (`!` +
+statement) and do not move the meter pointer. End-to-end measurement:
+`examples/network_meter_demo.py`.
+
 ## 12. Python API
 
 ```python

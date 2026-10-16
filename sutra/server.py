@@ -58,9 +58,38 @@ from .interpreter import RuntimeError as SutraRuntimeError
 from .registry import AgentRegistry
 from .keystore import KeyStore
 from .security import RateLimiter, InputValidator
-from .compact import CompactError, Session as CompactSession
+from .compact import CompactError, Session as CompactSession, TemplateSession
+from .compact import KW_REV as _KW_REV
 from .compact import decode as c1_decode, encode as c1_encode
 from .render import render_readable
+
+
+def parse_template_steps(text: str) -> list[tuple[str, str | None, bool, str | None]]:
+    """Template declaration for meter sessions — one step per line:
+
+        Q availability f          kind, predicate ('-' for none), direction
+        F available r m03-query   ... plus the implied reply thread (optional)
+    """
+    steps: list[tuple[str, str | None, bool, str | None]] = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split()
+        if len(parts) < 3:
+            raise ValueError(f"template step needs at least 3 tokens: {line!r}")
+        kind, predicate, direction = parts[0], parts[1], parts[2].lower()
+        prim = _KW_REV.get(kind.upper())
+        if prim is None:
+            raise ValueError(f"unknown message kind: {kind!r}")
+        if direction not in ("f", "r"):
+            raise ValueError(f"direction must be f or r: {line!r}")
+        reply = parts[3] if len(parts) > 3 else None
+        steps.append((prim, None if predicate == "-" else predicate,
+                      direction == "f", reply))
+    if not steps:
+        raise ValueError("template is empty")
+    return steps
 
 logger = logging.getLogger("sutra.server")
 
@@ -119,6 +148,8 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
             self._handle_c1_message()
         elif self.path == "/sutra/c1/handshake":
             self._handle_c1_handshake()
+        elif self.path == "/sutra/c1/template":
+            self._handle_c1_template()
         elif self.path == "/register":
             self._handle_register()
         else:
@@ -334,9 +365,88 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
             session.apply_handshake(line)
         with self.server.sutra_c1_lock:
             self.server.sutra_c1_sessions[sender] = session
+            self.server.sutra_c1_templates.pop(sender, None)  # re-handshake resets
         self._send_c1(204, [], {
             "X-Sutra-Agent": agent.agent_id,
             "X-Sutra-Dictionary": str(len(session.entities)),
+        })
+
+    def _handle_c1_template(self):
+        """POST /sutra/c1/template — agree on a sequential message template."""
+        sender = self.headers.get("X-From", "")
+        if not sender:
+            self._send_json(400, {"error": "X-From header required"})
+            return
+        with self.server.sutra_c1_lock:
+            session = self.server.sutra_c1_sessions.get(sender)
+        if session is None:
+            self._send_json(409, {"error": "No compact session: POST /sutra/c1/handshake first"})
+            return
+        try:
+            steps = parse_template_steps(self._read_body().decode("utf-8", errors="replace"))
+        except ValueError as e:
+            self._send_json(400, {"error": f"Invalid template: {e}"})
+            return
+        template = TemplateSession(steps, session)
+        with self.server.sutra_c1_lock:
+            self.server.sutra_c1_templates[sender] = {"tpl": template, "step": 0}
+        self._send_c1(204, [], {"X-Sutra-Steps": str(len(steps)),
+                                "X-Sutra-Agent": self.server.sutra_agent.agent_id})
+
+    def _handle_c1_meter(self, sender: str, session: CompactSession):
+        """Meter-mode message: the payload carries only new field values."""
+        agent: Agent = self.server.sutra_agent
+        with self.server.sutra_c1_lock:
+            entry = self.server.sutra_c1_templates.get(sender)
+        if entry is None:
+            self._send_json(409, {"error": "No template: POST /sutra/c1/template first"})
+            return
+        template: TemplateSession = entry["tpl"]
+        step = entry["step"]
+        if step >= len(template.steps):
+            self._send_json(409, {"error": "Template exhausted: negotiate a new one"})
+            return
+        payload = self._read_body().decode("utf-8", errors="replace").strip()
+        if not payload:
+            self._send_json(400, {"error": "Empty meter payload"})
+            return
+        try:
+            with self.server.sutra_c1_lock:
+                msg = template.decode(payload, step)
+        except (CompactError, IndexError, ValueError) as e:
+            self._send_json(422, {"error": f"Meter decode error: {e}"})
+            return
+        try:
+            program = Parser(Lexer(render_readable(msg)).tokenize()).parse()
+            responses = Interpreter(agent).execute(program)
+        except (LexerError, ParseError, SutraRuntimeError) as e:
+            self._send_json(422, {"error": f"Execution error: {e}"})
+            return
+
+        replies: list[str] = []
+        consumed = 1
+        if msg["primitive"] == "QUERY":
+            facts = list(agent.query_facts(msg["predicate"], msg.get("args") or {}))
+            if not facts:
+                self._send_json(409, {"error": "Template requires a reply payload but no facts matched"})
+                return
+            next_step = step + 1
+            if next_step >= len(template.steps) or template.steps[next_step][0] != "FACT":
+                self._send_json(409, {"error": "Template has no FACT slot for the auto-reply"})
+                return
+            with self.server.sutra_c1_lock:
+                for fact in facts:
+                    reply_msg = {"primitive": "FACT", "predicate": fact.predicate,
+                                 "args": dict(fact.args), "from": agent.agent_id,
+                                 "to": sender, "extra": {}}
+                    replies.append(template.encode(reply_msg, next_step))
+            consumed = 2
+        with self.server.sutra_c1_lock:
+            entry["step"] = step + consumed
+        self._send_c1(200, replies, {
+            "X-Sutra-Agent": agent.agent_id,
+            "X-Sutra-Mode": "meter",
+            "X-Sutra-Exec-Responses": str(len(responses)),
         })
 
     def _handle_c1_message(self):
@@ -361,6 +471,9 @@ class SutraRequestHandler(BaseHTTPRequestHandler):
             session = self.server.sutra_c1_sessions.get(sender)
         if session is None:
             self._send_json(409, {"error": "No compact session: POST /sutra/c1/handshake first"})
+            return
+        if self.headers.get("X-Sutra-Mode", "c1").lower() == "meter":
+            self._handle_c1_meter(sender, session)
             return
         raw = self._read_body()
         if not raw:
@@ -454,6 +567,8 @@ class SutraServer:
 
         # v0.9: compact (SUTRA-C) sessions, one per client
         self.c1_sessions: dict[str, CompactSession] = {}
+        # v0.10: agreed message templates for meter mode
+        self.c1_templates: dict[str, dict] = {}
         self.c1_lock = threading.Lock()
 
         self._httpd: HTTPServer | None = None
@@ -474,6 +589,7 @@ class SutraServer:
         httpd.sutra_input_validator = self.input_validator
         # v0.9 compact sessions
         httpd.sutra_c1_sessions = self.c1_sessions
+        httpd.sutra_c1_templates = self.c1_templates
         httpd.sutra_c1_lock = self.c1_lock
         return httpd
 

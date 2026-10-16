@@ -28,8 +28,8 @@ from dataclasses import dataclass, field
 from typing import Iterable
 
 from .registry import AgentRegistry
-from .compact import Session as CompactSession
-from .compact import decode as c1_decode, encode as c1_encode
+from .compact import CompactError, KW, Session as CompactSession, TemplateSession
+from .compact import decode as c1_decode, encode as c1_encode, encode_resync
 
 
 class SutraClientError(Exception):
@@ -237,23 +237,89 @@ class CompactClient:
         if self.session is None:
             raise SutraClientError("Call handshake() first")
         wire = c1_encode(msg, self.session)
-        endpoint = f"{to_url.rstrip('/')}/sutra/c1"
+        body, headers = self._post(to_url, wire, mode="c1")
+        replies = [c1_decode(line, self.session)
+                   for line in body.splitlines() if line.strip()]
+        return wire, replies, int(headers.get("X-Sutra-Exec-Responses", "0"))
+
+    # ── v0.10: template (meter) mode ─────────────────────
+
+    def negotiate_template(self, to_url: str,
+                           steps: list[tuple[str, str | None, bool, str | None]]) -> int:
+        """Agree on a sequential message template. Returns the step count."""
+        if self.session is None:
+            raise SutraClientError("Call handshake() first")
+        lines = []
+        for primitive, predicate, forward, reply in steps:
+            line = f"{KW[primitive]} {predicate or '-'} {'f' if forward else 'r'}"
+            if reply:
+                line += f" {reply}"
+            lines.append(line)
+        body, headers = self._post(to_url, "\n".join(lines), mode="c1",
+                                   path="/sutra/c1/template")
+        self.template = TemplateSession(steps, self.session)
+        self.meter_step = 0
+        return int(headers.get("X-Sutra-Steps", str(len(steps))))
+
+    def send_meter(self, to_url: str, msg: dict) -> tuple[str, list[str], int]:
+        """Send the next template message as a meter payload.
+
+        Returns (payload, reply_payloads, exec_count); reply payloads occupy
+        the following template step (QUERY -> FACT), exactly as the server
+        consumed them.
+        """
+        template = getattr(self, "template", None)
+        if template is None:
+            raise SutraClientError("Call negotiate_template() first")
+        step = getattr(self, "meter_step", 0)
+        if step >= len(template.steps):
+            raise SutraClientError("Template exhausted: negotiate a new one")
+        try:
+            payload = template.encode(msg, step)
+        except (CompactError, IndexError, ValueError) as e:
+            raise SutraClientError(f"Meter encode failed at step {step}: {e}") from e
+        body, headers = self._post(to_url, payload, mode="meter")
+        reply_payloads = [line for line in body.splitlines() if line.strip()]
+        self.meter_step = step + 1 + len(reply_payloads)
+        return payload, reply_payloads, int(headers.get("X-Sutra-Exec-Responses", "0"))
+
+    def decode_meter_reply(self, step: int, payload: str) -> dict:
+        """Decode a reply payload the client received at a template step."""
+        template = getattr(self, "template", None)
+        if template is None:
+            raise SutraClientError("Call negotiate_template() first")
+        return template.decode(payload, step)
+
+    def send_resync(self, to_url: str, msg: dict) -> tuple[str, list[dict], int]:
+        """A message outside the agreed template: resync marker + full C1."""
+        if self.session is None:
+            raise SutraClientError("Call handshake() first")
+        if msg.get("from") != self.agent_id:
+            raise SutraClientError("resync messages must come from this agent")
+        wire = encode_resync(msg, self.session)
+        body, headers = self._post(to_url, wire, mode="c1")
+        replies = [c1_decode(line, self.session)
+                   for line in body.splitlines() if line.strip()]
+        return wire, replies, int(headers.get("X-Sutra-Exec-Responses", "0"))
+
+    # ── transport helper ─────────────────────────────────
+
+    def _post(self, to_url: str, body: str, mode: str = "c1",
+              path: str = "/sutra/c1"):
         req = urllib.request.Request(
-            endpoint,
-            data=wire.encode("utf-8"),
-            headers={"Content-Type": "text/x-sutra-c1", "X-From": self.agent_id},
+            f"{to_url.rstrip('/')}{path}",
+            data=body.encode("utf-8"),
+            headers={"Content-Type": "text/x-sutra-c1",
+                     "X-From": self.agent_id,
+                     "X-Sutra-Mode": mode},
             method="POST",
         )
         try:
             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
-                body = resp.read().decode("utf-8")
-                exec_count = int(resp.headers.get("X-Sutra-Exec-Responses", "0"))
+                return resp.read().decode("utf-8"), resp.headers
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", errors="replace")
             raise SutraClientError(f"Send failed: HTTP {e.code} {detail}",
                                    status_code=e.code) from e
         except urllib.error.URLError as e:
             raise SutraClientError(f"Connection failed: {e.reason}") from e
-        replies = [c1_decode(line, self.session)
-                   for line in body.splitlines() if line.strip()]
-        return wire, replies, exec_count
