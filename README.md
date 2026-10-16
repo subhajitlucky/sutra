@@ -29,9 +29,11 @@ every failure is published.
 - The readable syntax's mandatory `;` was the single largest emission failure
   in model testing; the compact form removes terminators entirely.
 
-**SUTRA-C is shipped (v0.7)**: the frozen wire format lives in
-[`sutra/compact.py`](sutra/compact.py) with its spec in
-[`spec/SUTRA_C.md`](spec/SUTRA_C.md), 17 unit tests, and an end-to-end demo:
+**SUTRA-C is shipped (v0.7) and bridged into the runtime (v0.8)**: the frozen
+wire format lives in [`sutra/compact.py`](sutra/compact.py) with its spec in
+[`spec/SUTRA_C.md`](spec/SUTRA_C.md); [`sutra/compact_bridge.py`](sutra/compact_bridge.py)
+carries it over the multi-agent runtime, auto-responses included. 30 unit tests
+and two demos run on every push via CI:
 
 ```bash
 python examples/compact_deal.py   # full deal in C1 + meter, with token accounting
@@ -681,8 +683,9 @@ python -m sutra hardened-demo
 - [x] v0.5 — Sandboxed interpreter + JavaScript port + browser playground
 - [x] v0.6 — Security hardening (replay, encryption, auth, transactions, persistence)
 - [x] research — token-cost lab: measured encodings, cross-model comprehension, negatives published
-- [x] v0.7 — SUTRA-C wire format shipped: spec, codec (`sutra/compact.py`), 17 tests, end-to-end demo
-- [ ] v0.8 — runtime template negotiation + resync wiring; optional `;` in the readable parser; package CI; long-session drift tests
+- [x] v0.7 — SUTRA-C wire format shipped: spec, codec (`sutra/compact.py`), end-to-end demo
+- [x] v0.8 — optional `;` terminators; compact runtime bridge (auto-responses on the wire); CI (tests + demos on every push)
+- [ ] v0.9 — HTTP transport speaks C1; template negotiation + resync in the runtime; long-session drift tests; a third model family
 - [ ] v1.0 — Formal verification + production runtime
 
 ---

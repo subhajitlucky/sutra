@@ -45,6 +45,11 @@ class Parser:
         self.pos += 1
         return tok
 
+    def _end_statement(self) -> None:
+        """Consume an optional semicolon (terminators are no longer required:
+        the semicolon-fragility lesson from the model tests)."""
+        self._match(TokenType.SEMICOLON)
+
     def _expect_name(self, msg: str = "Expected identifier") -> Token:
         """Accept identifiers that collide with reserved words like `id`.
 
@@ -99,13 +104,13 @@ class Parser:
     def _parse_intent(self) -> IntentStmt:
         self._expect(TokenType.INTENT)
         pred = self._parse_predicate()
-        self._expect(TokenType.SEMICOLON, "Expected ';' after INTENT")
+        self._end_statement()
         return IntentStmt(predicate=pred)
 
     def _parse_fact(self) -> FactStmt:
         self._expect(TokenType.FACT)
         pred = self._parse_predicate()
-        self._expect(TokenType.SEMICOLON, "Expected ';' after FACT")
+        self._end_statement()
         return FactStmt(predicate=pred)
 
     def _parse_query(self) -> QueryStmt:
@@ -113,7 +118,7 @@ class Parser:
         pred = self._parse_predicate()
         self._expect(TokenType.FROM, "Expected 'FROM' in QUERY")
         agent = self._expect(TokenType.STRING, "Expected agent string after FROM")
-        self._expect(TokenType.SEMICOLON, "Expected ';' after QUERY")
+        self._end_statement()
         return QueryStmt(predicate=pred, from_agent=agent.value)
 
     def _parse_offer(self) -> OfferStmt:
@@ -131,7 +136,7 @@ class Parser:
         if self._match(TokenType.EXPIRES):
             expires_tok = self._expect(TokenType.STRING, "Expected expiry string after EXPIRES")
             expires = expires_tok.value
-        self._expect(TokenType.SEMICOLON, "Expected ';' after OFFER")
+        self._end_statement()
         return OfferStmt(offer_id=offer_id.value, to_agent=to_agent.value, fields=fields, expires=expires)
 
     def _parse_counter(self) -> CounterStmt:
@@ -150,7 +155,7 @@ class Parser:
         if self._match(TokenType.EXPIRES):
             expires_tok = self._expect(TokenType.STRING, "Expected expiry string after EXPIRES")
             expires = expires_tok.value
-        self._expect(TokenType.SEMICOLON, "Expected ';' after COUNTER")
+        self._end_statement()
         return CounterStmt(
             original_offer_id=original_id.value,
             offer_id=new_id.value,
@@ -179,7 +184,7 @@ class Parser:
             conditions.append(self._parse_predicate())
             while self._match(TokenType.COMMA):
                 conditions.append(self._parse_predicate())
-        self._expect(TokenType.SEMICOLON, "Expected ';' after ACCEPT")
+        self._end_statement()
         return AcceptStmt(offer_id=offer_id.value, conditions=conditions)
 
     def _parse_reject(self) -> RejectStmt:
@@ -189,7 +194,7 @@ class Parser:
         if self._match(TokenType.REASON):
             reason_tok = self._expect(TokenType.STRING, "Expected reason string")
             reason = reason_tok.value
-        self._expect(TokenType.SEMICOLON, "Expected ';' after REJECT")
+        self._end_statement()
         return RejectStmt(offer_id=offer_id.value, reason=reason)
 
     def _parse_commit(self) -> CommitStmt:
@@ -199,13 +204,13 @@ class Parser:
         if self._match(TokenType.BY):
             dl_tok = self._expect(TokenType.STRING, "Expected deadline string after BY")
             deadline = dl_tok.value
-        self._expect(TokenType.SEMICOLON, "Expected ';' after COMMIT")
+        self._end_statement()
         return CommitStmt(predicate=pred, deadline=deadline)
 
     def _parse_act(self) -> ActStmt:
         self._expect(TokenType.ACT)
         pred = self._parse_predicate()
-        self._expect(TokenType.SEMICOLON, "Expected ';' after ACT")
+        self._end_statement()
         return ActStmt(predicate=pred)
 
     # ── predicate ───────────────────────────────────────

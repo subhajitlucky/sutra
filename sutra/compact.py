@@ -39,6 +39,7 @@ SCHEMA: dict[tuple[str, str | None], list[str]] = {
     ("FACT", "available"): ["item", "seller", "price"],
     ("FACT", "committed"): ["id", "status"],
     ("QUERY", "availability"): ["item"],
+    ("QUERY", "available"): ["item"],
     ("COMMIT", "pay"): ["amount", "to"],
     ("ACT", "transfer"): ["amount", "to"],
     ("OFFER", None): ["id", "give.money", "want.item", "want.brand"],

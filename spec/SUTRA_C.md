@@ -64,7 +64,7 @@ are the frozen schemas; predicates outside the table use the named fallback
 | `INTENT buy` | item, max_price, deadline |
 | `FACT available` | item, seller, price |
 | `FACT committed` | id, status |
-| `QUERY availability` | item |
+| `QUERY availability` / `QUERY available` | item |
 | `COMMIT pay` | amount, to |
 | `ACT transfer` | amount, to |
 | `OFFER` | id, give.money, want.item, want.brand |
