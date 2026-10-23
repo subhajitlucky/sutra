@@ -2,9 +2,29 @@
 
 **A minimal, deterministic agent-to-agent communication language.**
 
+[![PyPI](https://img.shields.io/pypi/v/sutra-a2a.svg)](https://pypi.org/project/sutra-a2a/)
+[![Python](https://img.shields.io/pypi/pyversions/sutra-a2a.svg)](https://pypi.org/project/sutra-a2a/)
+[![CI](https://github.com/subhajitlucky/sutra/actions/workflows/ci.yml/badge.svg)](https://github.com/subhajitlucky/sutra/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 SUTRA is a formal language designed for autonomous AI agents to communicate, negotiate, and commit to agreements. It combines English-readable syntax with Dharmic ontological roots — making it both globally accessible and culturally unique.
 
 > *Designed for machines. Readable by humans. Rooted in Dharma.*
+
+## Quickstart
+
+```bash
+pip install sutra-a2a
+sutra demo
+```
+
+Run a `.sutra` file:
+
+```bash
+sutra run examples/buyer.sutra
+```
+
+The rest of this README covers the protocol, the compact wire format, and the architecture.
 
 ---
 

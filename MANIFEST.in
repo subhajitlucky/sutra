@@ -1,5 +1,8 @@
 include README.md
 include LICENSE
+include CHANGELOG.md
+include SECURITY.md
+include PUBLISHING.md
 include pyproject.toml
 recursive-include spec *.md
 recursive-include examples *.py *.sutra

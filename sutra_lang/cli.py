@@ -25,6 +25,7 @@ import os
 import time
 import logging
 
+from . import __version__
 from .lexer import Lexer, LexerError
 from .parser import Parser, ParseError
 from .interpreter import Interpreter
@@ -1216,8 +1217,9 @@ def cmd_playground(_args):
 def main():
     parser = argparse.ArgumentParser(
         prog="sutra",
-        description="SUTRA v0.10 — Agent-to-Agent Communication Language",
+        description=f"SUTRA v{__version__} — Agent-to-Agent Communication Language",
     )
+    parser.add_argument("--version", action="version", version=f"SUTRA {__version__}")
     sub = parser.add_subparsers(dest="command")
 
     # run command

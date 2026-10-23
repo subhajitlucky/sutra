@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sutra-a2a"
-version = "0.10.0"
+version = "0.10.1"
 description = "SUTRA — a deterministic agent-to-agent communication language with a compact wire format"
 readme = "README.md"
 license = "MIT"

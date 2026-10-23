@@ -4,6 +4,22 @@
 - Import package: `sutra_lang`
 - CLI command: `sutra`
 
+## Trusted Publishing (recommended)
+
+Future releases can publish from GitHub without a long-lived token.
+
+1. On PyPI, open the `sutra-a2a` project → **Publishing** → **Add a new publisher**.
+2. Choose **GitHub** and set:
+   - Owner: `subhajitlucky`
+   - Repository: `sutra`
+   - Workflow: `publish.yml`
+   - Environment: leave blank
+3. Publish a GitHub release. `.github/workflows/publish.yml` builds the
+   distributions and uploads them with OIDC.
+
+The manual token flow below remains available for the first release or an
+emergency.
+
 ## Build and check
 
 ```bash
