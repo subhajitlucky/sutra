@@ -13,8 +13,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from sutra.compact_bridge import CompactChannel  # noqa: E402
-from sutra.runtime import SutraRuntime  # noqa: E402
+from sutra_lang.compact_bridge import CompactChannel  # noqa: E402
+from sutra_lang.runtime import SutraRuntime  # noqa: E402
 
 try:
     import tiktoken

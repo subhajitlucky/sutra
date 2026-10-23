@@ -1,38 +1,42 @@
 [build-system]
-requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+requires = ["setuptools>=77.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
-name = "sutra-lang"
-version = "0.6.0"
-description = "SUTRA — A minimal agent-to-agent communication language"
+name = "sutra-a2a"
+version = "0.10.0"
+description = "SUTRA — a deterministic agent-to-agent communication language with a compact wire format"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
 authors = [
-    {name = "Subhajit"},
+    {name = "Subhajit Pradhan"},
 ]
-keywords = ["agents", "ai", "communication", "language", "negotiation", "dsl"]
+keywords = ["agents", "ai", "communication", "language", "negotiation", "dsl", "a2a", "mcp"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Interpreters",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
 [project.optional-dependencies]
 crypto = ["cryptography>=41.0"]
+dev = ["build>=1.2", "twine>=5.0", "pytest>=8.0"]
 
 [project.scripts]
-sutra = "sutra.cli:main"
+sutra = "sutra_lang.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/your-username/sutra"
-Repository = "https://github.com/your-username/sutra"
+Homepage = "https://github.com/subhajitlucky/sutra"
+Repository = "https://github.com/subhajitlucky/sutra"
+Issues = "https://github.com/subhajitlucky/sutra/issues"
+Documentation = "https://github.com/subhajitlucky/sutra#readme"
 
 [tool.setuptools.packages.find]
-include = ["sutra*"]
+include = ["sutra_lang*"]

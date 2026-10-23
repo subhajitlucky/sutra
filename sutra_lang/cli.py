@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-"""SUTRA v0.5 — CLI Entry Point
+"""SUTRA v0.10 — CLI Entry Point
 
 Usage:
-    python -m sutra run <file.sutra>                 # Run a script with a default agent
-    python -m sutra run <file.sutra> --agent <id>    # Run with named agent
-    python -m sutra run <file.sutra> --sign          # Run and sign COMMITs/OFFERs
-    python -m sutra parse <file.sutra>               # Parse and dump AST
-    python -m sutra demo                             # Run built-in buyer/seller demo
-    python -m sutra serve --agent <id> --port 8000   # Start HTTP agent server
-    python -m sutra send <url> <file.sutra>          # Send a .sutra message via HTTP
-    python -m sutra network-demo                     # Run networked multi-agent demo
-    python -m sutra keygen <agent_id>                # Generate signing key pair
-    python -m sutra keys                             # List all stored keys
-    python -m sutra verify <agent_id>                # Verify an agent's signed commits
-    python -m sutra signed-demo                      # Run demo with cryptographic signing
-    python -m sutra runtime-demo                     # Run multi-agent runtime demo
-    python -m sutra sandbox-demo                     # Run sandboxed interpreter demo
-    python -m sutra playground                       # Open browser playground
+    python -m sutra_lang run <file.sutra>                 # Run a script with a default agent
+    python -m sutra_lang run <file.sutra> --agent <id>    # Run with named agent
+    python -m sutra_lang run <file.sutra> --sign          # Run and sign COMMITs/OFFERs
+    python -m sutra_lang parse <file.sutra>               # Parse and dump AST
+    python -m sutra_lang demo                             # Run built-in buyer/seller demo
+    python -m sutra_lang serve --agent <id> --port 8000   # Start HTTP agent server
+    python -m sutra_lang send <url> <file.sutra>          # Send a .sutra message via HTTP
+    python -m sutra_lang network-demo                     # Run networked multi-agent demo
+    python -m sutra_lang keygen <agent_id>                # Generate signing key pair
+    python -m sutra_lang keys                             # List all stored keys
+    python -m sutra_lang verify <agent_id>                # Verify an agent's signed commits
+    python -m sutra_lang signed-demo                      # Run demo with cryptographic signing
+    python -m sutra_lang runtime-demo                     # Run multi-agent runtime demo
+    python -m sutra_lang sandbox-demo                     # Run sandboxed interpreter demo
+    python -m sutra_lang playground                       # Open browser playground
 """
 
 import argparse
@@ -1216,7 +1216,7 @@ def cmd_playground(_args):
 def main():
     parser = argparse.ArgumentParser(
         prog="sutra",
-        description="SUTRA v0.6 — Agent-to-Agent Communication Language",
+        description="SUTRA v0.10 — Agent-to-Agent Communication Language",
     )
     sub = parser.add_subparsers(dest="command")
 

@@ -15,7 +15,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-sys.path.insert(0, str(HERE.parents[1]))  # repo root, for `import sutra`
+sys.path.insert(0, str(HERE.parents[1]))  # repo root, for `import sutra_lang`
 
 import tiktoken  # noqa: E402  (installed in .venv)
 
@@ -30,8 +30,8 @@ ENCODINGS = {
 
 def validate_current_sutra() -> list[str]:
     """Every sutra_current rendering must parse with the repo's own parser."""
-    from sutra.lexer import Lexer
-    from sutra.parser import Parser
+    from sutra_lang.lexer import Lexer
+    from sutra_lang.parser import Parser
 
     problems = []
     render = REPRESENTATIONS["sutra_current"]

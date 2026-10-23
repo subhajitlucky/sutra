@@ -2,8 +2,8 @@
 
 import unittest
 
-from sutra.lexer import Lexer
-from sutra.parser import Parser
+from sutra_lang.lexer import Lexer
+from sutra_lang.parser import Parser
 
 
 def parse(src: str):

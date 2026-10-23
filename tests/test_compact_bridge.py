@@ -2,9 +2,9 @@
 
 import unittest
 
-from sutra.compact import decode
-from sutra.compact_bridge import CompactChannel
-from sutra.runtime import SutraRuntime
+from sutra_lang.compact import decode
+from sutra_lang.compact_bridge import CompactChannel
+from sutra_lang.runtime import SutraRuntime
 
 
 def build():
@@ -73,7 +73,7 @@ class TestCompactBridge(unittest.TestCase):
                  "to": "seller@store", "extra": {}}
         channel.ask(query)
         # the third decode of the same ellipsis in a fresh session must fail
-        from sutra.compact import CompactError, Session
+        from sutra_lang.compact import CompactError, Session
         with self.assertRaises(CompactError):
             decode("q availability .", Session())
 

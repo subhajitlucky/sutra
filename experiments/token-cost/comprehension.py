@@ -185,8 +185,8 @@ def n(v):
 
 
 def sutra_ast_to_canonical(src):
-    from sutra.lexer import Lexer
-    from sutra.parser import Parser
+    from sutra_lang.lexer import Lexer
+    from sutra_lang.parser import Parser
 
     prog = Parser(Lexer(src).tokenize()).parse()
     headers = {h.key: h.value for h in prog.headers}

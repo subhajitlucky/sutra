@@ -113,7 +113,7 @@ def render_json(m: dict) -> str:
 
 
 def render_sutra_current(m: dict) -> str:
-    """Exactly the syntax sutra/parser.py accepts. Strings always quoted."""
+    """Exactly the syntax sutra_lang/parser.py accepts. Strings always quoted."""
     p, pred = m["primitive"], m.get("predicate")
     args = m["args"]
     adict = dict(args)

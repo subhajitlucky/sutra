@@ -179,7 +179,7 @@ statement) and do not move the meter pointer. End-to-end measurement:
 ## 12. Python API
 
 ```python
-from sutra.compact import Session, encode, decode, encode_resync, TemplateSession
+from sutra_lang.compact import Session, encode, decode, encode_resync, TemplateSession
 
 s = Session()
 s.register("SmartTV", "a")

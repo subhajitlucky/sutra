@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from sutra.compact import (  # noqa: E402
+from sutra_lang.compact import (  # noqa: E402
     Session, TemplateSession, decode, encode, encode_resync,
 )
 
@@ -99,8 +99,8 @@ def jsonrpc(msg, i):
 
 
 def main():
-    from sutra.lexer import Lexer
-    from sutra.parser import Parser
+    from sutra_lang.lexer import Lexer
+    from sutra_lang.parser import Parser
 
     buyer, seller = Session(), Session()
     for value, alias in (("SmartTV", "a"), ("Samsung", "m"), ("off-001", "o"), ("off-001-c", "p")):

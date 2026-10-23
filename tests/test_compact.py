@@ -5,7 +5,7 @@ Run:  python -m unittest discover -s tests -v
 
 import unittest
 
-from sutra.compact import (
+from sutra_lang.compact import (
     CompactError, Session, TemplateSession,
     decode, decode_resync, encode, encode_resync, is_resync,
 )

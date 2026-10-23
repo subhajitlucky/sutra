@@ -30,8 +30,8 @@ every failure is published.
   in model testing; the compact form removes terminators entirely.
 
 **SUTRA-C is shipped (v0.7) and bridged into the runtime (v0.8)**: the frozen
-wire format lives in [`sutra/compact.py`](sutra/compact.py) with its spec in
-[`spec/SUTRA_C.md`](spec/SUTRA_C.md); [`sutra/compact_bridge.py`](sutra/compact_bridge.py)
+wire format lives in [`sutra_lang/compact.py`](sutra_lang/compact.py) with its spec in
+[`spec/SUTRA_C.md`](spec/SUTRA_C.md); [`sutra_lang/compact_bridge.py`](sutra_lang/compact_bridge.py)
 carries it over the multi-agent runtime, auto-responses included, and the HTTP
 transport speaks it natively (v0.9 handshake/compact POSTs, v0.10 template +
 meter mode over HTTP). 42 unit tests and four demos run on every push via CI:
@@ -118,33 +118,48 @@ ACT transfer(amount=48000, to="seller@store");
 
 ## Installation & Usage
 
+From PyPI (after the first release):
+
 ```bash
-# Clone the repo
+pip install sutra-a2a
+sutra demo
+```
+
+From source:
+
+```bash
 git clone https://github.com/subhajitlucky/sutra.git
 cd sutra
+pip install -e .
+sutra demo
+```
 
+The examples below use the installed `sutra` command. From a checkout without
+installing, use `python -m sutra_lang` instead.
+
+```bash
 # Run a .sutra file
-python -m sutra run examples/buyer.sutra
+sutra run examples/buyer.sutra
 
 # Parse and inspect AST
-python -m sutra parse examples/buyer.sutra
+sutra parse examples/buyer.sutra
 
 # Run the built-in buyer/seller demo (local)
-python -m sutra demo
+sutra demo
 
 # ── v0.2: Network Transport ──
 
 # Start an agent as an HTTP server
-python -m sutra serve --agent "seller@store" --port 8001
+sutra serve --agent "seller@store" --port 8001
 
 # (Optional) pre-load facts on startup
-python -m sutra serve --agent "seller@store" --port 8001 --facts examples/seller.sutra
+sutra serve --agent "seller@store" --port 8001 --facts examples/seller.sutra
 
 # Send a .sutra message to a remote agent
-python -m sutra send http://localhost:8001 examples/buyer.sutra --from "buyer@home"
+sutra send http://localhost:8001 examples/buyer.sutra --from "buyer@home"
 
 # Run the full networked multi-agent demo
-python -m sutra network-demo
+sutra network-demo
 ```
 
 No dependencies required — pure Python 3.11+.
@@ -217,9 +232,9 @@ Every SUTRA agent maintains:
 
 ```
 sutra/
-├── sutra/
+├── sutra_lang/
 │   ├── __init__.py       # Package init
-│   ├── __main__.py       # python -m sutra
+│   ├── __main__.py       # python -m sutra_lang
 │   ├── tokens.py         # Token types and keywords
 │   ├── lexer.py          # Tokenizer
 │   ├── ast_nodes.py      # AST node definitions
@@ -298,8 +313,8 @@ Response:
 Agents find each other via an `AgentRegistry` — a simple ID → URL lookup:
 
 ```python
-from sutra.registry import AgentRegistry
-from sutra.client import SutraClient
+from sutra_lang.registry import AgentRegistry
+from sutra_lang.client import SutraClient
 
 registry = AgentRegistry()
 registry.register("seller@store", "http://localhost:8001")
@@ -312,9 +327,9 @@ response = client.send_to("seller@store", from_agent="buyer@home",
 ### Programmatic Usage
 
 ```python
-from sutra.agent import Agent
-from sutra.server import SutraServer
-from sutra.client import SutraClient
+from sutra_lang.agent import Agent
+from sutra_lang.server import SutraServer
+from sutra_lang.client import SutraClient
 
 # Start seller agent
 seller = Agent("seller@store")
@@ -340,19 +355,19 @@ COMMIT and OFFER statements are now **cryptographically signed** using Ed25519 d
 
 ```bash
 # Generate a signing key for an agent
-python -m sutra keygen "seller@store"
+sutra keygen "seller@store"
 
 # List all stored keys
-python -m sutra keys
+sutra keys
 
 # Run a script with signing enabled
-python -m sutra run examples/finalize.sutra --agent "buyer@home" --sign
+sutra run examples/finalize.sutra --agent "buyer@home" --sign
 
 # Verify signatures in a file
-python -m sutra verify "buyer@home" examples/finalize.sutra
+sutra verify "buyer@home" examples/finalize.sutra
 
 # Run the full signed demo
-python -m sutra signed-demo
+sutra signed-demo
 ```
 
 ### How It Works
@@ -368,8 +383,8 @@ python -m sutra signed-demo
 ### Programmatic Usage
 
 ```python
-from sutra.crypto import generate_keypair, sign, verify, commitment_content
-from sutra.agent import Agent
+from sutra_lang.crypto import generate_keypair, sign, verify, commitment_content
+from sutra_lang.agent import Agent
 
 # Generate keys
 keypair = generate_keypair("buyer@home")
@@ -438,13 +453,13 @@ Run multiple agents **in a single process** with direct messaging, auto-response
 
 ```bash
 # See agents talk
-python -m sutra runtime-demo
+sutra runtime-demo
 ```
 
 ### Programmatic Usage
 
 ```python
-from sutra.runtime import SutraRuntime
+from sutra_lang.runtime import SutraRuntime
 
 # Create runtime and spawn agents
 rt = SutraRuntime()
@@ -521,7 +536,7 @@ SUTRA v0.5 introduces **sandboxed execution** — run untrusted SUTRA code safel
 ### Python Sandbox
 
 ```python
-from sutra.sandbox import SutraSandbox, SandboxLimits
+from sutra_lang.sandbox import SutraSandbox, SandboxLimits
 
 # Read-only sandbox — only FACT and QUERY allowed
 sandbox = SutraSandbox(
@@ -555,8 +570,8 @@ print(result.stats)         # {statements_total: 3, statements_executed: 2, ...}
 ### CLI Commands
 
 ```bash
-python -m sutra sandbox-demo     # Run sandboxed interpreter demo
-python -m sutra playground       # Open browser playground (http://localhost:8080)
+sutra sandbox-demo     # Run sandboxed interpreter demo
+sutra playground       # Open browser playground (http://localhost:8080)
 ```
 
 ### JavaScript / Browser Interpreter
@@ -586,7 +601,7 @@ console.log(res.violations);  // ["Keyword 'COMMIT' not allowed"]
 Open `wasm/index.html` in any browser or run:
 
 ```bash
-python -m sutra playground --port 8080
+sutra playground --port 8080
 ```
 
 Features:
@@ -619,8 +634,8 @@ v0.6 addresses 9 infrastructure-level security gaps identified through systemati
 ### Hardened Runtime
 
 ```python
-from sutra.runtime import SutraRuntime
-from sutra.agent import Agent
+from sutra_lang.runtime import SutraRuntime
+from sutra_lang.agent import Agent
 
 # Enable all v0.6 protections
 rt = SutraRuntime(hardened=True, ask_timeout_s=5.0)
@@ -636,7 +651,7 @@ print(msg.sequence)  # Monotonic sequence number
 ### Message Encryption
 
 ```python
-from sutra.security import MessageEncryptor
+from sutra_lang.security import MessageEncryptor
 
 enc = MessageEncryptor()
 key = enc.generate_key()
@@ -649,7 +664,7 @@ plaintext = enc.decrypt("buyer", "seller", ciphertext)
 ### Transaction Rollback
 
 ```python
-from sutra.transaction import SutraTransaction
+from sutra_lang.transaction import SutraTransaction
 
 tx = SutraTransaction(agent)
 tx.begin()
@@ -663,7 +678,7 @@ except Exception:
 ### State Persistence
 
 ```python
-from sutra.persistence import StateStore
+from sutra_lang.persistence import StateStore
 
 store = StateStore()
 store.save(agent)               # atomic write to ~/.sutra/state/
@@ -673,7 +688,7 @@ loaded = store.load("agent-id") # full round-trip
 ### Demo
 
 ```bash
-python -m sutra hardened-demo
+sutra hardened-demo
 ```
 
 ---
@@ -687,7 +702,7 @@ python -m sutra hardened-demo
 - [x] v0.5 — Sandboxed interpreter + JavaScript port + browser playground
 - [x] v0.6 — Security hardening (replay, encryption, auth, transactions, persistence)
 - [x] research — token-cost lab: measured encodings, cross-model comprehension, negatives published
-- [x] v0.7 — SUTRA-C wire format shipped: spec, codec (`sutra/compact.py`), end-to-end demo
+- [x] v0.7 — SUTRA-C wire format shipped: spec, codec (`sutra_lang/compact.py`), end-to-end demo
 - [x] v0.8 — optional `;` terminators; compact runtime bridge (auto-responses on the wire); CI (tests + demos on every push)
 - [x] v0.9 — HTTP transport speaks C1: handshake, compact POST, compact auto-replies
 - [x] v0.10 — template negotiation + meter mode over HTTP, resync off-template messages

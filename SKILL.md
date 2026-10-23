@@ -108,18 +108,18 @@ COMMITs and OFFERs are Ed25519-signed — tamper-proof, verifiable:
 pip install sutra-lang
 # or clone:
 git clone https://github.com/subhajitlucky/sutra.git
-cd sutra && python -m sutra demo
+cd sutra && python -m sutra_lang demo
 ```
 
 ## Key Commands
 
 ```bash
-python -m sutra demo              # Local negotiation demo
-python -m sutra network-demo      # HTTP-based multi-agent demo
-python -m sutra signed-demo       # Cryptographically signed demo
-python -m sutra runtime-demo      # Multi-agent runtime demo (v0.4)
-python -m sutra run file.sutra    # Execute a .sutra file
-python -m sutra keygen "agent-id" # Generate signing keys
+python -m sutra_lang demo              # Local negotiation demo
+python -m sutra_lang network-demo      # HTTP-based multi-agent demo
+python -m sutra_lang signed-demo       # Cryptographically signed demo
+python -m sutra_lang runtime-demo      # Multi-agent runtime demo (v0.4)
+python -m sutra_lang run file.sutra    # Execute a .sutra file
+python -m sutra_lang keygen "agent-id" # Generate signing keys
 ```
 
 ## Links

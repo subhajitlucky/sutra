@@ -2,7 +2,7 @@
 
 import unittest
 
-from sutra.render import parse_readable, render_readable
+from sutra_lang.render import parse_readable, render_readable
 
 DEAL_FACT = {"primitive": "FACT", "predicate": "available",
              "args": {"item": "SmartTV", "seller": "seller@store", "price": 48000},

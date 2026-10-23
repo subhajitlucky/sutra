@@ -5,9 +5,9 @@ import unittest
 import urllib.error
 import urllib.request
 
-from sutra.agent import Agent
-from sutra.client import CompactClient, SutraClientError
-from sutra.server import SutraServer
+from sutra_lang.agent import Agent
+from sutra_lang.client import CompactClient, SutraClientError
+from sutra_lang.server import SutraServer
 
 QUERY = {"primitive": "QUERY", "predicate": "available", "args": {"item": "SmartTV"},
          "from": "buyer@home", "to": "seller@store", "extra": {}}
